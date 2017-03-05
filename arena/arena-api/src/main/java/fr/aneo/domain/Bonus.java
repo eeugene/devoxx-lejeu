@@ -1,4 +1,4 @@
-package fr.aneo;
+package fr.aneo.domain;
 
 /**
  * Created by eeugene on 03/03/2017.

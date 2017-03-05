@@ -1,5 +1,8 @@
 package fr.aneo;
 
+import fr.aneo.domain.BattleResults;
+import fr.aneo.domain.Bonus;
+import fr.aneo.domain.Hero;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,18 +27,30 @@ public class MockHeroService {
         System.out.println("SAVED");
     }
 
+    private List<Hero> heros;
     private List<Hero> getHeros() {
-        return Arrays.asList(
-                buildHero(1),
-                buildHero(2),
-                buildHero(3),
-                buildHero(4),
-                buildHero(5)
-        );
+        int randomHero = RandomUtils.nextInt(5);
+        if (heros == null) {
+            heros = Arrays.asList(
+                    buildHero(1, null),
+                    buildHero(2, null),
+                    buildHero(3, null),
+                    buildHero(4, null),
+                    buildHero(5, null)
+            );
+        }
+        heros.get(randomHero).setBonus(randomBonus());
+        return heros;
     }
 
-    private Hero buildHero(int id) {
+    private String randomBonus() {
+        Bonus[] values = Bonus.values();
+        int i = RandomUtils.nextInt(values.length-1);
+        return values[i].name();
+    }
+
+    private Hero buildHero(int id, Bonus bonus) {
         String email = RandomStringUtils.randomAlphabetic(5);
-        return Hero.builder().email(email).name("name-" + id).hp(100).attackForce(1).bonus(null).build();
+        return Hero.builder().email(email).name("hero-" + id).hp(100).attackForce(10).bonus(bonus != null ? bonus.name() : null).build();
     }
 }

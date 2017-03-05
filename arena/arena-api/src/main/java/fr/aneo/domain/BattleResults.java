@@ -1,8 +1,8 @@
-package fr.aneo;
+package fr.aneo.domain;
 
+import fr.aneo.domain.BattleResult;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

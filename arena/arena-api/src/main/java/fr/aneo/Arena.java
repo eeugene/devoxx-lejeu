@@ -1,8 +1,10 @@
 package fr.aneo;
 
+import fr.aneo.domain.*;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,14 +15,14 @@ import java.util.stream.Collectors;
 @Service
 public class Arena {
 
-    final int minute = 60 * 1000;
-
-    private HeroService heroService;
+    final int fightIntervalMillis = 10 * 1000;
 
     @Autowired
-    public Arena(HeroService heroService) {
-        this.heroService = heroService;
-    }
+    private HeroService heroService;
+    @Autowired
+    private FightExecutor fightExecutor;
+    @Autowired
+    private PublishService publishService;
 
     public void start() {
         while (true) {
@@ -29,10 +31,10 @@ public class Arena {
                 List<Hero> heros = heroService.loadHeros();
                 Optional<BattleResults> battleResults = startBattles(heros);
                 if (battleResults.isPresent()) {
-                    System.out.println(battleResults.get());
+                    publishService.publishBattleResults(battleResults.get());
                     heroService.saveResults(battleResults.get());
                 }
-                Thread.sleep(minute);
+                Thread.sleep(fightIntervalMillis);
             } catch (InterruptedException e) {
                 throw new RuntimeException();
             }
@@ -61,7 +63,77 @@ public class Arena {
         return Optional.of(results);
     }
 
-    private BattleResult fight(Hero hero1, Hero hero2) {
-        return new BattleResult(hero1, hero2, false);
+    public BattleResult fight(Hero hero1, Hero hero2) {
+        FightDefinition fightDefinition = getFightDefinition(hero1, hero2);
+        return new BattleResult(hero1, hero2, fightExecutor.fight(fightDefinition));
+    }
+
+    public FightDefinition getFightDefinition(Hero hero1, Hero hero2) {
+        // hero bonus
+        Optional<Bonus> hero1Bonus = getBonus(hero1);
+        Optional<Bonus> hero2Bonus = getBonus(hero2);
+        FightDefinition.FightDefinitionBuilder fightDefinitionBuilder = FightDefinition.builder();
+
+        // random start
+        boolean isStartRandom = false;
+        boolean hero1StartAttacking;
+        if (heroStartAttacking(hero1Bonus, hero2Bonus)) {
+            fightDefinitionBuilder.startWithHero1(true);
+        } else if (heroStartAttacking(hero2Bonus, hero1Bonus)) {
+            fightDefinitionBuilder.startWithHero1(false);
+        } else {
+            fightDefinitionBuilder.startRandom(true);
+            fightDefinitionBuilder.startWithHero1(RandomUtils.nextBoolean());
+        }
+
+        fightDefinitionBuilder.cancelHero1FirstAttack(hasBonus(hero2Bonus, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
+        fightDefinitionBuilder.cancelHero2FirstAttack(hasBonus(hero1Bonus, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
+
+        // other params
+        int hero1Hp = hero1.getHp();
+        int hero2Hp = hero2.getHp();
+        if (hasBonus(hero1Bonus, Bonus.ADD_10_PERCENT_HP)) {
+            hero1Hp = (int)(hero1Hp + (hero1Hp*0.1));
+        }
+        if (hasBonus(hero2Bonus, Bonus.ADD_10_PERCENT_HP)) {
+            hero2Hp = (int)(hero2Hp + (hero2Hp*0.1));
+        }
+        if (hasBonus(hero1Bonus, Bonus.OPPONENT_START_AT_50_PERCENT_HP)) {
+            hero2Hp = (int)(hero2Hp*0.5);
+        }
+        if (hasBonus(hero2Bonus, Bonus.OPPONENT_START_AT_50_PERCENT_HP)) {
+            hero1Hp = (int)(hero1Hp*0.5);
+        }
+        fightDefinitionBuilder.hero1Hp(hero1Hp);
+        fightDefinitionBuilder.hero2Hp(hero2Hp);
+        fightDefinitionBuilder.hero1Attack(hero1.getAttackForce());
+        fightDefinitionBuilder.hero2Attack(hero2.getAttackForce());
+        if (hasBonus(hero1Bonus, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK)) {
+            fightDefinitionBuilder.hero1FirstAttackHas20PercentMorePower(true);
+        }
+        if (hasBonus(hero2Bonus, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK)) {
+            fightDefinitionBuilder.hero2FirstAttackHas20PercentMorePower(true);
+        }
+        return fightDefinitionBuilder.build();
+    }
+
+    private boolean hasBonus(Optional<Bonus> heroBonus, Bonus bonus) {
+        return heroBonus.isPresent() && heroBonus.get() == bonus;
+    }
+
+    private boolean heroStartAttacking(Optional<Bonus> hero1Bonus, Optional<Bonus> hero2Bonus) {
+        if (hasBonus(hero1Bonus, Bonus.FORCE_START_ATTACKING)
+                && !hasBonus(hero2Bonus, Bonus.FORCE_START_ATTACKING)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Optional<Bonus> getBonus(Hero hero) {
+        if (StringUtils.isEmpty(hero.getBonus())) {
+            return Optional.empty();
+        }
+        Bonus bonus = Bonus.valueOf(hero.getBonus());
+        return Optional.of(bonus);
     }
 }

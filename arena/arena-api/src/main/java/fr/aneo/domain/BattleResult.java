@@ -1,10 +1,8 @@
-package fr.aneo;
+package fr.aneo.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Value;
-
-import java.util.List;
 
 /**
  * Created by eeugene on 03/03/2017.

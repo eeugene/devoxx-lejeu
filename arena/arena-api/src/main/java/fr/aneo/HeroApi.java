@@ -1,7 +1,8 @@
 package fr.aneo;
 
-import feign.Param;
 import feign.RequestLine;
+import fr.aneo.domain.BattleResults;
+import fr.aneo.domain.Hero;
 
 import java.util.List;
 

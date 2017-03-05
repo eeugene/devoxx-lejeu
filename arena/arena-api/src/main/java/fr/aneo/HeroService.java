@@ -3,6 +3,8 @@ package fr.aneo;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import fr.aneo.domain.BattleResults;
+import fr.aneo.domain.Hero;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
