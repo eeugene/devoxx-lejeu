@@ -9,6 +9,6 @@
 *.ear
 
 *.iml
-**/.idea/
+.idea
 **/.mvn/
 **/target/
