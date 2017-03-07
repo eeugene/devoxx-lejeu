@@ -3,6 +3,7 @@ package fr.aneo.game.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -23,6 +24,7 @@ public class Quizz {
     @Column(name = "ANSWERS")
     private String answersAsString;
 
+    @NotNull
     @Column(name = "CHOICE")
     private int userChoice;
 }
