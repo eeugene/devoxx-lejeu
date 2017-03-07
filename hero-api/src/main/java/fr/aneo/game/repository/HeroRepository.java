@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * Created by raouf on 04/03/17.
  */
-public abstract class HeroRepository implements JpaRepository<Hero, String> {
+public interface HeroRepository extends JpaRepository<Hero, String> {
 }
