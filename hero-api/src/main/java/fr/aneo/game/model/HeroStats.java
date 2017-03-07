@@ -1,9 +1,6 @@
 package fr.aneo.game.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,11 +11,9 @@ import static javax.persistence.EnumType.STRING;
 /**
  * Created by raouf on 04/03/17.
  */
-@Embeddable
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Embeddable
 public class HeroStats {
 
 

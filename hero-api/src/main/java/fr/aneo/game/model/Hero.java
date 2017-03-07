@@ -2,23 +2,25 @@ package fr.aneo.game.model;
 
 import lombok.*;
 
-import javax.persistence.Embedded;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+
+import static javax.persistence.EnumType.STRING;
 
 /**
  * Created by raouf on 04/03/17.
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Entity
 public class Hero {
 
+    @Id
     private String email;
 
     private String password;
+
+    @Enumerated(value = STRING)
+    private Role role;
 
     private String nickname;
 

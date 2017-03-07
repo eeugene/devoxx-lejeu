@@ -1,25 +1,32 @@
 package fr.aneo.game.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.io.Serializable;
+
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.AUTO;
 
 /**
  * Created by raouf on 04/03/17.
  */
-@Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class Avatar {
+@Entity
+@Cacheable
+public class Avatar implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    private String depiction;
+    @Column(name = "MIME_TYPE")
+    private String mimeType;
+
+    @Lob
+    @Basic(fetch = LAZY)
+    private byte[] depiction;
 }

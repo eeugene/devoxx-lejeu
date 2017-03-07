@@ -1,29 +1,28 @@
 package fr.aneo.game.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import static javax.persistence.GenerationType.AUTO;
 
 /**
  * Created by raouf on 04/03/17.
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Quizz {
 
     @Id
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     private String question;
 
-    private String [] possibleAnswers;
+    @Column(name = "ANSWERS")
+    private String answersAsString;
 
-    private int validAnswerIndex;
+    @Column(name = "CHOICE")
+    private int userChoice;
 }
