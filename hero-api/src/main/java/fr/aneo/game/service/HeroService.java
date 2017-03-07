@@ -25,4 +25,8 @@ public class HeroService {
     public List<Hero> findAllHeroes() {
         return heroRepository.findAll();
     }
+
+    public Hero createHero(Hero hero) {
+        return heroRepository.save(hero);
+    }
 }
