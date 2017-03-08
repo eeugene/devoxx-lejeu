@@ -30,7 +30,6 @@ public class LeaderboardService {
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .logger(logger)
-                .options(new Request.Options())
                 .requestInterceptor(new RequestInterceptor() {
                     @Override
                     public void apply(RequestTemplate requestTemplate) {

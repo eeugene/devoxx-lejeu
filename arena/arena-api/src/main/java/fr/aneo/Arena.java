@@ -1,11 +1,13 @@
 package fr.aneo;
 
 import fr.aneo.domain.*;
+import fr.aneo.eventstore.EventStore;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,22 +25,30 @@ public class Arena {
     private FightExecutor fightExecutor;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private EventStore eventStore;
 
     public void start() {
         while (true) {
+
             try {
                 System.out.println("run battles");
                 List<Hero> heros = heroService.loadHeros();
                 Optional<BattleResults> battleResults = startBattles(heros);
                 if (battleResults.isPresent()) {
                     publishService.publishBattleResults(battleResults.get());
-                    heroService.saveResults(battleResults.get());
+                    saveBattleResults(battleResults.get());
                 }
                 Thread.sleep(fightIntervalMillis);
             } catch (InterruptedException e) {
                 throw new RuntimeException();
             }
         }
+    }
+
+    private void saveBattleResults(BattleResults battleResults) {
+        heroService.saveResults(battleResults);
+        eventStore.store(battleResults);
     }
 
     public Optional<BattleResults> startBattles(List<Hero> heros) {
@@ -65,7 +75,7 @@ public class Arena {
 
     public BattleResult fight(Hero hero1, Hero hero2) {
         FightDefinition fightDefinition = getFightDefinition(hero1, hero2);
-        return new BattleResult(hero1, hero2, fightExecutor.fight(fightDefinition));
+        return new BattleResult(hero1, hero2, fightExecutor.fight(fightDefinition), LocalDateTime.now());
     }
 
     public FightDefinition getFightDefinition(Hero hero1, Hero hero2) {
