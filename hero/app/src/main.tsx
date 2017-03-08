@@ -1,14 +1,17 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-//import {configureStore} from 'state';
-//import {Quizz} from 'component/quizz';
+import { configureStore } from 'state/configureStore';
+import App from './component/App';
+import { createAppReadyAction } from 'state/actions';
 
-//let store = configureStore();
+let store = configureStore();
 
-ReactDOM.render(
-  <Provider>
-    <h1> Hello world</h1>
+render(
+  <Provider store={store}>
+    <App />
   </Provider>,
   document.getElementById('main')
 );
+
+store.dispatch(createAppReadyAction());

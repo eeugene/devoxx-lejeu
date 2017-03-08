@@ -1,3 +1,8 @@
+export type QuizzAction = 
+// list of quizz actions
+    | QuizzAnswerSelectedAction;
+
+
 export interface QuizzAnswerSelectedAction {
     type: 'QUIZZ_ANSWER_SELECTED';
     quizzId: number;

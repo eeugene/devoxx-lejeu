@@ -1,2 +1,4 @@
-export * from './quizz';
-export * from './quizzAction'
+
+export interface AppState {
+    quizz: any;
+}

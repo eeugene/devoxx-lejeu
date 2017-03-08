@@ -1,8 +1,6 @@
 import * as React from 'react';
 
 interface IQuizzFromStateProps {
-    question: string;
-    ansewers: string[];
 }
 
 
