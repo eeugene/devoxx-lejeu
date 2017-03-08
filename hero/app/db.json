@@ -1,0 +1,26 @@
+{
+  "userscurrent": {
+    "login": "Player Pseudo"
+  },
+  "quizz": {
+    "question": {
+      "id": 1,
+      "label": "Quelle est le numero du stand ANEO"
+    },
+    "answers": [
+      {
+        "id": 1,
+        "label": "stand numero 1"
+      },
+      {
+        "id": 2,
+        "label": "stand numero 2"
+      },
+      {
+        "id": 3,
+        "label": "stand numero 41"
+      }
+    ],
+    "isBonusQuestion": true
+  }
+}

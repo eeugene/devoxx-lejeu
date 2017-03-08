@@ -1,0 +1,50 @@
+{
+  "name": "hero_app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "api": "json-server db.json --routes routes.json",
+    "build:dev": "webpack --progress --profile --colors",
+    "build:prod": "webpack --env=prod --progress --profile --colors",
+    "start": "webpack-dev-server --port 8040"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^18.1.1",
+    "@types/react": "^15.0.14",
+    "@types/react-dom": "^0.14.23",
+    "@types/react-redux": "^4.4.36",
+    "html-webpack-plugin": "^2.28.0",
+    "jest": "^19.0.2",
+    "json-server": "^0.9.5",
+    "ts-jest": "^19.0.0",
+    "ts-loader": "^2.0.1",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-merge": "^3.0.0"
+  },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}
