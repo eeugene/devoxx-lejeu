@@ -14,7 +14,7 @@ module.exports = function () {
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
-      modules: [path.join(__dirname, 'src'), 'node_modules']
+      modules: [path.join(__dirname, '/../src'), 'node_modules']
     },
     module: {
       loaders: [{
@@ -27,7 +27,9 @@ module.exports = function () {
       },
       {
         test: /(component[\/\\]).*\.less$/i, 
-        loaders: ['style-loader','css-loader','less-loader']
+        use: ['style-loader'
+              ,{loader: 'css-loader', options: {imortLoaders: 1}},
+              'less-loader']
       },
       {
         test: /\.(jpg|png|gif)$/,

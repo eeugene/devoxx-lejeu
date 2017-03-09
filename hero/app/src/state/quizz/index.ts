@@ -3,21 +3,21 @@ export * from './quizzReducer';
 export * from './quizzEpic';
 
 export interface IQuizzState {
-    quizz: IQuizz;
-    selectedAnswer: number;
+    quizz?: IQuizz;
+    selectedAnswer?: number;
 };
 
 export interface IQuizz {
-    question: IQuestion;
-    answers: IAnswer[];
+    question: string;
+    answers: string[];
 }
 
-interface IQuestion {
-    id: number;
-    label: string;
-}
+// interface IQuestion {
+//     id: number;
+//     label: string;
+// }
 
-interface IAnswer {
-    id: number;
-    label: string;
-}
+// interface IAnswer {
+//     id: number;
+//     label: string;
+// }

@@ -7,7 +7,7 @@ import {quizzApi} from './../api/quizz';
 export function configureStore() {
     const rootReducer = combineReducers<AppState>(
         {
-            quizzReducer
+            quizzState: quizzReducer
             // reducers
         }
     );

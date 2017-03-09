@@ -11,7 +11,16 @@
     "target": "es5",
     "module": "commonjs",
     "jsx": "react",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "lib": [
+      "dom",
+      "es2016"
+    ],
+    "types": [
+      "jest",
+      "jsdom",
+      "node"
+    ]
   },
   "exclude": [
     "node_modules",
