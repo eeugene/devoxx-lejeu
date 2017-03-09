@@ -4,6 +4,9 @@ import fr.aneo.domain.BattleResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -19,12 +22,16 @@ public class EventStore {
         System.out.println("event store: start persist");
         eventStoreRepository.save(
                 battleResults.getResults().stream().map(br ->
-                BattleState.builder()
+                BattleFinished.builder()
                         .hero1Email(br.getHero1().getEmail())
                         .hero2Email(br.getHero2().getEmail())
-                        .player1Won(br.isPlayer1Won())
-                        .time(br.getTime()).build())
+                        .hero1Won(br.isHero1Won())
+                        .time(Date.from(br.getTime().atZone(ZoneId.systemDefault()).toInstant())).build())
                 .collect(Collectors.toList())
         );
+    }
+
+    public List<BattleFinished> load() {
+        return eventStoreRepository.findAll();
     }
 }

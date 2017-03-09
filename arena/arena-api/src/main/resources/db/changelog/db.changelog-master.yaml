@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: eeugene
+      changes:
+        - createTable:
+            tableName: battle_finished
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: hero1_email
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hero2_email
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hero1_won
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time
+                  type: datetime
+                  constraints:
+                    nullable: false

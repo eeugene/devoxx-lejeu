@@ -50,7 +50,6 @@ public class MockHeroService {
     }
 
     private Hero buildHero(int id, Bonus bonus) {
-        String email = RandomStringUtils.randomAlphabetic(5);
-        return Hero.builder().email(email).name("hero-" + id).hp(100).attackForce(10).bonus(bonus != null ? bonus.name() : null).build();
+        return Hero.builder().email("hero-" + id + "@aneo.fr").name("hero-" + id).hp(100).attackForce(10).bonus(bonus != null ? bonus.name() : null).build();
     }
 }

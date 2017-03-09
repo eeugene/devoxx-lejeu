@@ -1,6 +1,7 @@
 package fr.aneo.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
@@ -11,10 +12,11 @@ import java.time.LocalDateTime;
  */
 @Data
 @Value
+@Builder
 @AllArgsConstructor
 public class BattleResult {
     Hero hero1;
     Hero hero2;
-    boolean player1Won;
+    boolean hero1Won;
     LocalDateTime time;
 }

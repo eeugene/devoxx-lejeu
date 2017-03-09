@@ -18,16 +18,16 @@ public class PublishService {
 
     public void publishBattleResults(BattleResults battleResults) {
         printBattleResult(battleResults);
-        leaderboardService.updateLeaders(battleResults);
+        leaderboardService.addBattleResults(battleResults);
     }
 
     private void printBattleResult(BattleResults battleResults) {
         battleResults.getResults().forEach(
                 r -> System.out.println(
                         "BattleResult -> "
-                        + r.getHero1().getName() + (r.isPlayer1Won() ? " [W]" : "    ")
+                        + r.getHero1().getName() + (r.isHero1Won() ? " [W]" : "    ")
                         + " /VS/ "
-                        + r.getHero2().getName() + (r.isPlayer1Won() ? " " : " [W] ")
+                        + r.getHero2().getName() + (r.isHero1Won() ? " " : " [W] ")
                         + (r.getHero1().getBonus()!=null? "(Bonus "+r.getHero1().getName()+": "+r.getHero1().getBonus()+")": "")
                         + (r.getHero2().getBonus()!=null? "(Bonus "+r.getHero2().getName()+": "+r.getHero2().getBonus()+")" : "")
                 )
