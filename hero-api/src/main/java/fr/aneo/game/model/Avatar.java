@@ -21,7 +21,7 @@ public class Avatar implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    private Long id;
+    private int id;
 
     @Column(name = "MIME_TYPE")
     private String mimeType;
