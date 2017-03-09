@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LeaderBoardLine {
+    private String heroId;
     private String heroName;
     private int winCount;
 }

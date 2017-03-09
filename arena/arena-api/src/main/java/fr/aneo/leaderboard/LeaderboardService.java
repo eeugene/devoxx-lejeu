@@ -12,7 +12,6 @@ import fr.aneo.eventstore.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -26,8 +25,8 @@ import java.util.stream.Collectors;
 @Service
 public class LeaderboardService {
 
-    Map<String, Integer> leaderboad = new HashMap<>();
-    LeaderboardApi client;
+    Map<Hero, Integer> leaderboad = new HashMap<>();
+    LeaderboardApi leaderboardApi;
     @Autowired
     EventStore eventStore;
     @Autowired
@@ -36,9 +35,9 @@ public class LeaderboardService {
     public void init() {
         System.out.println("Rehydrating Leaderboard...");
         List<Hero> heros = heroService.loadHeros();
-        List<BattleFinished> load = eventStore.load();
+        List<BattleFinished> events = eventStore.load();
         BattleResults battleResults = new BattleResults();
-        List<BattleResult> battleResultList = load.stream().map(evt ->
+        List<BattleResult> battleResultList = events.stream().map(evt ->
                 BattleResult.builder()
                         .hero1(heros.stream().filter(h -> h.getEmail().equals(evt.getHero1Email())).findFirst().get())
                         .hero2(heros.stream().filter(h -> h.getEmail().equals(evt.getHero2Email())).findFirst().get())
@@ -51,7 +50,7 @@ public class LeaderboardService {
     }
 
     public LeaderboardService() {
-        client = Feign.builder()
+        leaderboardApi = Feign.builder()
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
                 .requestInterceptor(new RequestInterceptor() {
@@ -68,11 +67,11 @@ public class LeaderboardService {
         for (BattleResult battleR : results) {
             Hero hero1 = battleR.getHero1();
             Hero hero2 = battleR.getHero2();
-            String winnerHero;
+            Hero winnerHero;
             if (battleR.isHero1Won()) {
-                winnerHero = hero1.getName();
+                winnerHero = hero1;
             } else {
-                winnerHero = hero2.getName();
+                winnerHero = hero2;
             }
             leaderboad.compute(winnerHero, (k, v) -> v == null ? 1 : v+1);
         }
@@ -84,11 +83,11 @@ public class LeaderboardService {
                 .stream()
                 .sorted((o1, o2) -> o2.getValue().compareTo(o1.getValue()))
                 .limit(20)
-                .map( kv -> new LeaderBoardLine(kv.getKey(), kv.getValue()))
+                .map( kv -> new LeaderBoardLine(kv.getKey().getEmail(), kv.getKey().getName(), kv.getValue()))
                 .collect(Collectors.toList());
 
         LeaderBoard leaderBoard = new LeaderBoard(list);
-        client.update(leaderBoard);
+        leaderboardApi.update(leaderBoard);
         printLeaderboard(leaderBoard);
     }
 

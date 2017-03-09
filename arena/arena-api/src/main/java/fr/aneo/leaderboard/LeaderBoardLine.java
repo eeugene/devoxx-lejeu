@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LeaderBoardLine {
+    private String heroId;
     private String heroName;
     private int winCount;
 }

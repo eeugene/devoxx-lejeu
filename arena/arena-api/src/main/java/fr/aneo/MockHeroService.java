@@ -1,13 +1,12 @@
 package fr.aneo;
 
+import fr.aneo.domain.Avatar;
 import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Bonus;
 import fr.aneo.domain.Hero;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.tomcat.util.http.parser.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +23,12 @@ public class MockHeroService {
     }
     @RequestMapping(value = "/heros/results", method = RequestMethod.POST)
     public void save(BattleResults battleResults) {
-        System.out.println("SAVED");
+        System.out.println("Battle Results SAVED in Hero Api");
     }
-
+    @RequestMapping(value = "/heros/{id}/avatar", produces = "image/png")
+    public byte[] getAvatar(String heroId) throws Exception {
+        return Avatar.DEFAULT_AVATAR;
+    }
     private List<Hero> heros;
     private List<Hero> getHeros() {
         int randomHero = RandomUtils.nextInt(5);

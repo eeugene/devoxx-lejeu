@@ -8,6 +8,7 @@ import lombok.*;
 @Data
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(of = "email")
 public class Hero {
     private String email;
     private String avatar;

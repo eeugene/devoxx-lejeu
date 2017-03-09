@@ -19,7 +19,7 @@ public class EventStore {
     EventStoreRepository eventStoreRepository;
 
     public void store(BattleResults battleResults) {
-        System.out.println("event store: start persist");
+        System.out.println("Event store: store Battle results");
         eventStoreRepository.save(
                 battleResults.getResults().stream().map(br ->
                 BattleFinished.builder()
