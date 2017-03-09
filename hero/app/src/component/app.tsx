@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from 'state';
-import {Quizz} from './quizz/Quizz';
+import Quizz from './quizz/Quizz';
 
 interface IAppProps {
     quizz: any;
@@ -10,12 +10,12 @@ interface IAppProps {
 
 const component = (props: IAppProps) => (
     <div>
-        <Quizz />
+        <Quizz id={1}/>
     </div>
 );
 
 export default connect(mapStateToProps)(component);
 
 function mapStateToProps(state: AppState):  IAppProps{
-    return state.quizz;
+    return {quizz: 'test'};
 }

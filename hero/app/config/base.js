@@ -4,7 +4,7 @@ let HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = function () {
   return {
     entry: {
-      'main': './src/main.tsx'
+      'main': './src/main.tsx',
     },
     output: {
       path: path.join(__dirname, '/../dist'),
@@ -24,7 +24,12 @@ module.exports = function () {
       }, {
         test: /\.css$/,
         loaders: ['to-string-loader', 'css-loader']
-      }, {
+      },
+      {
+        test: /(component[\/\\]).*\.less$/i, 
+        loaders: ['style-loader','css-loader','less-loader']
+      },
+      {
         test: /\.(jpg|png|gif)$/,
         loader: 'file-loader'
       }, {

@@ -1,4 +1,5 @@
+import {IQuizzState} from './quizz'
 
 export interface AppState {
-    quizz: any;
+    quizzState: IQuizzState;
 }
