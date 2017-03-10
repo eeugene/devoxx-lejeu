@@ -5,7 +5,7 @@
 
 	<groupId>fr.aneo</groupId>
 	<artifactId>parent</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>aneo parent pom</name>

@@ -1,0 +1,13 @@
+aneo.security.jwt:
+  tokenExpirationTime: 600 # Number of minutes
+  tokenIssuer: http://aneo.fr
+  tokenSigningKey: xm8EV6Hy5RAFK4EEACIDAwQus
+
+spring.datasource:
+  url: "jdbc:mysql://localhost/devoxx-lejeu"
+  username: aneo
+  password: devoxx2017
+  data: "classpath*:data.sql"
+spring.jpa:
+  hibernate.ddl-auto: update
+  database-platform: org.hibernate.dialect.MySQL5Dialect

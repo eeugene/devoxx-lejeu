@@ -5,9 +5,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
-import static javax.persistence.EnumType.STRING;
+import java.util.List;
 
 /**
  * Created by raouf on 04/03/17.
@@ -30,9 +29,9 @@ public class Hero {
     @NotBlank
     private String lastname;
 
-    @NotNull
-    @Enumerated(value = STRING)
-    private Role role;
+    @OneToMany
+    @JoinColumn(name="USER_ID", referencedColumnName="email")
+    private List<UserRole> roles;
 
     @NotBlank
     private String nickname;
