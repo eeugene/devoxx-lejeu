@@ -9,7 +9,6 @@
 	<packaging>jar</packaging>
 
 	<name>leaderboard-app</name>
-	<description>Demo project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

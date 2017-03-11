@@ -6,20 +6,16 @@
 
     <groupId>fr.aneo</groupId>
     <artifactId>hero-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>fr.aneo</groupId>
-        <artifactId>parent</artifactId>
+        <artifactId>aneo-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-		<relativePath>../aneo-parent</relativePath>
+        <relativePath>../../aneo-parent/pom.xml</relativePath>
     </parent>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
         <jjwt.version>0.6.0</jjwt.version>
     </properties>
 
