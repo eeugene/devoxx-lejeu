@@ -9,6 +9,7 @@ import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Hero;
 import fr.aneo.eventstore.BattleFinished;
 import fr.aneo.eventstore.EventStore;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  * Created by eeugene on 05/03/2017.
  */
 @Service
+@Slf4j
 public class LeaderboardService {
 
     Map<Hero, Integer> leaderboad = new HashMap<>();
@@ -33,7 +35,7 @@ public class LeaderboardService {
     HeroService heroService;
 
     public void init() {
-        System.out.println("Rehydrating Leaderboard...");
+        log.info("Rehydrating Leaderboard...");
         List<Hero> heros = heroService.loadHeros();
         List<BattleFinished> events = eventStore.load();
         BattleResults battleResults = new BattleResults();
@@ -56,7 +58,7 @@ public class LeaderboardService {
                 .requestInterceptor(new RequestInterceptor() {
                     @Override
                     public void apply(RequestTemplate requestTemplate) {
-                        System.out.println(requestTemplate.toString());
+                        log.info(requestTemplate.toString());
                     }
                 })
                 .target(LeaderboardApi.class, "http://localhost:8081");
@@ -92,10 +94,10 @@ public class LeaderboardService {
     }
 
     public void printLeaderboard(LeaderBoard leaderBoard) {
-        System.out.println("-- LEADERBOARD --\n" );
+        log.info("-- LEADERBOARD --\n" );
         int i = 0;
         for (LeaderBoardLine entry: leaderBoard.getList()) {
-            System.out.println(
+            log.info(
                     (++i) + "- " + entry.getHeroName() + " - " + entry.getWinCount()
             );
         }

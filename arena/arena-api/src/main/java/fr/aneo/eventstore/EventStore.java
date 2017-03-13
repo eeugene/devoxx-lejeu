@@ -1,6 +1,7 @@
 package fr.aneo.eventstore;
 
 import fr.aneo.domain.BattleResults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +14,14 @@ import java.util.stream.Collectors;
  * Created by eeugene on 08/03/2017.
  */
 @Service
+@Slf4j
 public class EventStore {
 
     @Autowired
     EventStoreRepository eventStoreRepository;
 
     public void store(BattleResults battleResults) {
-        System.out.println("Event store: store Battle results");
+        log.info("Event store: store Battle results");
         eventStoreRepository.save(
                 battleResults.getResults().stream().map(br ->
                 BattleFinished.builder()

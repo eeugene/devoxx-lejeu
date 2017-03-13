@@ -2,6 +2,7 @@ package fr.aneo;
 
 import fr.aneo.domain.*;
 import fr.aneo.eventstore.EventStore;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * Created by eeugene on 03/03/2017.
  */
 @Service
+@Slf4j
 public class Arena {
 
     final int fightIntervalMillis = 10 * 1000;
@@ -32,7 +34,7 @@ public class Arena {
         while (true) {
 
             try {
-                System.out.println("run battles");
+                log.info("run battles");
                 List<Hero> heros = heroService.loadHeros();
                 Optional<BattleResults> battleResults = startBattles(heros);
                 if (battleResults.isPresent()) {

@@ -4,6 +4,7 @@ import fr.aneo.domain.Avatar;
 import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Bonus;
 import fr.aneo.domain.Hero;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +16,19 @@ import java.util.List;
  * Created by eeugene on 03/03/2017.
  */
 @RestController
+@Slf4j
 public class MockHeroService {
 
     @RequestMapping("/heros")
     public List<Hero> heros() {
         return getHeros();
     }
+
     @RequestMapping(value = "/heros/results", method = RequestMethod.POST)
     public void save(BattleResults battleResults) {
-        System.out.println("Battle Results SAVED in Hero Api");
+        log.info("Battle Results SAVED in Hero Api");
     }
+
     @RequestMapping(value = "/heros/{id}/avatar", produces = "image/png")
     public byte[] getAvatar(String heroId) throws Exception {
         return Avatar.DEFAULT_AVATAR;
