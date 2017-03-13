@@ -8,6 +8,7 @@ spring.datasource:
   username: aneo
   password: devoxx2017
   data: "classpath*:data.sql"
+
 spring.jpa:
   hibernate.ddl-auto: update
   database-platform: org.hibernate.dialect.MySQL5Dialect
