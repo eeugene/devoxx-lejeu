@@ -10,3 +10,9 @@
 * execute 'npm i' then 'npm run api' in a terminal
 * execute 'npm start' in another terminal
 * the application is running on "localhost:8020/"
+
+## Docker
+* requires docker installed
+* To build application (ex arena-api)
+* execute mvn package docker:build
+* then docker run -t --name arena -p 8080:8080 arena-api
