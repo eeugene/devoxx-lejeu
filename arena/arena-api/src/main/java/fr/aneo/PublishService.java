@@ -1,6 +1,7 @@
 package fr.aneo;
 
 import fr.aneo.domain.BattleResults;
+import fr.aneo.eventstore.HeroStatsView;
 import fr.aneo.leaderboard.LeaderboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,15 @@ public class PublishService {
 
     @Autowired
     LeaderboardService leaderboardService;
+    @Autowired
+    HeroService heroService;
+    @Autowired
+    HeroStatsView heroStatsView;
 
-    public void publishBattleResults(BattleResults battleResults) {
+    public void publish(BattleResults battleResults) {
         printBattleResult(battleResults);
-        leaderboardService.addBattleResults(battleResults);
+        heroService.saveStats(heroStatsView.getStats());
+        leaderboardService.updateLeaderboard();
     }
 
     private void printBattleResult(BattleResults battleResults) {

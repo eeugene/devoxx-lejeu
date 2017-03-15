@@ -19,18 +19,20 @@ public class EventStore {
 
     @Autowired
     EventStoreRepository eventStoreRepository;
+    @Autowired
+    EventPublisher eventPublisher;
 
-    public void store(BattleResults battleResults) {
-        log.info("Event store: store Battle results");
-        eventStoreRepository.save(
-                battleResults.getResults().stream().map(br ->
-                BattleFinished.builder()
-                        .hero1Email(br.getHero1().getEmail())
-                        .hero2Email(br.getHero2().getEmail())
-                        .hero1Won(br.isHero1Won())
-                        .time(Date.from(br.getTime().atZone(ZoneId.systemDefault()).toInstant())).build())
-                .collect(Collectors.toList())
-        );
+    public void saveEvents(BattleResults battleResults) {
+        List<BattleFinished> battleFinisheds = battleResults.getResults().stream()
+                .map(br ->
+                        BattleFinished.builder()
+                                .hero1Email(br.getHero1().getEmail())
+                                .hero2Email(br.getHero2().getEmail())
+                                .hero1Won(br.isHero1Won())
+                                .time(Date.from(br.getTime().atZone(ZoneId.systemDefault()).toInstant())).build())
+                .collect(Collectors.toList());
+        eventStoreRepository.save(battleFinisheds);
+        battleFinisheds.forEach(event -> eventPublisher.publish(event));
     }
 
     public List<BattleFinished> load() {

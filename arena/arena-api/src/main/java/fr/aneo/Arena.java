@@ -5,11 +5,13 @@ import fr.aneo.eventstore.EventStore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -19,7 +21,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Arena {
 
-    final int fightIntervalMillis = 10 * 1000;
+    @Value("${fightIntervalInSeconds}")
+    private int fightIntervalInSeconds;
 
     @Autowired
     private HeroService heroService;
@@ -32,16 +35,14 @@ public class Arena {
 
     public void start() {
         while (true) {
-
             try {
                 log.info("run battles");
-                List<Hero> heros = heroService.loadHeros();
+                List<Hero> heros = heroService.getHeros();
                 Optional<BattleResults> battleResults = startBattles(heros);
                 if (battleResults.isPresent()) {
-                    publishService.publishBattleResults(battleResults.get());
                     saveBattleResults(battleResults.get());
                 }
-                Thread.sleep(fightIntervalMillis);
+                Thread.sleep(TimeUnit.SECONDS.toMillis(fightIntervalInSeconds));
             } catch (InterruptedException e) {
                 throw new RuntimeException();
             }
@@ -49,8 +50,8 @@ public class Arena {
     }
 
     private void saveBattleResults(BattleResults battleResults) {
-        heroService.saveResults(battleResults);
-        eventStore.store(battleResults);
+        eventStore.saveEvents(battleResults);
+        publishService.publish(battleResults);
     }
 
     public Optional<BattleResults> startBattles(List<Hero> heros) {

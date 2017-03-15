@@ -2,7 +2,6 @@ package fr.aneo.eventstore;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,7 +12,7 @@ import java.util.Date;
 @Data
 @Builder
 @Entity
-public class BattleFinished {
+public class BattleFinished implements Event {
     @Tolerate
     BattleFinished() {}
     @Id

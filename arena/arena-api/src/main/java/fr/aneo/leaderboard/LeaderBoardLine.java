@@ -11,5 +11,5 @@ import lombok.Data;
 public class LeaderBoardLine {
     private String heroId;
     private String heroName;
-    private int winCount;
+    private double winRatio;
 }
