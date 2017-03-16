@@ -1,0 +1,130 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-db
+      author: mabdelhamid
+      changes:
+        - createTable:
+            tableName: HERO
+            columns:
+              - column:
+                  name: EMAIL
+                  type: varchar(250)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: PASSWORD
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: FIRSTNAME
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: LASTNAME
+                  type: varchar(250)
+                  constraints:
+                  nullable: false
+              - column:
+                  name: NICKNAME
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ROLE
+                  type: varchar(25)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: AVATAR_ID
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ATTACK
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: BONUS
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: WIN
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: LOSS
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: RANK
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: BEST_RANK
+                  type: int
+                  constraints:
+                    nullable: true
+
+        - createTable:
+            tableName: AVATAR
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: MIME_TYPE
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: DEPICTION
+                  type: blob
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: QUIZZ
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: QUESTION
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ANSWERS
+                  type: varchar(5000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CORRECT_ID
+                  type: int
+                  constraints:
+                    nullable: false
+  - changeSet:
+    id: load-data
+    author: mabdelhamid
+    changes:
+    - sqlFile:
+        dbms: mysql
+        encoding: utf8
+        endDelimiter: \n
+        path: ../sql/load-data.sql
+        relativeToChangelogFile: true
+        splitStatements: true
+        stripComments: true

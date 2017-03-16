@@ -1,12 +1,14 @@
 package fr.aneo.game.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-import java.util.List;
+import static javax.persistence.EnumType.STRING;
 
 /**
  * Created by raouf on 04/03/17.
@@ -29,14 +31,15 @@ public class Hero {
     @NotBlank
     private String lastname;
 
-    @OneToMany
-    @JoinColumn(name="USER_ID", referencedColumnName="email")
-    private List<UserRole> roles;
+    @NotNull
+    @Enumerated(STRING)
+    private Role role;
 
     @NotBlank
     private String nickname;
 
     @ManyToOne
+    @JoinColumn(name = "AVATAR_ID")
     private Avatar avatar;
 
     @Embedded

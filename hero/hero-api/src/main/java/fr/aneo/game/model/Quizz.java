@@ -1,11 +1,14 @@
 package fr.aneo.game.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
-import java.util.List;
 
 import static javax.persistence.GenerationType.AUTO;
 
@@ -19,15 +22,16 @@ public class Quizz {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    private long id;
+    private Long id;
 
-    @Column(name = "QUESTION")
+    @NotBlank
     private String question;
 
+    @NotBlank
     @Column(name = "ANSWERS")
-    private List<String> answersAsString;
+    private String answersAsString;
 
     @NotNull
-    @Column(name = "CHOICE")
-    private int userChoice;
+    @Column(name = "CORRECT_ID")
+    private int correctAnswerId;
 }

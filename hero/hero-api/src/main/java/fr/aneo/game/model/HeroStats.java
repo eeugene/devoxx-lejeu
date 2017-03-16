@@ -1,10 +1,12 @@
 package fr.aneo.game.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -18,6 +20,7 @@ public class HeroStats {
 
 
     @Column(name = "ATTACK")
+    @NotNull
     private int attackLevel;
 
     @Enumerated(value = STRING)

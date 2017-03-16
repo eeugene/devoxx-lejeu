@@ -1,12 +1,11 @@
 package fr.aneo.game.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
@@ -21,7 +20,7 @@ public class Avatar implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "MIME_TYPE")
     private String mimeType;
