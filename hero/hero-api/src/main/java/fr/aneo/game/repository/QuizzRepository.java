@@ -9,4 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface QuizzRepository extends JpaRepository<Quizz, Long> {
+    public Quizz getNextQuestion();
+
+    public void postAnswer(Quizz q);
 }

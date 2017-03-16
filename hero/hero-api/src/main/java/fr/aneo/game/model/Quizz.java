@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.AUTO;
 
 /**
@@ -17,12 +19,13 @@ public class Quizz {
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    private Long id;
+    private long id;
 
+    @Column(name = "QUESTION")
     private String question;
 
     @Column(name = "ANSWERS")
-    private String answersAsString;
+    private List<String> answersAsString;
 
     @NotNull
     @Column(name = "CHOICE")
