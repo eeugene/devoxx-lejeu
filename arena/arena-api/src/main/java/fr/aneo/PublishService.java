@@ -1,5 +1,6 @@
 package fr.aneo;
 
+import fr.aneo.api.HeroService;
 import fr.aneo.domain.BattleResults;
 import fr.aneo.eventstore.HeroStatsView;
 import fr.aneo.leaderboard.LeaderboardService;
@@ -26,14 +27,16 @@ public class PublishService {
     HeroStatsView heroStatsView;
 
     public void publish(BattleResults battleResults) {
-        printBattleResult(battleResults);
+        if (log.isDebugEnabled()) {
+            printBattleResult(battleResults);
+        }
         heroService.saveStats(heroStatsView.getStats());
         leaderboardService.updateLeaderboard();
     }
 
     private void printBattleResult(BattleResults battleResults) {
         battleResults.getResults().forEach(
-                r -> log.info(
+                r -> log.debug(
                         "BattleResult -> "
                         + r.getHero1().getName() + (r.isHero1Won() ? " [W]" : "    ")
                         + " /VS/ "
@@ -45,6 +48,6 @@ public class PublishService {
     }
 
     public void publishFightEvents(List<FightExecutor.FightRound> rounds) {
-        rounds.forEach(r -> log.info(valueOf(r)));
+        rounds.forEach(r -> log.debug(valueOf(r)));
     }
 }

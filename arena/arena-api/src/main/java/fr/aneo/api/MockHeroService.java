@@ -1,15 +1,18 @@
-package fr.aneo;
+package fr.aneo.api;
 
 import fr.aneo.domain.Avatar;
 import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Bonus;
 import fr.aneo.domain.Hero;
+import fr.aneo.eventstore.HeroStatsView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.tomcat.util.http.parser.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,32 +22,35 @@ import java.util.List;
 @Slf4j
 public class MockHeroService {
 
-    @RequestMapping("/heros")
+    final int nbOfHeros = 1000;
+    @Autowired
+    HeroStatsView heroStatsView;
+
+    @GetMapping("/heros")
     public List<Hero> heros() {
         return getHeros();
     }
-
-    @RequestMapping(value = "/heros/results", method = RequestMethod.POST)
-    public void save(BattleResults battleResults) {
-        log.info("Battle Results SAVED in Hero Api");
+    @PostMapping(value = "/heros/stats")
+    public void saveStats(BattleResults battleResults) {
+        log.debug("Battle Results SAVED in Hero Api");
     }
-
-    @RequestMapping(value = "/heros/{id}/avatar", produces = "image/png")
+    @GetMapping(value = "/heros/{id}/avatar", produces = "image/png")
     public byte[] getAvatar(String heroId) throws Exception {
         return Avatar.DEFAULT_AVATAR;
     }
+    @GetMapping("/heros/{email:.*}")
+    public HeroStatsView.HeroStats stats(@PathVariable("email") String id) {
+        return heroStatsView.getStats().get(Hero.builder().email(id).build());
+    }
     private List<Hero> heros;
     private List<Hero> getHeros() {
-        int randomHero = RandomUtils.nextInt(5);
         if (heros == null) {
-            heros = Arrays.asList(
-                    buildHero(1, null),
-                    buildHero(2, null),
-                    buildHero(3, null),
-                    buildHero(4, null),
-                    buildHero(5, null)
-            );
+            heros = new LinkedList<>();
+            for (int i = 0; i < nbOfHeros; i++) {
+                heros.add(buildHero(i+1, null));
+            }
         }
+        int randomHero = RandomUtils.nextInt(heros.size());
         heros.get(randomHero).setBonus(randomBonus());
         return heros;
     }

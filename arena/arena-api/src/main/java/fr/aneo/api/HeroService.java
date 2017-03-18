@@ -1,4 +1,4 @@
-package fr.aneo;
+package fr.aneo.api;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
@@ -7,6 +7,7 @@ import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Hero;
 import fr.aneo.eventstore.HeroStatsView;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,28 +21,26 @@ import java.util.Optional;
 @Slf4j
 public class HeroService {
 
-    HeroApi client;
+    @Value("${heroApiUrl}")
+    private String heroApiUrl;
+    HeroApi heroApi;
     List<Hero> heros;
 
     public HeroService() {
-        client = Feign.builder()
+        heroApi = Feign.builder()
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
-                .target(HeroApi.class, "http://localhost:8080");
-    }
-
-    public void saveResults(BattleResults results) {
-        client.saveResults(results);
+                .target(HeroApi.class, heroApiUrl);
     }
 
     private List<Hero> loadHeros() {
-        heros = client.heros();
+        heros = heroApi.heros();
         return heros;
     }
 
     public void saveStats(Map<Hero, HeroStatsView.HeroStats> stats) {
-        log.info("Hero stats to be saved");
-        log.info(stats.toString());
+        log.debug("Hero stats to be saved");
+        log.debug(stats.toString());
     }
 
     public Optional<Hero> getHero(String email) {

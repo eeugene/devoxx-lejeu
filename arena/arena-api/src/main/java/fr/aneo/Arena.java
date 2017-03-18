@@ -1,17 +1,18 @@
 package fr.aneo;
 
+import fr.aneo.api.HeroService;
 import fr.aneo.domain.*;
 import fr.aneo.eventstore.EventStore;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -20,9 +21,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class Arena {
-
-    @Value("${fightIntervalInSeconds}")
-    private int fightIntervalInSeconds;
 
     @Autowired
     private HeroService heroService;
@@ -34,18 +32,10 @@ public class Arena {
     private EventStore eventStore;
 
     public void start() {
-        while (true) {
-            try {
-                log.info("run battles");
-                List<Hero> heros = heroService.getHeros();
-                Optional<BattleResults> battleResults = startBattles(heros);
-                if (battleResults.isPresent()) {
-                    saveBattleResults(battleResults.get());
-                }
-                Thread.sleep(TimeUnit.SECONDS.toMillis(fightIntervalInSeconds));
-            } catch (InterruptedException e) {
-                throw new RuntimeException();
-            }
+        List<Hero> heros = heroService.getHeros();
+        Optional<BattleResults> battleResults = startBattles(heros);
+        if (battleResults.isPresent()) {
+            saveBattleResults(battleResults.get());
         }
     }
 

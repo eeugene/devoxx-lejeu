@@ -1,4 +1,4 @@
-package fr.aneo;
+package fr.aneo.api;
 
 import feign.RequestLine;
 import fr.aneo.domain.BattleResults;

@@ -1,6 +1,6 @@
 package fr.aneo.eventstore;
 
-import fr.aneo.HeroService;
+import fr.aneo.api.HeroService;
 import fr.aneo.domain.Hero;
 import fr.aneo.leaderboard.LeaderboardService;
 import lombok.Data;
@@ -41,10 +41,7 @@ public class HeroStatsView implements Consumer<BattleFinished> {
         }
         Map<Hero,Integer> opponentCount = new HashMap<>();
     }
-    @Autowired
-    LeaderboardService leaderboardService;
-    @Autowired
-    EventPublisher publisher;
+
     @Autowired
     HeroService heroService;
 
