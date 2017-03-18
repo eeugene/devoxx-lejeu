@@ -21,7 +21,7 @@ import static java.lang.String.format;
 @Service
 public class JWTService {
 
-    private static final String AUTH_HEADER = "Autorization";
+    private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER_TEMPLATE = "Bearer %s";
 
     private String issuer;
@@ -31,8 +31,8 @@ public class JWTService {
     private long expirationTime;
 
     @Autowired
-    public JWTService(@Value("aneo.security.jwt.issuer") String issuer,
-                      @Value("aneo.security.jwt.secretKey") String secretKey,
+    public JWTService(@Value("${aneo.security.jwt.issuer}") String issuer,
+                      @Value("${aneo.security.jwt.secretKey}") String secretKey,
                       @Value("${aneo.security.jwt.expirationTime}") long expirationTime) {
         this.issuer = issuer;
         this.secretKey = secretKey;
