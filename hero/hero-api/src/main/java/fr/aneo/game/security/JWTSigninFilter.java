@@ -1,7 +1,7 @@
 package fr.aneo.game.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.authentication.UserCredentials;
+import fr.aneo.game.model.HeroCredentials;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,20 +20,29 @@ import java.io.IOException;
  */
 public class JWTSigninFilter extends AbstractAuthenticationProcessingFilter {
 
-    protected JWTSigninFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
+    private ObjectMapper objectMapper;
+
+    private JWTService jwtService;
+
+    protected JWTSigninFilter(String defaultFilterProcessesUrl,
+                              AuthenticationManager authenticationManager,
+                              JWTService jwtService,
+                              ObjectMapper objectMapper) {
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         setAuthenticationManager(authenticationManager);
+        this.jwtService = jwtService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        UserCredentials credentials = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
+        HeroCredentials credentials = objectMapper.readValue(request.getInputStream(), HeroCredentials.class);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
         return getAuthenticationManager().authenticate(token);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        new JWTService().addToken(response, authResult.getName());
+        jwtService.addToken(response, authResult.getName());
     }
 }

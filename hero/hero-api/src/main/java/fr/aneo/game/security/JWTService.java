@@ -3,6 +3,7 @@ package fr.aneo.game.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,27 @@ import static java.lang.String.format;
 /**
  * Created by raouf on 14/03/17.
  */
-@Service
 @Slf4j
+@Service
 public class JWTService {
 
     private static final String AUTH_HEADER = "Autorization";
     private static final String BEARER_TEMPLATE = "Bearer %s";
 
-    @Value("com.aneo.security.secret")
+    private String issuer;
+
     private String secretKey;
 
-    private long expiration = 1000 * 60 * 60 * 24;
+    private long expirationTime;
+
+    @Autowired
+    public JWTService(@Value("aneo.security.jwt.issuer") String issuer,
+                      @Value("aneo.security.jwt.secretKey") String secretKey,
+                      @Value("${aneo.security.jwt.expirationTime}") long expirationTime) {
+        this.issuer = issuer;
+        this.secretKey = secretKey;
+        this.expirationTime = expirationTime;
+    }
 
     public void addToken(HttpServletResponse response, String email) {
 
@@ -34,9 +45,10 @@ public class JWTService {
 
         String token = Jwts.builder()
                 .setSubject(email)
-                .signWith(SignatureAlgorithm.RS512, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .setIssuedAt(today)
-                .setExpiration(new Date(today.getTime() + expiration))
+                .setIssuer(issuer)
+                .setExpiration(new Date(today.getTime() + expirationTime))
                 .compact();
         response.addHeader(AUTH_HEADER, format(BEARER_TEMPLATE, token));
     }
