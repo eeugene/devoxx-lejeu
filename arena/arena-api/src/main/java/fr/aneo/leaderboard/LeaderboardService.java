@@ -1,6 +1,5 @@
 package fr.aneo.leaderboard;
 
-import feign.Feign;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.hystrix.FallbackFactory;
@@ -11,10 +10,8 @@ import fr.aneo.eventstore.HeroStatsView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.netflix.feign.support.FallbackCommand;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

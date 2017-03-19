@@ -1,7 +1,7 @@
 package fr.aneo.domain;
 
-import fr.aneo.domain.BattleResult;
-import lombok.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 

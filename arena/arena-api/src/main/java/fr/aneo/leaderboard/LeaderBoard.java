@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

@@ -2,7 +2,6 @@ package fr.aneo.eventstore;
 
 import fr.aneo.api.HeroService;
 import fr.aneo.domain.Hero;
-import fr.aneo.leaderboard.LeaderboardService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.beans.factory.annotation.Autowired;

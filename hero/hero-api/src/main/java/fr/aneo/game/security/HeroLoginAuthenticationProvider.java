@@ -1,6 +1,5 @@
 package fr.aneo.game.security;
 
-import fr.aneo.game.HeroApplication;
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;

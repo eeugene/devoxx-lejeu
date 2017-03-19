@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 
 import static javax.persistence.EnumType.STRING;
@@ -18,7 +17,6 @@ import static javax.persistence.EnumType.STRING;
 @NoArgsConstructor
 @Embeddable
 public class HeroStats {
-
 
     @Column(name = "ATTACK")
     @NotNull

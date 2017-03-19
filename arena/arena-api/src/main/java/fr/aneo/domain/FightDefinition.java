@@ -1,6 +1,9 @@
 package fr.aneo.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Value;
 
 /**
  * Created by eeugene on 04/03/2017.

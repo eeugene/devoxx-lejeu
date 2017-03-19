@@ -3,7 +3,6 @@ package fr.aneo.api;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Hero;
 import fr.aneo.eventstore.HeroStatsView;
 import lombok.extern.slf4j.Slf4j;

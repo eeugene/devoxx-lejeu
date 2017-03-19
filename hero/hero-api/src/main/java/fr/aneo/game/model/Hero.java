@@ -9,8 +9,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import java.util.List;
-
 import static javax.persistence.EnumType.STRING;
 
 /**

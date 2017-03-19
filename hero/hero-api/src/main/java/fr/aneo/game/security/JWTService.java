@@ -26,7 +26,7 @@ import static java.lang.String.format;
  */
 @Slf4j
 @Service
-public class JWTService {
+class JWTService {
 
     private static final String AUTH_HEADER = "Authorization";
     private static final String HEADER_PREFIX = "Bearer ";
@@ -45,7 +45,7 @@ public class JWTService {
         this.expirationTime = expirationTime;
     }
 
-    public void addToken(HttpServletResponse response, Authentication authentication) {
+    void addToken(HttpServletResponse response, Authentication authentication) {
         AuthenticatedHero authenticatedHero = (AuthenticatedHero) authentication.getPrincipal();
         if (authenticatedHero == null) {
             throw new IllegalArgumentException("Cannot create JWT Token without authenticatedHero");
@@ -55,7 +55,7 @@ public class JWTService {
             throw new IllegalArgumentException("Hero doesn't have any privileges");
         }
         Claims claims = Jwts.claims().setSubject(authenticatedHero.getName());
-        claims.put("scopes", authenticatedHero.getAuthorities().stream().map(s -> s.toString()).collect(Collectors.toList()));
+        claims.put("scopes", authenticatedHero.getAuthorities().stream().map(Object::toString).collect(Collectors.toList()));
         Date today = new Date();
 
         String token = Jwts.builder()
@@ -68,14 +68,14 @@ public class JWTService {
         response.addHeader(AUTH_HEADER, format(BEARER_TEMPLATE, token));
     }
 
-    public Authentication getAuthentication(HttpServletRequest request) {
+    Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(AUTH_HEADER);
         if (token != null) {
             Jws<Claims> jwsClaims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(extract(token));
             String email = jwsClaims.getBody().getSubject();
             List<String> scopes = jwsClaims.getBody().get("scopes", List.class);
             List<GrantedAuthority> authorities = scopes.stream()
-                    .map(authority -> new SimpleGrantedAuthority(authority))
+                    .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
             if (email != null) {
                 return new AuthenticatedHero(email, authorities);
@@ -84,7 +84,7 @@ public class JWTService {
         return null;
     }
 
-    public String extract(String header) {
+    private String extract(String header) {
         if (StringUtils.isEmpty(header)) {
             throw new RuntimeException("Authorization header cannot be blank!");
         }
