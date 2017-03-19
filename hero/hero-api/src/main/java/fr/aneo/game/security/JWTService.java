@@ -1,16 +1,23 @@
 package fr.aneo.game.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -22,12 +29,11 @@ import static java.lang.String.format;
 public class JWTService {
 
     private static final String AUTH_HEADER = "Authorization";
-    private static final String BEARER_TEMPLATE = "Bearer %s";
+    private static final String HEADER_PREFIX = "Bearer ";
+    private static final String BEARER_TEMPLATE = HEADER_PREFIX + "%s";
 
     private String issuer;
-
     private String secretKey;
-
     private long expirationTime;
 
     @Autowired
@@ -39,12 +45,21 @@ public class JWTService {
         this.expirationTime = expirationTime;
     }
 
-    public void addToken(HttpServletResponse response, String email) {
+    public void addToken(HttpServletResponse response, Authentication authentication) {
+        AuthenticatedHero authenticatedHero = (AuthenticatedHero) authentication.getPrincipal();
+        if (authenticatedHero == null) {
+            throw new IllegalArgumentException("Cannot create JWT Token without authenticatedHero");
+        }
 
+        if (authenticatedHero.getAuthorities() == null || authenticatedHero.getAuthorities().isEmpty()) {
+            throw new IllegalArgumentException("Hero doesn't have any privileges");
+        }
+        Claims claims = Jwts.claims().setSubject(authenticatedHero.getName());
+        claims.put("scopes", authenticatedHero.getAuthorities().stream().map(s -> s.toString()).collect(Collectors.toList()));
         Date today = new Date();
 
         String token = Jwts.builder()
-                .setSubject(email)
+                .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
                 .setIssuedAt(today)
                 .setIssuer(issuer)
@@ -55,16 +70,29 @@ public class JWTService {
 
     public Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(AUTH_HEADER);
-        if(token != null) {
-            String email = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-            if(email != null) {
-                return new AuthenticatedHero(email);
+        if (token != null) {
+            Jws<Claims> jwsClaims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(extract(token));
+            String email = jwsClaims.getBody().getSubject();
+            List<String> scopes = jwsClaims.getBody().get("scopes", List.class);
+            List<GrantedAuthority> authorities = scopes.stream()
+                    .map(authority -> new SimpleGrantedAuthority(authority))
+                    .collect(Collectors.toList());
+            if (email != null) {
+                return new AuthenticatedHero(email, authorities);
             }
         }
         return null;
+    }
+
+    public String extract(String header) {
+        if (StringUtils.isEmpty(header)) {
+            throw new RuntimeException("Authorization header cannot be blank!");
+        }
+
+        if (header.length() < HEADER_PREFIX.length()) {
+            throw new RuntimeException("Invalid authorization header size.");
+        }
+
+        return header.substring(HEADER_PREFIX.length(), header.length());
     }
 }

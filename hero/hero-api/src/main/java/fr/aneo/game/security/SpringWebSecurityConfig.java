@@ -1,7 +1,6 @@
 package fr.aneo.game.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.aneo.game.model.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -26,6 +26,8 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JWTService jwtService;
+    @Autowired
+    private HeroLoginAuthenticationProvider ajaxAuthenticationProvider;
 
     @Bean
     protected ObjectMapper objectMapper() {
@@ -47,13 +49,13 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JWTAuthFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Bean
+    protected BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        /*auth.jdbcAuthentication()
-                .withUser("admin").roles(Role.ADMIN.name());*/
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("password")
-                .roles(Role.ADMIN.name());
+        auth.authenticationProvider(ajaxAuthenticationProvider);
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Enumerated;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 
 import static javax.persistence.EnumType.STRING;
@@ -28,14 +29,14 @@ public class HeroStats {
     private Bonus currentBonus;
 
     @Column(name = "WIN")
-    private int wins;
+    private Integer wins;
 
     @Column(name = "LOSS")
-    private int losses;
+    private Integer losses;
 
     @Column(name = "RANK")
-    private int currentRanking;
+    private Integer currentRanking;
 
     @Column(name = "BEST_RANK")
-    private int bestRanking;
+    private Integer bestRanking;
 }

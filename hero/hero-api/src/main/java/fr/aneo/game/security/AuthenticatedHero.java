@@ -4,23 +4,25 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by raouf on 14/03/17.
  */
 public class AuthenticatedHero implements Authentication {
 
-    private String email;
-
+    private final String email;
+    private final List<GrantedAuthority> authorities;
     private boolean authenticated = true;
 
-    public AuthenticatedHero(String email) {
+    public AuthenticatedHero(String email, List<GrantedAuthority> authorities) {
         this.email = email;
+        this.authorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
@@ -52,4 +54,5 @@ public class AuthenticatedHero implements Authentication {
     public String getName() {
         return this.email;
     }
+
 }

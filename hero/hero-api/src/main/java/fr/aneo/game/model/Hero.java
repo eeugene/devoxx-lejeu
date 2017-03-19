@@ -1,5 +1,6 @@
 package fr.aneo.game.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
@@ -7,6 +8,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import java.util.List;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -22,6 +25,7 @@ public class Hero {
     @Email
     private String email;
 
+    @JsonIgnore
     @NotBlank
     private String password;
 
@@ -38,6 +42,7 @@ public class Hero {
     @NotBlank
     private String nickname;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "AVATAR_ID")
     private Avatar avatar;
