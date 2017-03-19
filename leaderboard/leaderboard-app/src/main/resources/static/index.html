@@ -1,16 +1,20 @@
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"-->
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"-->
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css" /-->
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css" /-->
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" /-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" />
 </head>
 <body>
-    <button id="subscribe-string-events">start streaming</button>
     <div class="container">
         <div class="header text-center">
             <h1>ANEO - DEVOXX - LE JEU</h1>
             <h2>Leaderboard</h2>
+            <h3><span id="date"></span> - <span id="time"></span></h3>
         </div>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -29,17 +33,30 @@
         </div>
     </div>
     <script type="application/javascript">
-    function addEvent(evnt, elem, func) {
-        if (elem.addEventListener)  // W3C DOM
-            elem.addEventListener(evnt,func,false);
-        else if (elem.attachEvent) { // IE DOM
-            elem.attachEvent("on"+evnt, func);
+
+    // SETUP DATE and TIME
+    document.getElementById('date').innerHTML = new Date().toLocaleDateString();
+    (function () {
+        function checkTime(i) {
+            return (i < 10) ? "0" + i : i;
         }
-        else { // No much to do
-            elem[evnt] = func;
+
+        function startTime() {
+            var today = new Date(),
+                h = checkTime(today.getHours()),
+                m = checkTime(today.getMinutes()),
+                s = checkTime(today.getSeconds());
+            document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout(function () {
+                startTime()
+            }, 500);
         }
-    }
-    addEvent("click", document.getElementById('subscribe-string-events'), function() {
+        startTime();
+    })();
+
+    // SUBSCRIBE TO EVENT STREAM
+    (function () {
+
         var leaderboard = document.getElementById("leaderboard");
         var stringEventSource = new EventSource("/stream");
         stringEventSource.onmessage = function(e) {
@@ -52,7 +69,8 @@
 
             leaderboard.innerHTML = html;
         }
-    });
+    })();
+
     </script>
 </body>
 </html>

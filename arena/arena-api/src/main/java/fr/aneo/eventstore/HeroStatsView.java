@@ -6,10 +6,7 @@ import fr.aneo.domain.HeroStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -66,7 +63,7 @@ public class HeroStatsView implements Consumer<BattleFinished> {
                 .count()+1;
     }
 
-    public Map<Hero, HeroStats> getStats() {
-        return heroStatsMap;
+    public Collection<HeroStats> getStats() {
+        return heroStatsMap.values();
     }
 }

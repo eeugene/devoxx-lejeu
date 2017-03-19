@@ -4,15 +4,14 @@ import feign.hystrix.FallbackFactory;
 import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import fr.aneo.domain.Hero;
 import fr.aneo.domain.HeroStats;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,13 +33,12 @@ public class LeaderboardService {
                 .target(LeaderboardApi.class, leaderboardUrl, fallbackFactory);
     }
 
-    public void updateLeaderboard(Map<Hero, HeroStats> stats) {
+    public void updateLeaderboard(Collection<HeroStats> stats) {
         List<LeaderBoardLine> list = stats
-                .entrySet()
                 .stream()
-                .sorted((o1, o2) -> o2.getValue().getWinRatio().compareTo(o1.getValue().getWinRatio()))
+                .sorted((o1, o2) -> o2.getWinRatio().compareTo(o1.getWinRatio()))
                 .limit(20)
-                .map(kv -> new LeaderBoardLine(kv.getKey().getEmail(), kv.getKey().getName(), kv.getValue().getWinRatio()))
+                .map(stat -> new LeaderBoardLine(stat.getHero().getEmail(), stat.getHero().getName(), stat.getWinRatio()))
                 .collect(Collectors.toList());
 
         LeaderBoard leaderBoard = new LeaderBoard(list);

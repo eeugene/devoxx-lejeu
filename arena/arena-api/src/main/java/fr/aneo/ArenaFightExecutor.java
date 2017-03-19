@@ -4,7 +4,6 @@ import fr.aneo.domain.FightDefinition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;

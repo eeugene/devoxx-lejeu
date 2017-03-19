@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -35,7 +35,7 @@ public class HeroService {
         return heros;
     }
 
-    public void saveStats(Map<Hero, HeroStats> stats) {
+    public void saveStats(Collection<HeroStats> stats) {
         log.debug("Hero stats to be saved");
         log.debug(stats.toString());
     }

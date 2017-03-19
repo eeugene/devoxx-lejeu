@@ -38,7 +38,8 @@ public class MockHeroService {
     }
     @GetMapping("/heros/{email:.*}")
     public HeroStats stats(@PathVariable("email") String id) {
-        return heroStatsView.getStats().get(Hero.builder().email(id).build());
+        return heroStatsView.getStats().stream().filter(h -> h.equals(Hero.builder().email(id).build())).findFirst()
+                .orElseThrow(() -> new RuntimeException("no stats found for Hero " + id));
     }
     private List<Hero> heros;
     private List<Hero> getHeros() {

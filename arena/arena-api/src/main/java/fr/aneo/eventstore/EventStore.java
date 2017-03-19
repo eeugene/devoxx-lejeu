@@ -3,9 +3,14 @@ package fr.aneo.eventstore;
 import fr.aneo.domain.BattleResults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +41,9 @@ public class EventStore {
     }
 
     public List<BattleFinished> load() {
-        return eventStoreRepository.findAll();
+        Date from = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(LocalDate.now().plus(Period.ofDays(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        log.info(String.format("Loading events between %s and %s", from, to));
+        return eventStoreRepository.findAllOfToday(from, to);
     }
 }
