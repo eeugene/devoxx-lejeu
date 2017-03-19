@@ -3,6 +3,8 @@ package fr.aneo;
 import fr.aneo.api.HeroService;
 import fr.aneo.domain.*;
 import fr.aneo.eventstore.EventStore;
+import fr.aneo.eventstore.HeroStatsView;
+import fr.aneo.leaderboard.LeaderboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,13 @@ public class Arena {
     @Autowired
     private HeroService heroService;
     @Autowired
-    private FightExecutor fightExecutor;
-    @Autowired
-    private PublishService publishService;
+    private ArenaFightExecutor fightExecutor;
     @Autowired
     private EventStore eventStore;
+    @Autowired
+    private HeroStatsView heroStatsView;
+    @Autowired
+    private LeaderboardService leaderboardService;
 
     public void start() {
         List<Hero> heros = heroService.getHeros();
@@ -41,10 +45,27 @@ public class Arena {
 
     private void saveBattleResults(BattleResults battleResults) {
         eventStore.saveEvents(battleResults);
-        publishService.publish(battleResults);
+        heroService.saveStats(heroStatsView.getStats());
+        leaderboardService.updateLeaderboard(heroStatsView.getStats());
+        if (log.isDebugEnabled()) {
+            printBattleResult(battleResults);
+        }
     }
 
-    public Optional<BattleResults> startBattles(List<Hero> heros) {
+    private void printBattleResult(BattleResults battleResults) {
+        battleResults.getResults().forEach(
+                r -> log.debug(
+                        "BattleResult -> "
+                                + r.getHero1().getName() + (r.isHero1Won() ? " [W]" : "    ")
+                                + " /VS/ "
+                                + r.getHero2().getName() + (r.isHero1Won() ? " " : " [W] ")
+                                + (r.getHero1().getBonus()!=null? "(Bonus "+r.getHero1().getName()+": "+r.getHero1().getBonus()+")": "")
+                                + (r.getHero2().getBonus()!=null? "(Bonus "+r.getHero2().getName()+": "+r.getHero2().getBonus()+")" : "")
+                )
+        );
+    }
+
+    private Optional<BattleResults> startBattles(List<Hero> heros) {
         if (heros.size() < 2) {
             return Optional.empty();
         }
@@ -66,12 +87,12 @@ public class Arena {
         return Optional.of(results);
     }
 
-    public BattleResult fight(Hero hero1, Hero hero2) {
+    private BattleResult fight(Hero hero1, Hero hero2) {
         FightDefinition fightDefinition = getFightDefinition(hero1, hero2);
         return new BattleResult(hero1, hero2, fightExecutor.fight(fightDefinition), LocalDateTime.now());
     }
 
-    public FightDefinition getFightDefinition(Hero hero1, Hero hero2) {
+    FightDefinition getFightDefinition(Hero hero1, Hero hero2) {
         // hero bonus
         Optional<Bonus> hero1Bonus = getBonus(hero1);
         Optional<Bonus> hero2Bonus = getBonus(hero2);
@@ -125,11 +146,8 @@ public class Arena {
     }
 
     private boolean heroStartAttacking(Optional<Bonus> hero1Bonus, Optional<Bonus> hero2Bonus) {
-        if (hasBonus(hero1Bonus, Bonus.FORCE_START_ATTACKING)
-                && !hasBonus(hero2Bonus, Bonus.FORCE_START_ATTACKING)) {
-            return true;
-        }
-        return false;
+        return hasBonus(hero1Bonus, Bonus.FORCE_START_ATTACKING)
+                && !hasBonus(hero2Bonus, Bonus.FORCE_START_ATTACKING);
     }
 
     private Optional<Bonus> getBonus(Hero hero) {

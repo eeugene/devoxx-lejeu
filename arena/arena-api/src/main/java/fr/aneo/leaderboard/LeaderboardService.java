@@ -1,19 +1,18 @@
 package fr.aneo.leaderboard;
 
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
 import feign.hystrix.FallbackFactory;
 import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
-import fr.aneo.eventstore.HeroStatsView;
+import fr.aneo.domain.Hero;
+import fr.aneo.domain.HeroStats;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -23,29 +22,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LeaderboardService {
 
-    LeaderboardApi leaderboardApi;
-    @Value("${leaderboardUrl}")
-    private String leaderboardUrl;
-    @Autowired
-    HeroStatsView heroStatsView;
+    private LeaderboardApi leaderboardApi;
 
-    public LeaderboardService() {
+    public LeaderboardService(@Value("${leaderboardUrl}") String leaderboardUrl) {
         FallbackFactory<? extends LeaderboardApi> fallbackFactory =
                 cause -> leaderBoard -> new LeaderBoard(Collections.emptyList());
         leaderboardApi = HystrixFeign.builder()
                 .encoder(new JacksonEncoder())
                 .decoder(new JacksonDecoder())
-                .requestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void apply(RequestTemplate requestTemplate) {
-                        log.debug(requestTemplate.toString());
-                    }
-                })
+                .requestInterceptor(requestTemplate -> log.debug(requestTemplate.toString()))
                 .target(LeaderboardApi.class, leaderboardUrl, fallbackFactory);
     }
 
-    public void updateLeaderboard() {
-        List<LeaderBoardLine> list = heroStatsView.getStats()
+    public void updateLeaderboard(Map<Hero, HeroStats> stats) {
+        List<LeaderBoardLine> list = stats
                 .entrySet()
                 .stream()
                 .sorted((o1, o2) -> o2.getValue().getWinRatio().compareTo(o1.getValue().getWinRatio()))
@@ -60,10 +50,10 @@ public class LeaderboardService {
         }
     }
 
-    public void printLeaderboard(LeaderBoard leaderBoard) {
-        log.debug("-- LEADERBOARD --\n" );
+    private void printLeaderboard(LeaderBoard leaderBoard) {
+        log.debug("-- LEADERBOARD --\n");
         int i = 0;
-        for (LeaderBoardLine entry: leaderBoard.getList()) {
+        for (LeaderBoardLine entry : leaderBoard.getList()) {
             log.debug(
                     (++i) + "- " + entry.getHeroName() + " - " + entry.getWinRatio()
             );

@@ -14,22 +14,19 @@ import java.util.List;
  * Created by eeugene on 04/03/2017.
  */
 @Service
-public class FightExecutor {
-
-    @Autowired
-    PublishService publishService;
+public class ArenaFightExecutor {
 
     @Data
     @Value
     @AllArgsConstructor
-    static class FightRound {
+    private static class FightRound {
         int roundNumber;
         FighterState fighter1;
         FighterState fighter2;
     }
     @Data
     @AllArgsConstructor
-    static class FighterState {
+    private static class FighterState {
         int hp;
         int attack;
         boolean firstAttackBonus;
@@ -101,7 +98,7 @@ public class FightExecutor {
             else hero1Won = false;
         }
 
-        publishEvents(rounds);
+        //publishEvents(rounds);
         return hero1Won;
     }
 
@@ -111,10 +108,6 @@ public class FightExecutor {
 
     private FighterState clone(FighterState state) {
         return new FighterState(state.getHp(), state.getAttack(), state.isFirstAttackBonus(), state.isFirstAttackBlocked());
-    }
-
-    private void publishEvents(List<FightRound> rounds) {
-        publishService.publishFightEvents(rounds);
     }
 
     private boolean foundWinner(FighterState firstFighter, FighterState secondFighter) {

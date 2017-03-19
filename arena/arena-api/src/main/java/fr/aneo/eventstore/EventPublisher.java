@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  */
 public class EventPublisher {
 
-    Map<Class, List<Consumer<Event>>> listeners = new HashMap<>();
+    private Map<Class, List<Consumer<Event>>> listeners = new HashMap<>();
 
     public void addListener(Class<? extends Event> eventClass, Consumer<? extends Event> handler) {
         List<Consumer<Event>> handlers = listeners.get(eventClass);

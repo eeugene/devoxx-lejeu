@@ -24,7 +24,7 @@ public class FightExecutorTests {
     @Autowired
     Arena arena;
     @Autowired
-    FightExecutor fightExecutor;
+    ArenaFightExecutor fightExecutor;
 
     @Test
     public void fightExecutorTests_Classic() {

@@ -1,9 +1,6 @@
 package fr.aneo.api;
 
-import fr.aneo.domain.Avatar;
-import fr.aneo.domain.BattleResults;
-import fr.aneo.domain.Bonus;
-import fr.aneo.domain.Hero;
+import fr.aneo.domain.*;
 import fr.aneo.eventstore.HeroStatsView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
@@ -40,7 +37,7 @@ public class MockHeroService {
         return Avatar.DEFAULT_AVATAR;
     }
     @GetMapping("/heros/{email:.*}")
-    public HeroStatsView.HeroStats stats(@PathVariable("email") String id) {
+    public HeroStats stats(@PathVariable("email") String id) {
         return heroStatsView.getStats().get(Hero.builder().email(id).build());
     }
     private List<Hero> heros;

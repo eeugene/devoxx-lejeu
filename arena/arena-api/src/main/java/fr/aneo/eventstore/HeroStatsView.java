@@ -2,8 +2,7 @@ package fr.aneo.eventstore;
 
 import fr.aneo.api.HeroService;
 import fr.aneo.domain.Hero;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import fr.aneo.domain.HeroStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,28 +17,6 @@ import java.util.function.Consumer;
  */
 @Component
 public class HeroStatsView implements Consumer<BattleFinished> {
-
-    @Data
-    @EqualsAndHashCode(of = "email")
-    public static class HeroStats {
-        Hero hero;
-        int rank;
-        int totalFightCount;
-        int totalVictoryCount;
-        int totalLossCount;
-
-        public HeroStats(Hero hero) {
-            this.hero = hero;
-        }
-
-        public Double getWinRatio() {
-            double ratio = (double) totalVictoryCount / totalFightCount;
-            double value = (ratio * 100);
-            double rounded = (double) Math.round(value * 100) / 100;
-            return rounded;
-        }
-        Map<Hero,Integer> opponentCount = new HashMap<>();
-    }
 
     @Autowired
     HeroService heroService;
@@ -69,17 +46,17 @@ public class HeroStatsView implements Consumer<BattleFinished> {
             heroStatsMap.put(hero2, hero2Stats);
         }
         // computing stats hero1
-        hero1Stats.totalFightCount++;
-        hero1Stats.totalVictoryCount += battleFinished.isHero1Won() ? 1 : 0;
-        hero1Stats.totalLossCount += battleFinished.isHero1Won() ? 0 : 1;
-        hero1Stats.rank = getHeroRank(hero1Stats);
-        hero1Stats.opponentCount.compute(hero2, (k,v) -> v == null ? 1 : v+1);
+        hero1Stats.incTotalFightCount(1);
+        hero1Stats.incTotalVictoryCount(battleFinished.isHero1Won() ? 1 : 0);
+        hero1Stats.incTotalLossCount(battleFinished.isHero1Won() ? 0 : 1);
+        hero1Stats.setRank(getHeroRank(hero1Stats));
+        hero1Stats.getOpponentCount().compute(hero2, (k,v) -> v == null ? 1 : v+1);
         // computing stats hero2
-        hero2Stats.totalFightCount++;
-        hero2Stats.totalVictoryCount += battleFinished.isHero1Won() ? 0 : 1;
-        hero2Stats.totalLossCount += battleFinished.isHero1Won() ? 1 : 0;
-        hero2Stats.rank = getHeroRank(hero2Stats);
-        hero2Stats.opponentCount.compute(hero1, (k, v) -> v == null ? 1 : v+1);
+        hero2Stats.incTotalFightCount(1);
+        hero2Stats.incTotalVictoryCount(battleFinished.isHero1Won() ? 0 : 1);
+        hero2Stats.incTotalLossCount(battleFinished.isHero1Won() ? 1 : 0);
+        hero2Stats.setRank(getHeroRank(hero2Stats));
+        hero2Stats.getOpponentCount().compute(hero1, (k, v) -> v == null ? 1 : v+1);
     }
 
     private int getHeroRank(HeroStats heroStats) {
