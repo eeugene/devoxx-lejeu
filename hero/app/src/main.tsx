@@ -6,6 +6,8 @@ import { Provider } from 'react-redux';
 import { configureStore } from './state/configureStore';
 import App from './component/App';
 import { createAppReadyAction } from './state/actions';
+import { isHeroAuthenticated } from 'state/hero/heroService';
+import { createHeroLoggedInAction } from 'state/hero/heroAction';
 
 function bootstrap() {
   
@@ -19,6 +21,9 @@ function bootstrap() {
   );
 
   store.dispatch(createAppReadyAction());
+  if(isHeroAuthenticated()) {
+    store.dispatch(createHeroLoggedInAction())
+  }
 }
 
 bootstrap();

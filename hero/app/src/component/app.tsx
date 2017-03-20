@@ -3,24 +3,40 @@ import { connect } from 'react-redux';
 
 import { AppState } from 'state';
 import Quizz from './quizz/Quizz';
-import { IQuizzState, IQuizz } from './../state/quizz';
-import { getQuizzState } from './../state/selectors';
+import Hero from './hero/Hero';
+import Login from './login/Login';
+import Logout from './login/Logout';
+
+import { IQuizzState, IQuizz } from '../state/quizz';
+import { getQuizzState, getHeroState } from '../state/selectors';
 
 interface IAppProps {
     quizzReducer?: IQuizz;
     selectedAnswer?: number;
+    isAuthenticated: boolean;
 }
 
-const component = (props: IAppProps) => (
+const component = (props: IAppProps) => {
+    let isLoggedIn = props.isAuthenticated;
+    return (
     <div>
-        <Quizz id={1} />
+        {!isLoggedIn ? (
+            <Login />
+        ) : (
+            <div>
+                <Logout />
+                <Hero />
+                <Quizz id={1} />
+            </div>
+        )}
     </div>
-);
+)};
 
 export default connect(mapStateToProps)(component);
 
 function mapStateToProps(state: AppState): IAppProps {
     return {
-        ...getQuizzState(state)
+        ...
+        {isAuthenticated: state.heroState.isLoggedIn}
     };
 }

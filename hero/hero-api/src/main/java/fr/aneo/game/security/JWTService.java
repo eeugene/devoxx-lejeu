@@ -1,5 +1,7 @@
 package fr.aneo.game.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +48,7 @@ class JWTService {
         this.expirationTime = expirationTime;
     }
 
-    void addToken(HttpServletResponse response, Authentication authentication) {
+    void addToken(HttpServletResponse response, Authentication authentication, ObjectMapper objectMapper) throws IOException {
         AuthenticatedHero authenticatedHero = (AuthenticatedHero) authentication.getPrincipal();
         if (authenticatedHero == null) {
             throw new IllegalArgumentException("Cannot create JWT Token without authenticatedHero");
@@ -65,6 +68,9 @@ class JWTService {
                 .setIssuer(issuer)
                 .setExpiration(new Date(today.getTime() + expirationTime))
                 .compact();
+        ObjectNode json = objectMapper.createObjectNode();
+        json.put("token", token);
+        response.getWriter().write(json.toString());
         response.addHeader(AUTH_HEADER, format(BEARER_TEMPLATE, token));
     }
 

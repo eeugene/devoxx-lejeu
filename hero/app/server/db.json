@@ -1,0 +1,22 @@
+{
+  "userscurrent": {
+    "login": "Player Pseudo"
+  },
+  "quizz": {
+    "question": "Quelle est le numero du stand ANEO ?",
+    "answers": [
+      "stand numero 1",
+      "stand numero 2",
+      "stand numero 41"
+    ]
+  },
+  "hero": {
+    "email": "eeugene@aneo.fr",
+    "firstname": "emmanuel",
+    "lastname": "eugene",
+    "nickname": "manu"
+  },
+  "login": {
+    "token":"blabla"
+  }
+}

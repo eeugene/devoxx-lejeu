@@ -11,7 +11,8 @@ module.exports = function (env) {
         "/api": {
           target: "http://localhost:3000"
         }
-      }
+      },
+      historyApiFallback: true
     }
   });
 };

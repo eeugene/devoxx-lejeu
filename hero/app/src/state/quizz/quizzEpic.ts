@@ -9,12 +9,12 @@ export interface IQuizzApi {
     getQuizz: () => Observable<IQuizz>;
     timeout: number;
 }
-export function updateQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Action, AppState> {
-    return (action$, _) => {
+export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Action, AppState> {
+    return action$ => {
         const quizz$ = api.getQuizz()
             .timeout(api.timeout, scheduler)
             .map((quizz: IQuizz) => createQuizzReceivedAction(quizz));
 
-        return action$.ofType('APP_READY').mergeMap(() => quizz$);
+        return action$.ofType('HERO_LOGGED_IN').mergeMap(() => quizz$);
     };
 }

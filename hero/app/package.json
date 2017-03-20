@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "api": "json-server db.json --routes routes.json",
+    "api": "node server/server.js",
     "build:dev": "webpack --progress --profile --colors",
     "build:prod": "webpack --env=prod --progress --profile --colors",
     "start": "webpack-dev-server --port 8040"

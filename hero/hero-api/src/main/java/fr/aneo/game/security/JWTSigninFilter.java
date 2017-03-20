@@ -43,6 +43,6 @@ public class JWTSigninFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        jwtService.addToken(response, authResult);
+        jwtService.addToken(response, authResult, objectMapper);
     }
 }
