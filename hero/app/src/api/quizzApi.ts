@@ -1,4 +1,4 @@
-import { Observable, ajax } from './../rx';
+import { Observable, ajax } from 'rx';
 import {IQuizzApi, IQuizz} from 'state/quizz'
 import { getAuthenticatedHeader } from 'state/hero/heroService'
 

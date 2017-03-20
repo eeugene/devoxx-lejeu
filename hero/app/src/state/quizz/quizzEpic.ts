@@ -1,4 +1,4 @@
-import { Observable, IScheduler, combineLatest, of } from './../../rx';
+import { Observable, IScheduler, combineLatest, of } from 'rx';
 import { Epic } from 'redux-observable';
 
 import { AppReadyAction, Action } from 'state/actions';

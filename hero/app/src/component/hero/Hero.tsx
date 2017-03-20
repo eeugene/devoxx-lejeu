@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { getHero } from '../../state/selectors';
-import { IHero } from '../../state/hero';
+import { getHero } from 'state/selectors';
+import { IHero } from 'state/hero';
 
 interface IHeroPropsFromState {
     hero: IHero;

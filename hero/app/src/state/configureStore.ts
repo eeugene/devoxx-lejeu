@@ -3,8 +3,8 @@ import { combineReducers, compose, createStore, applyMiddleware } from 'redux';
 import { AppState } from '.';
 import { quizzReducer, getCurrentQuizz } from './quizz';
 
-import { quizzApi } from '../api/quizzApi';
-import { heroApi } from '../api/heroApi';
+import { quizzApi } from 'api/quizzApi';
+import { heroApi } from 'api/heroApi';
 import { getHeroDetails } from './hero/heroEpic';
 import { heroReducer } from './hero/heroReducer';
 

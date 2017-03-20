@@ -3,8 +3,8 @@ import * as cssmodules from 'react-css-modules';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { getQuizz } from './../../state/selectors';
-import { createQuizzAnswerSelectedAction, IQuizz } from './../../state/quizz';
+import { getQuizz } from 'state/selectors';
+import { createQuizzAnswerSelectedAction, IQuizz } from 'state/quizz';
 
 interface IQuizzPropsFromState {
     quizz: IQuizz;

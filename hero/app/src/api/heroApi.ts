@@ -1,4 +1,4 @@
-import { Observable, ajax } from './../rx';
+import { Observable, ajax } from 'rx';
 import {IHero} from 'state/hero'
 
 export interface IHeroApi {

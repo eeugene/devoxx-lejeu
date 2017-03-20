@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { createHeroLoggedOutAction } from '../../state/hero/heroAction'
-import { removeTokenFromLocalStorage } from '../../state/hero/heroService'
+import { createHeroLoggedOutAction } from 'state/hero/heroAction'
+import { removeTokenFromLocalStorage } from 'state/hero/heroService'
 
 interface ILogoutProps {
     onLogout:any;

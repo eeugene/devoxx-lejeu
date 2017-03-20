@@ -7,8 +7,8 @@ import Hero from './hero/Hero';
 import Login from './login/Login';
 import Logout from './login/Logout';
 
-import { IQuizzState, IQuizz } from '../state/quizz';
-import { getQuizzState, getHeroState } from '../state/selectors';
+import { IQuizzState, IQuizz } from 'state/quizz';
+import { getQuizzState, getHeroState } from 'state/selectors';
 
 interface IAppProps {
     quizzReducer?: IQuizz;

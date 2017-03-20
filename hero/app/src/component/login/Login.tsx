@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { createHeroLoggedInAction, createHeroLoginErrorAction } from '../../state/hero/heroAction'
-import { heroApi } from '../../api/heroApi'
-import { setTokenInLocalStorage } from '../../state/hero/heroService'
+import { createHeroLoggedInAction, createHeroLoginErrorAction } from 'state/hero/heroAction'
+import { heroApi } from 'api/heroApi'
+import { setTokenInLocalStorage } from 'state/hero/heroService'
 
 interface ILoginProps {
     onLogin:(email:string,password:string)=>void;
