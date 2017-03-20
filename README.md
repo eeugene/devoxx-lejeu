@@ -5,11 +5,11 @@
 * requires leaderboard-app to be started on localhost:8081
 
 ## hero/app
-* requires npm3 and nodejs installed
+* requires npm3 and nodejs (v6.4.0+) installed
 * To run application:
 * execute 'npm i' then 'npm run api' in a terminal
 * execute 'npm start' in another terminal
-* the application is running on "localhost:8020/"
+* the application is running on "localhost:8040/"
 
 ## Docker
 * requires docker installed
