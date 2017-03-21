@@ -3,11 +3,12 @@
     "login": "Player Pseudo"
   },
   "quizz": {
+    "id": 1,
     "question": "Quelle est le numero du stand ANEO ?",
     "answers": [
-      "stand numero 1",
-      "stand numero 2",
-      "stand numero 41"
+      {"id": 1, "text": "stand numero 1"},
+      {"id": 2, "text": "stand numero 2"},
+      {"id": 3, "text": "stand numero 41"}
     ]
   },
   "hero": {

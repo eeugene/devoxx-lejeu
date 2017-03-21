@@ -2,7 +2,9 @@ import { IQuizz } from '.';
 export type QuizzAction =
     // list of quizz actions
     | QuizzAnswerSelectedAction
-    | QuizzReceivedAction;
+    | QuizzReceivedAction
+    | SubmitQuizzAction
+    | QuizzSubmittedAction;
 
 
 export interface QuizzReceivedAction {
@@ -17,10 +19,27 @@ export const createQuizzReceivedAction =
 
 export interface QuizzAnswerSelectedAction {
     type: 'QUIZZ_ANSWER_SELECTED';
-    quizzId: number;
     answerId: number;
 };
 
 export const createQuizzAnswerSelectedAction =
-    (quizzId: number, answerId: number): QuizzAnswerSelectedAction =>
-        ({ type: 'QUIZZ_ANSWER_SELECTED', quizzId, answerId });
+    (answerId: number): QuizzAnswerSelectedAction =>
+        ({ type: 'QUIZZ_ANSWER_SELECTED', answerId });
+
+export interface SubmitQuizzAction {
+    type: 'SUBMIT_QUIZZ';
+    quizzId: number;
+    answerId: number;
+};
+
+export const createSubmitQuizzAction =
+    (quizzId: number, answerId: number): SubmitQuizzAction =>
+        ({ type: 'SUBMIT_QUIZZ', quizzId, answerId });
+
+export interface QuizzSubmittedAction {
+    type: 'QUIZZ_SUBMITTED';
+};
+
+export const createQuizzSubmittedAction =
+    (): QuizzSubmittedAction =>
+        ({ type: 'QUIZZ_SUBMITTED' });

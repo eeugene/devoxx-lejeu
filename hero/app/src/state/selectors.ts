@@ -6,8 +6,12 @@ export function getQuizz(state: AppState): IQuizz {
     return state.quizzState.quizz;
 } 
 
-export function getQuizzState(state: AppState): IQuizzState {
-    return state.quizzState;
+export function getSelectedAnswer(state: AppState): number {
+    return state.quizzState.selectedAnswer;
+}
+
+export function getIsQuizzSubmitted(state: AppState): boolean {
+    return state.quizzState.isQuizzSubmitted;
 }
 
 export function getHero(state: AppState): IHero {
