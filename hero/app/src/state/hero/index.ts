@@ -10,5 +10,7 @@ export interface IHero {
 export interface IHeroState {
     hero?: IHero;
     isLoggedIn?: boolean;
+    isRegistering?: boolean;
     loginErrors?:string;
+    registerErrors?:string;
 };

@@ -22,6 +22,21 @@ export function heroReducer(state: IHeroState = {}, action: Action):IHeroState {
                 ...state,
                 loginErrors: action.errors
             }
+        case 'HERO_OPEN_REGISTERING': 
+            return {
+                ...state,
+                isRegistering: true
+            }
+        case 'HERO_EXIT_REGISTERING': 
+            return {
+                ...state,
+                isRegistering: false
+            }
+        case 'HERO_REGISTERING_ERROR_MISSING_VALUE': 
+            return {
+                ...state,
+                registerErrors: 'Le champ ' + action.field + ' doit être rempli'
+            }
         default:
             return state;
     }

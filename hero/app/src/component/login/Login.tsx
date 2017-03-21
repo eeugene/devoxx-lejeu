@@ -3,36 +3,47 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { createHeroLoggedInAction, createHeroLoginErrorAction } from 'state/hero/heroAction'
+import { createHeroLoggedInAction, createHeroLoginErrorAction, createHeroOpenRegisteringAction } from 'state/hero/heroAction'
 import { heroApi } from 'api/heroApi'
 import { setTokenInLocalStorage } from 'state/hero/heroService'
 
 interface ILoginProps {
     onLogin:(email:string,password:string)=>void;
+    onRegister: ()=>void;
     error: string;
 }
 
 const component = (props: ILoginProps) => (
-    <div className="jumbotron">
-        { 
-            (props.error != null) ? (
-            <div className="alert alert-danger">{props.error.toString()}</div>
-        ) : (
-            <div></div>
-        )}
-        <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input type="text" className="form-control" id="email" placeholder="Email"
-                ref={node => {this.email = node}}
-            />
+    <div>
+        
+        <div className="jumbotron">
+            <h2>Login</h2>
+            { 
+                (props.error != null) ? (
+                <div className="alert alert-danger">{props.error.toString()}</div>
+            ) : (
+                <div></div>
+            )}
+            <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input type="text" className="form-control" id="email" placeholder="Email"
+                    ref={node => {this.email = node}}
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="password">Mot de passe</label>
+                <input type="password" className="form-control" id="password" placeholder="Mot de passe"
+                    ref={node => {this.password = node}}
+                />
+            </div>
+            <button className="btn btn-primary" onClick={() => 
+                props.onLogin(this.email.value,this.password.value)}>Me connecter</button>
         </div>
-        <div className="form-group">
-            <label htmlFor="password">Email address</label>
-            <input type="password" className="form-control" id="password" placeholder="Password"
-                ref={node => {this.password = node}}
-            />
+        <div>
+            <p className="text-center">
+                <a href="#" className="btn btn-default" onClick={props.onRegister}>Je veux m'inscrire au jeu</a>
+            </p>
         </div>
-        <button className="btn" onClick={()=>props.onLogin(this.email.value,this.password.value)}>log in</button>
     </div>
 
 );
@@ -63,6 +74,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>) {
                 dispatch(createHeroLoginErrorAction(error))
             }
         )
-    }
+    },
+    onRegister: () => dispatch(createHeroOpenRegisteringAction())
   }
 }
