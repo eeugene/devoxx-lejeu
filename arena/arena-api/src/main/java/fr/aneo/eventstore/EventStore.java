@@ -3,14 +3,11 @@ package fr.aneo.eventstore;
 import fr.aneo.domain.BattleResults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
