@@ -1,20 +1,32 @@
-import { Observable, ajax } from 'rx';
-import {IHero} from 'state/hero'
+import { Observable, ajax, AjaxResponse } from 'rx';
+import { IHero, IAvatar } from 'state/hero'
+import { IHeroRegisterForm } from 'component/login/Register'
+import { getAuthorizationHeader } from 'state/hero/heroService'
 
 export interface IHeroApi {
-    getHero: () => Observable<IHero>;
-    login: (username:string,password:string) => Observable<any>;
+    getHero: (email:string) => Observable<IHero>;
+    login: (username:string,password:string) => Observable<AjaxResponse>;
+    register: (hero:IHeroRegisterForm) => Observable<AjaxResponse>;
+    getAvatars: () => Observable<IAvatar[]>;
     timeout: number;
 }
 
 export const heroApi: IHeroApi = {
-    getHero() {
-        return ajax.getJSON<IHero>('api/hero');
+    getHero(email:string) {
+        return ajax.getJSON<IHero>('api/hero/'+email, getAuthorizationHeader());
+    },
+    getAvatars() {
+        return ajax.getJSON<IAvatar[]>('api/avatar');
     },
     login(username:string,password:string) {
         const body = JSON.stringify({...{},username,password})
-        const headers = {}
-        return ajax.post('api/login', body, headers);
+        const headers = {'Content-Type': 'application/json'}
+        return ajax.post('login', body, headers);
+    },
+    register(hero:IHeroRegisterForm) {
+        const body = JSON.stringify(hero)
+        const headers = {'Content-Type': 'application/json'}
+        return ajax.post('api/hero/register', body, headers)
     },
     timeout: 5000
 };

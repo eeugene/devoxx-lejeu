@@ -1,5 +1,6 @@
 package fr.aneo.game.service;
 
+import fr.aneo.game.model.Quizz;
 import fr.aneo.game.repository.QuizzRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ public class QuizzService {
 
     @Autowired
     private QuizzRepository quizzRepository;
+
+    public Quizz getCurrentQuestion() {
+        return quizzRepository.findAll().get(0);
+    }
+
 
     /*
     public Quizz getQuestion() {

@@ -11,6 +11,7 @@ export function heroReducer(state: IHeroState = {}, action: Action):IHeroState {
         case 'HERO_LOGGED_IN':
             return {
                 ...state,
+                email: action.email,
                 isLoggedIn: true
             }
         case 'HERO_LOGGED_OUT': 
@@ -35,7 +36,12 @@ export function heroReducer(state: IHeroState = {}, action: Action):IHeroState {
         case 'HERO_REGISTERING_ERROR_MISSING_VALUE': 
             return {
                 ...state,
-                registerErrors: 'Le champ ' + action.field + ' doit être rempli'
+                registerErrors: action.errors
+            }
+        case 'HERO_REGISTERING_SERVER_ERROR': 
+            return {
+                ...state,
+                registerErrors: [action.errors]
             }
         default:
             return state;

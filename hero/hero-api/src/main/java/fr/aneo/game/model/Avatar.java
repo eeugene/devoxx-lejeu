@@ -1,12 +1,16 @@
 package fr.aneo.game.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
 /**
@@ -26,6 +30,7 @@ public class Avatar implements Serializable {
     private String mimeType;
 
     @Lob
-    @Basic(fetch = LAZY)
+    @JsonIgnore
     private byte[] depiction;
+
 }

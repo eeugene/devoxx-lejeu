@@ -22,7 +22,7 @@ function bootstrap() {
 
   store.dispatch(createAppReadyAction());
   if(isHeroAuthenticated()) {
-    store.dispatch(createHeroLoggedInAction())
+    //store.dispatch(createHeroLoggedInAction())
   }
 }
 

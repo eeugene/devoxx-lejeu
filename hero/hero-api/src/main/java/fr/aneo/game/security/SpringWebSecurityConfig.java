@@ -42,6 +42,8 @@ public class SpringWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/beans").permitAll()
                 .antMatchers("h2-console").permitAll()
+                .antMatchers("/api/avatar/**").permitAll()
+                .antMatchers("/api/hero/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JWTSigninFilter("/login", authenticationManager(), jwtService, objectMapper), UsernamePasswordAuthenticationFilter.class)

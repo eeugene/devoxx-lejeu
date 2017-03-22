@@ -19,5 +19,18 @@
   },
   "login": {
     "token":"blabla"
-  }
+  },
+  "register": {
+    "message":"success"
+  },
+  "avatar": [
+    {
+      "id": 1,
+      "mimeType": "image/jpeg"
+    },
+    {
+      "id": 2,
+      "mimeType": "image/png"
+    }
+  ]
 }

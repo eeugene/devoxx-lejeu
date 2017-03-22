@@ -2,9 +2,12 @@ package fr.aneo.game.resource;
 
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.service.HeroService;
+import lombok.Builder;
+import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.authentication.UserCredentials;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,7 +23,7 @@ import static org.springframework.http.ResponseEntity.*;
  * Created by raouf on 04/03/17.
  */
 @RestController
-@RequestMapping("/api/heroes")
+@RequestMapping("/api/hero")
 public class HeroResource {
 
     @Autowired
@@ -31,7 +34,7 @@ public class HeroResource {
         return heroService.findAllHeroes();
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/{email:.*}")
     public ResponseEntity<Hero> getHeroByEmail(@PathVariable @Email String email) {
         Hero hero = heroService.findHeroByEmail(email);
         if(hero == null) {
@@ -40,27 +43,30 @@ public class HeroResource {
         return ok(hero);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> createHero(@RequestBody Hero hero) {
+    @PostMapping(value = "/register")
+    public ResponseEntity<HeroResponse> createHero(@RequestBody Hero hero) {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/")
                 .buildAndExpand(hero.getEmail()).toUri();
-
-        Hero createdHero = heroService.createHero(hero);
+        Hero createdHero;
+        try {
+            createdHero = heroService.createHero(hero);
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).body(HeroResponse.builder().errors(e.getMessage()).build());
+        }
         if(createdHero == null) {
-            return status(INTERNAL_SERVER_ERROR).build();
+            return status(INTERNAL_SERVER_ERROR).body(HeroResponse.builder().errors("Hero can't be created").build());
         }
         return created(location)
-                .body(format("The hero %s identified by %s was correctly created",
-                        hero.getNickname(), hero.getEmail()));
+                .body(HeroResponse.builder().message(
+                        format("The hero %s identified by %s was correctly created",
+                        hero.getNickname(), hero.getEmail())).build());
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<Void> authenticateHero(@RequestBody UserCredentials credentials) {
-        Hero hero = heroService.findHeroByEmail(credentials.getUsername());
-        if(hero == null) {
-            return notFound().build();
-        }
-        return ok().build();
+    @Data
+    @Builder
+    public static class HeroResponse {
+        private String message;
+        private String errors;
     }
 }

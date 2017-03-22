@@ -18,9 +18,11 @@ import static javax.persistence.EnumType.STRING;
 @Embeddable
 public class HeroStats {
 
+    private static final int DEFAULT_ATTACK_LEVEL = 100;
+
     @Column(name = "ATTACK")
     @NotNull
-    private int attackLevel;
+    private int attackLevel = DEFAULT_ATTACK_LEVEL;
 
     @Enumerated(value = STRING)
     @Column(name = "BONUS")

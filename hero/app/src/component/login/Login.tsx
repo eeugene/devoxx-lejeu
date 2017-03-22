@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { AppState } from 'state';
 import { createHeroLoggedInAction, createHeroLoginErrorAction, createHeroOpenRegisteringAction } from 'state/hero/heroAction'
 import { heroApi } from 'api/heroApi'
-import { setTokenInLocalStorage } from 'state/hero/heroService'
+import { login } from 'state/hero/heroService'
 
 interface ILoginProps {
     onLogin:(email:string,password:string)=>void;
@@ -58,23 +58,8 @@ function mapStateToProps(state: AppState) {
 
 function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
-    onLogin: (email:string,password:string) => {
-        heroApi.login(email,password)
-        .subscribe(
-            data => {
-                if (data.status === 201 || data.status === 200) {
-                    setTokenInLocalStorage(data.response.token)
-                    dispatch(createHeroLoggedInAction())
-                } else {
-                    dispatch(createHeroLoginErrorAction("Login error: bad status " + data.status + " received"))
-                }
-            },
-            error => {
-                console.log("Login error: " + error)
-                dispatch(createHeroLoginErrorAction(error))
-            }
-        )
-    },
+    onLogin: (email:string,password:string) => login(email, password,
+                () => dispatch(createHeroLoggedInAction(email)), (error:any) => dispatch(createHeroLoginErrorAction(error))),
     onRegister: () => dispatch(createHeroOpenRegisteringAction())
   }
 }

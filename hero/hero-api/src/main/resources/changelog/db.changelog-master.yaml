@@ -79,6 +79,7 @@ databaseChangeLog:
               - column:
                   name: ID
                   type: int
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -98,6 +99,7 @@ databaseChangeLog:
               - column:
                   name: ID
                   type: int
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false

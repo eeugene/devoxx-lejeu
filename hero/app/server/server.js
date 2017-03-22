@@ -29,6 +29,16 @@ server.get('/api/login', function (req, res, next) {
   }
 })
 
+server.get('/api/register', function (req, res, next) {
+  let credentials =JSON.parse(Object.keys(req.query)[0])
+  if (credentials.username == '')
+  {
+    res.sendStatus(401)
+  } else {
+    next()
+  }
+})
+
 server.use('/api',router)
 
 server.listen(3000, function () {

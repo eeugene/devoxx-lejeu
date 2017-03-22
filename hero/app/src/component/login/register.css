@@ -1,0 +1,8 @@
+
+.avatar-selected {
+    border: 3px solid red;
+}
+
+.avatar, .avatar-selected {
+    max-width: 60px;
+}

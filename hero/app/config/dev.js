@@ -6,10 +6,10 @@ module.exports = function (env) {
   return webpackMerge(commonConfig(), {
     devtool: 'cheap-module-source-map',
     devServer: {
-      inline: true,
+      //inline: true,
       proxy: {
-        "/api": {
-          target: "http://localhost:3000"
+        "/": {
+          target: "http://localhost:8080"
         }
       },
       historyApiFallback: true
