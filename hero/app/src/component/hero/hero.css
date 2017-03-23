@@ -1,0 +1,27 @@
+
+.flex {
+    display:flex;
+}
+
+.item {
+    border-top:1px solid lightgray;
+    border-bottom:1px solid lightgray;
+    width:20%;
+    padding:10px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.item-label {
+}
+.item-value {
+    font-weight: bold;
+}
+
+.hero-avatar {
+    max-width: 70px;
+}
+
+.hero-header {
+    margin:20px;
+}

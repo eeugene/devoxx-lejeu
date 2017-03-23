@@ -10,9 +10,9 @@ import java.util.List;
  * Created by eeugene on 03/03/2017.
  */
 public interface HeroApi {
-    @RequestLine("GET /heros")
+    @RequestLine("GET /hero")
     List<Hero> heros();
 
-    @RequestLine("POST /heros/results")
-    void saveResults(BattleResults result);
+    @RequestLine("POST /hero/results")
+    void saveStats(BattleResults result);
 }
