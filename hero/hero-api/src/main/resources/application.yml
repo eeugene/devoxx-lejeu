@@ -14,3 +14,9 @@ spring.jpa:
 
 liquibase:
   change-log: classpath:/changelog/db.changelog-master.yaml
+
+quizz:
+  startAt: 9
+  endAt: 17
+  intervalInMinutes: 60
+  inSimuMode: true # if true, the quizz changes every 10 seconds

@@ -108,6 +108,12 @@ databaseChangeLog:
                   type: varchar(500)
                   constraints:
                     nullable: false
+              - column:
+                  name: ACTIVE
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: QUIZZ_ANSWER
             columns:

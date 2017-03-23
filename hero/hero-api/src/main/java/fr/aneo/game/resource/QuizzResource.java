@@ -22,38 +22,42 @@ public class QuizzResource {
     @Autowired
     private QuizzService quizzService;
 
-    @Autowired
-    private HeroService heroService;
-
     @GetMapping
-    public ResponseEntity<Quizz> current() {
+    public ResponseEntity<Quizz> currentQuizz() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            throw new RuntimeException("no authentication found");
+            throw new RuntimeException("Not authenticated");
         }
-        Quizz currentQuestion = quizzService.getCurrentQuestion();
+        Quizz currentQuizz = quizzService.getCurrentQuizz();
+        if (currentQuizz == null) {
+            return ok(null);
+        }
         String heroEmail = authentication.getName();
-        if (quizzService.heroHasAnsweredQuestion(heroEmail, currentQuestion.getId())) {
+        if (quizzService.heroHasAnsweredQuizz(heroEmail, currentQuizz.getId())) {
             return ok(null);
         } else {
-            return ok(currentQuestion);
+            return ok(currentQuizz);
         }
     }
 
     @PostMapping
-    public void answerCurrentQuestion(@RequestBody QuizzAnswer quizzAnswer) {
+    public void answerCurrentQuizz(@RequestBody QuizzAnswer quizzAnswer) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            throw new RuntimeException("no authentication found");
+            throw new RuntimeException("Not authenticated");
+        }
+        Quizz currentQuizz = quizzService.getCurrentQuizz();
+        if (currentQuizz.getId() != quizzAnswer.getQuizzId()) {
+            throw new RuntimeException("the quizz is not active");
         }
         String heroEmail = authentication.getName();
-        quizzService.saveAnswerToCurrentQuestion(heroEmail, quizzAnswer.getQuizzId(), quizzAnswer.getAnswerId());
+        quizzService.saveAnswerToCurrentQuizz(heroEmail, quizzAnswer.getQuizzId(), quizzAnswer.getAnswerId());
         return;
     }
 
     @Data
     static class QuizzAnswer {
-        long quizzId;
-        long answerId;
+        Long quizzId;
+        Long answerId;
     }
 }

@@ -2,6 +2,7 @@ package fr.aneo.game.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -26,7 +27,9 @@ public class Quizz {
     @NotBlank
     private String question;
 
-    @OneToMany(mappedBy = "quizzId")
+    @OneToMany(mappedBy = "quizzId", fetch = FetchType.EAGER)
     private Collection<QuizzAnswer> answers;
 
+    @NotNull
+    private boolean active;
 }
