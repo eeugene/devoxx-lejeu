@@ -1,4 +1,4 @@
-import { IHero, IAvatar } from '.'
+import { IHero, IAvatar } from '.';
 
 export type HeroAction =
     // list of hero actions
@@ -14,19 +14,19 @@ export type HeroAction =
     ;
 
 
-export interface HeroLoggedOutAction { type: 'HERO_LOGGED_OUT'}
-export interface HeroOpenRegisteringAction { type: 'HERO_OPEN_REGISTERING'}
-export interface HeroExitRegisteringAction { type: 'HERO_EXIT_REGISTERING'}
+export interface HeroLoggedOutAction { type: 'HERO_LOGGED_OUT'; }
+export interface HeroOpenRegisteringAction { type: 'HERO_OPEN_REGISTERING'; }
+export interface HeroExitRegisteringAction { type: 'HERO_EXIT_REGISTERING'; }
 
-export interface HeroLoggedInAction { 
+export interface HeroLoggedInAction {
     type: 'HERO_LOGGED_IN';
-    email:string;
+    email: string;
 }
-export interface HeroRegisteringErrorMissingValueAction { 
+export interface HeroRegisteringErrorMissingValueAction {
     type: 'HERO_REGISTERING_ERROR_MISSING_VALUE';
-    errors:string[];
+    errors: string[];
 }
-export interface HeroLoginErrorAction { 
+export interface HeroLoginErrorAction {
     type: 'HERO_LOGIN_ERROR';
     errors: string;
 };
@@ -40,15 +40,15 @@ export interface HeroAvatarsReceivedAction {
 };
 export interface HeroRegisteringServerErrorAction {
     type: 'HERO_REGISTERING_SERVER_ERROR';
-    errors:string;
+    errors: string;
 };
 
 export const createHeroReceivedAction = (hero: IHero): HeroDetailsReceivedAction => ({ type: 'HERO_DETAILS_RECEIVED', hero });
 export const createHeroAvatarsReceivedAction = (avatars: IAvatar[]): HeroAvatarsReceivedAction => ({ type: 'HERO_AVATARS_RECEIVED', avatars });
-export const createHeroLoggedInAction = (email:string):HeroLoggedInAction => ({type: 'HERO_LOGGED_IN', email});
-export const createHeroLoggedOutAction = ():HeroLoggedOutAction => ({type: 'HERO_LOGGED_OUT'});
-export const createHeroOpenRegisteringAction = ():HeroOpenRegisteringAction => ({type: 'HERO_OPEN_REGISTERING'});
-export const createHeroExitRegisteringAction = ():HeroExitRegisteringAction => ({type: 'HERO_EXIT_REGISTERING'});
-export const createHeroRegisteringErrorMissingValueAction = (errors:string[]):HeroRegisteringErrorMissingValueAction => ({type: 'HERO_REGISTERING_ERROR_MISSING_VALUE', errors});
-export const createHeroRegisteringServerErrorAction = (errors:string):HeroRegisteringServerErrorAction => ({type: 'HERO_REGISTERING_SERVER_ERROR', errors});
-export const createHeroLoginErrorAction = (errors:string):HeroLoginErrorAction => ({type: 'HERO_LOGIN_ERROR', errors});
+export const createHeroLoggedInAction = (email: string): HeroLoggedInAction => ({ type: 'HERO_LOGGED_IN', email });
+export const createHeroLoggedOutAction = (): HeroLoggedOutAction => ({ type: 'HERO_LOGGED_OUT' });
+export const createHeroOpenRegisteringAction = (): HeroOpenRegisteringAction => ({ type: 'HERO_OPEN_REGISTERING' });
+export const createHeroExitRegisteringAction = (): HeroExitRegisteringAction => ({ type: 'HERO_EXIT_REGISTERING' });
+export const createHeroRegisteringErrorMissingValueAction = (errors: string[]): HeroRegisteringErrorMissingValueAction => ({ type: 'HERO_REGISTERING_ERROR_MISSING_VALUE', errors });
+export const createHeroRegisteringServerErrorAction = (errors: string): HeroRegisteringServerErrorAction => ({ type: 'HERO_REGISTERING_SERVER_ERROR', errors });
+export const createHeroLoginErrorAction = (errors: string): HeroLoginErrorAction => ({ type: 'HERO_LOGIN_ERROR', errors });

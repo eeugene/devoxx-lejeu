@@ -8,7 +8,8 @@
     "api": "node server/server.js",
     "build:dev": "webpack --progress --profile --colors",
     "build:prod": "webpack --env=prod --progress --profile --colors",
-    "start": "webpack-dev-server --port 8040"
+    "start": "webpack-dev-server --port 8040",
+    "lint": "tslint --config tslint.json src/**/*.ts"
   },
   "dependencies": {
     "@types/jsdom": "^2.0.30",

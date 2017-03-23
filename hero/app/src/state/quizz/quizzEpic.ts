@@ -1,7 +1,7 @@
-import { Observable, IScheduler, combineLatest, of } from 'rx';
+import { Observable, IScheduler } from 'rx';
 import { Epic } from 'redux-observable';
 
-import { AppReadyAction, Action } from 'state/actions';
+import { Action } from 'state/actions';
 import { AppState } from 'state';
 import { IQuizz, createQuizzReceivedAction, createQuizzSubmittedAction, SubmitQuizzAction } from '.';
 
@@ -14,11 +14,11 @@ export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
     return action$ => {
 
         return action$.ofType('HERO_LOGGED_IN', 'QUIZZ_SUBMITTED').mergeMap(
-            (action) => 
+            (action) =>
                 api.getQuizz()
-                .timeout(api.timeout, scheduler)
-                .map((quizz: IQuizz) => createQuizzReceivedAction(quizz))
-            );
+                    .timeout(api.timeout, scheduler)
+                    .map((quizz: IQuizz) => createQuizzReceivedAction(quizz))
+        );
     };
 }
 
@@ -26,10 +26,10 @@ export function postQuizzAnswer(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
     return action$ => {
 
         return action$.ofType('SUBMIT_QUIZZ').mergeMap(
-            (action:SubmitQuizzAction) => 
+            (action: SubmitQuizzAction) =>
                 api.postQuizzAnswer(action.quizzId, action.answerId)
-                .timeout(api.timeout, scheduler)
-                .map(_ => createQuizzSubmittedAction())
-            );
-    }
+                    .timeout(api.timeout, scheduler)
+                    .map(_ => createQuizzSubmittedAction())
+        );
+    };
 }

@@ -1,0 +1,39 @@
+{
+    "rules": {
+        "no-console": [
+            true,
+            "log",
+            "error",
+            "debug"
+        ],
+        "no-reference": true,
+        "no-unused-variable": [
+            true,
+            "react"
+        ],
+        "no-duplicate-variable": true,
+        "no-shadowed-variable": true,
+        "class-name": true,
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "indent": [
+            true,
+            "spaces"
+        ],
+        "no-eval": true,
+        "no-internal-module": true,
+        "no-trailing-whitespace": true,
+        "no-var-keyword": true,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "semicolon": [
+            true,
+            "always"
+        ]
+    }
+}

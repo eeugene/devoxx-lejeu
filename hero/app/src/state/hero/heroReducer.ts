@@ -1,48 +1,48 @@
-import { IHeroState, IHero } from '.';
-import { Action } from 'state/actions'
+import { IHeroState } from '.';
+import { Action } from 'state/actions';
 
-export function heroReducer(state: IHeroState = {}, action: Action):IHeroState {
+export function heroReducer(state: IHeroState = {}, action: Action): IHeroState {
     switch (action.type) {
         case 'HERO_DETAILS_RECEIVED':
             return {
                 ...state,
                 hero: action.hero
-            }
+            };
         case 'HERO_LOGGED_IN':
             return {
                 ...state,
                 email: action.email,
                 isLoggedIn: true
-            }
-        case 'HERO_LOGGED_OUT': 
+            };
+        case 'HERO_LOGGED_OUT':
             return {
                 isLoggedIn: false
-            }
-        case 'HERO_LOGIN_ERROR': 
+            };
+        case 'HERO_LOGIN_ERROR':
             return {
                 ...state,
                 loginErrors: action.errors
-            }
-        case 'HERO_OPEN_REGISTERING': 
+            };
+        case 'HERO_OPEN_REGISTERING':
             return {
                 ...state,
                 isRegistering: true
-            }
-        case 'HERO_EXIT_REGISTERING': 
+            };
+        case 'HERO_EXIT_REGISTERING':
             return {
                 ...state,
                 isRegistering: false
-            }
-        case 'HERO_REGISTERING_ERROR_MISSING_VALUE': 
+            };
+        case 'HERO_REGISTERING_ERROR_MISSING_VALUE':
             return {
                 ...state,
                 registerErrors: action.errors
-            }
-        case 'HERO_REGISTERING_SERVER_ERROR': 
+            };
+        case 'HERO_REGISTERING_SERVER_ERROR':
             return {
                 ...state,
                 registerErrors: [action.errors]
-            }
+            };
         default:
             return state;
     }

@@ -1,10 +1,10 @@
-import {AppState} from '.';
-import {IQuizz, IQuizzState} from './quizz';
-import {IHero, IHeroState} from './hero';
+import { AppState } from '.';
+import { IQuizz } from './quizz';
+import { IHero, IHeroState } from './hero';
 
 export function getQuizz(state: AppState): IQuizz {
     return state.quizzState.quizz;
-} 
+}
 
 export function getSelectedAnswer(state: AppState): number {
     return state.quizzState.selectedAnswer;

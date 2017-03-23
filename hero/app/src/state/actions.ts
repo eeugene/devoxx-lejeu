@@ -1,5 +1,5 @@
-import {QuizzAction} from './quizz'
-import {HeroAction} from './hero'
+import {QuizzAction} from './quizz';
+import {HeroAction} from './hero';
 
 export interface AppReadyAction {
     type: 'APP_READY';
