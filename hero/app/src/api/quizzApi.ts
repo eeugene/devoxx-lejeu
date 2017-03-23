@@ -4,7 +4,8 @@ import { getAuthorizationHeader } from 'state/hero/heroService'
 
 export const quizzApi: IQuizzApi = {
     getQuizz() {
-        return ajax.getJSON<IQuizz>('api/quizz', getAuthorizationHeader());
+        const header = getAuthorizationHeader()
+        return ajax.getJSON<IQuizz>('api/quizz', header);
     },
     postQuizzAnswer(quizzId: number, answerId: number) {
         let headers = {'Content-Type': 'application/json'}

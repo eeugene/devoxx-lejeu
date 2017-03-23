@@ -24,6 +24,10 @@ const component = (props: ILoginProps) => (
             ) : (
                 <div></div>
             )}
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                return props.onLogin(this.email.value,this.password.value);
+                }}>
             <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input type="text" className="form-control" id="email" placeholder="Email"
@@ -36,8 +40,8 @@ const component = (props: ILoginProps) => (
                     ref={node => {this.password = node}}
                 />
             </div>
-            <button className="btn btn-primary" onClick={() => 
-                props.onLogin(this.email.value,this.password.value)}>Me connecter</button>
+            <input type="submit" className="btn btn-primary" value="Connexion" />
+            </form>
         </div>
         <div>
             <p className="text-center">
