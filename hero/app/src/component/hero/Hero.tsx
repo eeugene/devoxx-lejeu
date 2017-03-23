@@ -35,11 +35,11 @@ const component = (props: IHeroProps) => {
     const bestRanking = getStat(stats, 'bestRanking')
     const wins = getStat(stats, 'wins')
     const losses = getStat(stats, 'losses')
-    const url = "http://localhost:8080/api/avatar/"+props.hero.avatarId
+    const avatarId = props.hero.avatarId
     return (
     <div>
         <div className="hero-header">
-            <img src={url} className='hero-avatar' />
+            <Avatar id={avatarId} />
             <h1>{props.hero.firstname} {props.hero.lastname}</h1>
             <h2>{props.hero.nickname}</h2>
             <span>{props.hero.email}</span>

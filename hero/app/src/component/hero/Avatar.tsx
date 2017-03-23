@@ -1,19 +1,23 @@
 import * as React from 'react';
+import './hero.css';
 
 interface IAvatarProps {
     id:number;
-    text:string;
 }
 export class Avatar extends React.Component<IAvatarProps, any> {
-    url:string;
     constructor(props:IAvatarProps) {
-        console.log(props)
       super(props);
-      this.url = "http://localhost:8080/api/avatar/"+this.props.id
+      this.state = this.getState(this.props.id)
     }
     render() {
         return (
-            <img src={this.url} />
+            <img src={this.state.url} className='hero-avatar'/>
         )
+    }
+    getState(id:number) {
+        return {url:"http://localhost:8080/api/avatar/"+id}
+    }
+    componentWillReceiveProps(nextProps:IAvatarProps) {
+        this.setState(this.getState(this.props.id))
     }
 }
