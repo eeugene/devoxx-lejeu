@@ -7,7 +7,9 @@ export const quizzApi: IQuizzApi = {
         return ajax.getJSON<IQuizz>('api/quizz', getAuthorizationHeader());
     },
     postQuizzAnswer(quizzId: number, answerId: number) {
-        return ajax.post('api/quizz', {quizzId, answerId}).map(resp => resp.status)
+        let headers = {'Content-Type': 'application/json'}
+        headers = Object.assign(headers, getAuthorizationHeader())
+        return ajax.post('api/quizz', {quizzId, answerId}, headers).map(resp => resp.status)
     },
     timeout: 5000
 };

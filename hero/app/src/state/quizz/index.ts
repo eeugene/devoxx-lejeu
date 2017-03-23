@@ -16,5 +16,5 @@ export interface IQuizz {
 
 interface IAnswer {
     id: number;
-    text: string;
+    answer: string;
 }

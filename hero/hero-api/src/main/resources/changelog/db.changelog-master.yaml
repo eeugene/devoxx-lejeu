@@ -105,16 +105,51 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: QUESTION
-                  type: varchar(100)
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: QUIZZ_ANSWER
+            columns:
+              - column:
+                  name: ID
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ANSWER
+                  type: varchar(500)
                   constraints:
                     nullable: false
               - column:
-                  name: ANSWERS
-                  type: varchar(5000)
+                  name: IS_CORRECT_ANSWER
+                  type: boolean
                   constraints:
                     nullable: false
               - column:
-                  name: CORRECT_ID
+                  name: QUIZZ_ID
+                  type: int
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: QUIZZ_HERO_ANSWER
+            columns:
+              - column:
+                  name: QUIZZ_ID
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: HERO_EMAIL
+                  type: varchar(250)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: QUIZZ_ANSWER_ID
                   type: int
                   constraints:
                     nullable: false

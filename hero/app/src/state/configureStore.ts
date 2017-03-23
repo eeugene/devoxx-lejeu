@@ -18,8 +18,8 @@ export function configureStore() {
     );
 
     const rootEpic = combineEpics(
-        getCurrentQuizz(quizzApi)/* epics calls */,
         getHeroDetails(heroApi),
+        getCurrentQuizz(quizzApi),
         postQuizzAnswer(quizzApi)
     );
 

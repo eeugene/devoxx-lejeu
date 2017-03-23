@@ -7,7 +7,7 @@ import { getQuizz, getSelectedAnswer, getIsQuizzSubmitted } from 'state/selector
 import { createQuizzAnswerSelectedAction, createSubmitQuizzAction, IQuizz } from 'state/quizz';
 
 interface IQuizzPropsFromState {
-    quizz: IQuizz;
+    quizz?: IQuizz;
     selectedAnswer: number;
     isQuizzSubmitted: boolean;
 }
@@ -33,16 +33,21 @@ const component = (props: IQuizzProps) => (
                 <div className="radio" key={answer.id}>
                     <div><input type="radio"
                         checked={answer.id === props.selectedAnswer}
-                        onChange={() => props.onAnswerSelected(answer.id)} /> {answer.text}
+                        onChange={() => props.onAnswerSelected(answer.id)} /> {answer.answer}
                     </div>
                 </div>
             ))
         }
-        <button className="btn btn-success"
-            onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
-            disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
-            submit
-        </button>
+        { props.quizz && props.quizz.answers ? (
+            <button className="btn btn-success"
+                onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
+                disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
+                submit
+            </button>
+        ) : (
+            <div></div>            
+            )
+        }
         {
             props.isQuizzSubmitted &&
             <h1> THANK YOU FOR YOUR ANSWER </h1>
