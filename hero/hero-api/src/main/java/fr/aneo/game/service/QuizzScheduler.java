@@ -38,13 +38,11 @@ public class QuizzScheduler {
 
         timer = Executors.newSingleThreadScheduledExecutor();
         quizzScheduler = Executors.newSingleThreadScheduledExecutor();
-        start();
     }
 
-    private void start() {
-
+    public void start() {
         if (inSimuMode) {
-            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(this::incCurrentQuizz, 0, 60, TimeUnit.SECONDS);
+            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(this::incCurrentQuizz, 60, 60, TimeUnit.SECONDS);
             try {
                 handle.get();
             } catch (ExecutionException e) {
@@ -79,7 +77,7 @@ public class QuizzScheduler {
     }
 
     private void scheduleQuizz() {
-        quizzScheduler.scheduleAtFixedRate(this::incCurrentQuizz, 0, interval, TimeUnit.MINUTES);
+        quizzScheduler.scheduleAtFixedRate(this::incCurrentQuizz, interval, interval, TimeUnit.MINUTES);
     }
 
     private void incCurrentQuizz() {
