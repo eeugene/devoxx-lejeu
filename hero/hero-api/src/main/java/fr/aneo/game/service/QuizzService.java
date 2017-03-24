@@ -53,8 +53,13 @@ public class QuizzService {
 
     private Quizz getNextQuizz() {
         log.info("Loading next available quizz");
-        Quizz quizz = quizzRepository.findAll()
-                .stream().filter(q -> q.isActive()).findFirst().orElse(null);
+        Quizz quizz;
+        quizz = quizzRepository.findAll()
+                .stream().filter(q -> q.isActive() && q.isBonus()).findFirst().orElse(null);
+        if (quizz == null) {
+            quizz = quizzRepository.findAll()
+                .stream().filter(q -> q.isActive() && !q.isBonus()).findFirst().orElse(null);
+        }
         log.info("getNextQuizz: " + quizz);
         return quizz;
     }

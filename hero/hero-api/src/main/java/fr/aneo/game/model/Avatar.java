@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,10 +16,12 @@ import static javax.persistence.GenerationType.AUTO;
  */
 @Data
 @Builder
-@NoArgsConstructor
 @Entity
 @Cacheable
 public class Avatar implements Serializable {
+
+    @Tolerate
+    public Avatar() {}
 
     @Id
     @GeneratedValue(strategy = AUTO)

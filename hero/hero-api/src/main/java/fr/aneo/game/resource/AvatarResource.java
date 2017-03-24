@@ -73,7 +73,7 @@ public class AvatarResource {
 
     @Data
     @Builder
-    private class AvatarResponse {
+    private static class AvatarResponse {
         private String message;
         private String errors;
     }

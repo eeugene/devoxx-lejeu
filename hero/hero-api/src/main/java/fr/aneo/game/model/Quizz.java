@@ -32,4 +32,8 @@ public class Quizz {
 
     @NotNull
     private boolean active;
+
+    @NotNull
+    @Column(name = "IS_BONUS")
+    private boolean bonus;
 }

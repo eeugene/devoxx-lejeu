@@ -119,6 +119,12 @@ databaseChangeLog:
                   defaultValueBoolean: true
                   constraints:
                     nullable: false
+              - column:
+                  name: IS_BONUS
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: QUIZZ_ANSWER
             columns:

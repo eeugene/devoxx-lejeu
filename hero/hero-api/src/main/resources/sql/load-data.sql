@@ -14,6 +14,12 @@ insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (4, 'no
 insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (5, 'pas eux', false, 2);
 insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (6, 'pas les autres', false, 2);
 #
+insert into QUIZZ(ID, QUESTION, ACTIVE, IS_BONUS) values(3, "question bonus?", true, true);
+#
+insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (7, 'reponse1', true, 3);
+insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (8, 'reponse2', false, 3);
+insert into QUIZZ_ANSWER(ID, ANSWER, IS_CORRECT_ANSWER, QUIZZ_ID) values (9, 'reponse3', false, 3);
+#
 insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('mabdelhamid@aneo.fr', 'mohamed','abdelhamid','mab', 'ADMIN', 1, 100, 100, 'toto');
 #
 insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('eeugene@aneo.fr', 'emmanuel','eugene','manu', 'ADMIN', 2, 100, 100, '$2a$10$6TajU85/gVrGUm5fv5Z8beVF37rlENohyLk3BEpZJFi6Av9JNkw9O');
