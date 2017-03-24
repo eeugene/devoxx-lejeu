@@ -37,6 +37,9 @@ public class HeroService {
         if (heroRepository.exists(hero.getEmail())) {
             throw new RuntimeException("Cet email existe déjà");
         }
+        if (hero.getHeroStats() == null) {
+            hero.setHeroStats(new HeroStats());
+        }
         hero.setPassword(passwordEncoder.encode(hero.getPassword())); // set encoded password
         return heroRepository.save(hero);
     }

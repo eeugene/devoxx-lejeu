@@ -18,14 +18,14 @@ import static javax.persistence.EnumType.STRING;
 @Embeddable
 public class HeroStats {
     @Column(name = "WIN")
-    private Integer wins;
+    private int wins;
 
     @Column(name = "LOSS")
-    private Integer losses;
+    private int losses;
 
     @Column(name = "RANK")
-    private Integer currentRanking;
+    private int currentRanking;
 
     @Column(name = "BEST_RANK")
-    private Integer bestRanking;
+    private int bestRanking;
 }

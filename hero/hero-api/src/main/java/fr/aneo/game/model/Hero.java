@@ -72,6 +72,6 @@ public class Hero {
     private Bonus currentBonus;
 
     @Embedded
-    private HeroStats heroStats = new HeroStats();
+    private HeroStats heroStats;
 
 }
