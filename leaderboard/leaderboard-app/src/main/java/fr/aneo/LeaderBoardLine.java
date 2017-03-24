@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LeaderBoardLine {
     private String heroId;
+    private long avatarId;
     private String heroName;
     private double winRatio;
 }

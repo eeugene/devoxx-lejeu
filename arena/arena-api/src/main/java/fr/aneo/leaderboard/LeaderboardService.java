@@ -38,8 +38,13 @@ public class LeaderboardService {
                 .stream()
                 .sorted((o1, o2) -> o2.getWinRatio().compareTo(o1.getWinRatio()))
                 .limit(20)
-                .map(stat -> new LeaderBoardLine(stat.getHero().getEmail(), stat.getHero().getNickname(), stat.getWinRatio()))
-                .collect(Collectors.toList());
+                .map(stat -> LeaderBoardLine.builder()
+                        .heroId(stat.getHero().getEmail())
+                        .avatarId(stat.getHero().getAvatarId())
+                        .heroName(stat.getHero().getNickname())
+                        .winRatio(stat.getWinRatio())
+                        .build()
+                ).collect(Collectors.toList());
 
         LeaderBoard leaderBoard = new LeaderBoard(list);
         leaderboardApi.update(leaderBoard);
