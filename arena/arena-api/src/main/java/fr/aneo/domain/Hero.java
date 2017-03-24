@@ -14,10 +14,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "email")
 public class Hero {
     private String email;
-    private String avatar;
-    private String name;
+    private String firstname;
+    private String lastname;
+    private Long avatarId;
+    private String nickname;
 
-    private int hp;
-    private int attackForce;
-    private String bonus;
+    private int hpLevel;
+    private int attackLevel;
+    private String currentBonus;
 }

@@ -57,6 +57,6 @@ public class FightExecutorTests {
 
     private Hero buildHero(int id, Bonus bonus) {
         String email = RandomStringUtils.randomAlphabetic(5);
-        return Hero.builder().email(email).name("name-" + id).hp(100).attackForce(50).bonus(bonus != null ? bonus.name() : null).build();
+        return Hero.builder().email(email).nickname("name-" + id).hpLevel(100).attackLevel(50).currentBonus(bonus != null ? bonus.name() : null).build();
     }
 }

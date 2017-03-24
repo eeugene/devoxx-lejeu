@@ -56,11 +56,11 @@ public class Arena {
         battleResults.getResults().forEach(
                 r -> log.debug(
                         "BattleResult -> "
-                                + r.getHero1().getName() + (r.isHero1Won() ? " [W]" : "    ")
+                                + r.getHero1().getNickname() + (r.isHero1Won() ? " [W]" : "    ")
                                 + " /VS/ "
-                                + r.getHero2().getName() + (r.isHero1Won() ? " " : " [W] ")
-                                + (r.getHero1().getBonus()!=null? "(Bonus "+r.getHero1().getName()+": "+r.getHero1().getBonus()+")": "")
-                                + (r.getHero2().getBonus()!=null? "(Bonus "+r.getHero2().getName()+": "+r.getHero2().getBonus()+")" : "")
+                                + r.getHero2().getNickname() + (r.isHero1Won() ? " " : " [W] ")
+                                + (r.getHero1().getCurrentBonus()!=null? "(Bonus "+r.getHero1().getNickname()+": "+r.getHero1().getCurrentBonus()+")": "")
+                                + (r.getHero2().getCurrentBonus()!=null? "(Bonus "+r.getHero2().getNickname()+": "+r.getHero2().getCurrentBonus()+")" : "")
                 )
         );
     }
@@ -114,8 +114,8 @@ public class Arena {
         fightDefinitionBuilder.cancelHero2FirstAttack(hasBonus(hero1Bonus, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
 
         // other params
-        int hero1Hp = hero1.getHp();
-        int hero2Hp = hero2.getHp();
+        int hero1Hp = hero1.getHpLevel();
+        int hero2Hp = hero2.getHpLevel();
         if (hasBonus(hero1Bonus, Bonus.ADD_10_PERCENT_HP)) {
             hero1Hp = (int)(hero1Hp + (hero1Hp*0.1));
         }
@@ -130,8 +130,8 @@ public class Arena {
         }
         fightDefinitionBuilder.hero1Hp(hero1Hp);
         fightDefinitionBuilder.hero2Hp(hero2Hp);
-        fightDefinitionBuilder.hero1Attack(hero1.getAttackForce());
-        fightDefinitionBuilder.hero2Attack(hero2.getAttackForce());
+        fightDefinitionBuilder.hero1Attack(hero1.getAttackLevel());
+        fightDefinitionBuilder.hero2Attack(hero2.getAttackLevel());
         if (hasBonus(hero1Bonus, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK)) {
             fightDefinitionBuilder.hero1FirstAttackHas20PercentMorePower(true);
         }
@@ -151,10 +151,10 @@ public class Arena {
     }
 
     private Optional<Bonus> getBonus(Hero hero) {
-        if (StringUtils.isEmpty(hero.getBonus())) {
+        if (StringUtils.isEmpty(hero.getCurrentBonus())) {
             return Optional.empty();
         }
-        Bonus bonus = Bonus.valueOf(hero.getBonus());
+        Bonus bonus = Bonus.valueOf(hero.getCurrentBonus());
         return Optional.of(bonus);
     }
 }

@@ -50,7 +50,7 @@ public class MockHeroService {
             }
         }
         int randomHero = RandomUtils.nextInt(heros.size());
-        heros.get(randomHero).setBonus(randomBonus());
+        heros.get(randomHero).setCurrentBonus(randomBonus());
         return heros;
     }
 
@@ -61,6 +61,6 @@ public class MockHeroService {
     }
 
     private Hero buildHero(int id, Bonus bonus) {
-        return Hero.builder().email("hero-" + id + "@aneo.fr").name("hero-" + id).hp(100).attackForce(10).bonus(bonus != null ? bonus.name() : null).build();
+        return Hero.builder().email("hero-" + id + "@aneo.fr").nickname("hero-" + id).hpLevel(100).attackLevel(10).currentBonus(bonus != null ? bonus.name() : null).build();
     }
 }

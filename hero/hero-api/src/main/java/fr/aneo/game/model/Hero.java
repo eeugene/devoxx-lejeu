@@ -20,6 +20,9 @@ import static javax.persistence.EnumType.STRING;
 @Entity
 public class Hero {
 
+    private static final int DEFAULT_ATTACK_LEVEL = 100;
+    private static final int DEFAULT_HP_LEVEL = 100;
+
     @Id
     @Email
     private String email;
@@ -41,14 +44,27 @@ public class Hero {
     @NotBlank
     private String nickname;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "AVATAR_ID", insertable = false, updatable = false)
-    @JsonIgnore
     private Avatar avatar;
 
     @Column(name = "AVATAR_ID")
     private long avatarId;
 
+    @NotNull
+    @Column(name = "ATTACK")
+    private int attackLevel = DEFAULT_ATTACK_LEVEL;
+
+    @NotNull
+    @Column(name = "HP")
+    private int hpLevel = DEFAULT_HP_LEVEL;
+
+    @Column(name = "BONUS")
+    @Enumerated(value = STRING)
+    private Bonus currentBonus;
+
     @Embedded
     private HeroStats heroStats = new HeroStats();
+
 }

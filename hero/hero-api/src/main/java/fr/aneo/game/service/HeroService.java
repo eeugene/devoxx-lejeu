@@ -1,6 +1,7 @@
 package fr.aneo.game.service;
 
 import fr.aneo.game.model.Hero;
+import fr.aneo.game.model.HeroStats;
 import fr.aneo.game.repository.HeroRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,10 @@ public class HeroService {
         }
         hero.setPassword(passwordEncoder.encode(hero.getPassword())); // set encoded password
         return heroRepository.save(hero);
+    }
+
+    public void updateStats(Hero hero, HeroStats stats) {
+        hero.setHeroStats(stats);
+        heroRepository.save(hero);
     }
 }

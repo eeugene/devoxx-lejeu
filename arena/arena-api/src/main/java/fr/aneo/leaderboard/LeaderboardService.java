@@ -38,7 +38,7 @@ public class LeaderboardService {
                 .stream()
                 .sorted((o1, o2) -> o2.getWinRatio().compareTo(o1.getWinRatio()))
                 .limit(20)
-                .map(stat -> new LeaderBoardLine(stat.getHero().getEmail(), stat.getHero().getName(), stat.getWinRatio()))
+                .map(stat -> new LeaderBoardLine(stat.getHero().getEmail(), stat.getHero().getNickname(), stat.getWinRatio()))
                 .collect(Collectors.toList());
 
         LeaderBoard leaderBoard = new LeaderBoard(list);

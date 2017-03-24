@@ -1,9 +1,11 @@
 package fr.aneo.game.resource;
 
 import fr.aneo.game.model.Hero;
+import fr.aneo.game.model.HeroStats;
 import fr.aneo.game.service.HeroService;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -43,7 +46,7 @@ public class HeroResource {
     }
 
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<HeroResponse> createHero(@RequestBody Hero hero) {
+    public ResponseEntity<HeroRegisterResponse> createHero(@RequestBody Hero hero) {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/")
                 .buildAndExpand(hero.getEmail()).toUri();
@@ -51,20 +54,51 @@ public class HeroResource {
         try {
             createdHero = heroService.createHero(hero);
         } catch (Exception e) {
-            return status(INTERNAL_SERVER_ERROR).body(HeroResponse.builder().errors(e.getMessage()).build());
+            return status(INTERNAL_SERVER_ERROR).body(HeroRegisterResponse.builder().errors(e.getMessage()).build());
         }
         if(createdHero == null) {
-            return status(INTERNAL_SERVER_ERROR).body(HeroResponse.builder().errors("Hero can't be created").build());
+            return status(INTERNAL_SERVER_ERROR).body(HeroRegisterResponse.builder().errors("Hero can't be created").build());
         }
         return created(location)
-                .body(HeroResponse.builder().message(
+                .body(HeroRegisterResponse.builder().message(
                         format("The hero %s identified by %s was correctly created",
                         hero.getNickname(), hero.getEmail())).build());
     }
 
+    @PostMapping(value = "/stats")
+    public void updateStats(@RequestBody UpdateHeroStats stats) {
+        if (stats == null) {
+            return;
+        }
+        stats.getList().stream()
+                .forEach( s ->
+                    {
+                        Hero hero = heroService.findHeroByEmail(s.email);
+                        if (hero != null) {
+                            heroService.updateStats(hero, s.getStats());
+                        }
+                    }
+                );
+    }
+
     @Data
     @Builder
-    public static class HeroResponse {
+    public static class UpdateHeroStats {
+        @Tolerate UpdateHeroStats() {}
+        Collection<NewHeroStats> list;
+    }
+
+    @Data
+    @Builder
+    public static class NewHeroStats {
+        @Tolerate NewHeroStats() {}
+        String email;
+        HeroStats stats;
+    }
+
+    @Data
+    @Builder
+    public static class HeroRegisterResponse {
         private String message;
         private String errors;
     }

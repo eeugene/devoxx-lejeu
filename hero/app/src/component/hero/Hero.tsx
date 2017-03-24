@@ -10,6 +10,7 @@ import './hero.css';
 
 interface IHeroPropsFromState {
     hero: IHero;
+    // stat: IHeroStats;
 }
 
 interface IHeroDispatchProps {
@@ -22,7 +23,7 @@ type IHeroProps = IHeroOwnProps & IHeroPropsFromState & IHeroDispatchProps;
 
 function getStat(stats:IHeroStats, key:string):number {
     if (stats) {
-        const value = Object.keys(stats)[key]
+        let value = stats[key]
         if (value)
             return value;
     }
@@ -30,11 +31,12 @@ function getStat(stats:IHeroStats, key:string):number {
 }
 
 const component = (props: IHeroProps) => {
-    const stats = props.hero.heroStats
-    const currentRanking = getStat(stats, 'currentRanking')
-    const bestRanking = getStat(stats, 'bestRanking')
-    const wins = getStat(stats, 'wins')
-    const losses = getStat(stats, 'losses')
+    let stats = props.hero.heroStats
+    console.log(stats)
+    let currentRanking = getStat(stats, 'currentRanking')
+    let bestRanking = getStat(stats, 'bestRanking')
+    let wins = getStat(stats, 'wins')
+    let losses = getStat(stats, 'losses')
     return (
     <div>
         <div className="hero-header">
@@ -55,11 +57,11 @@ const component = (props: IHeroProps) => {
             </div>
             <div className="item">
                 <span className='item-label'>Wins</span>
-                <p className="item-value">{bestRanking}</p>
+                <p className="item-value">{wins}</p>
             </div>
             <div className="item">
                 <span className='item-label'>Losses</span>
-                <p className="item-value">{bestRanking}</p>
+                <p className="item-value">{losses}</p>
             </div>
         </div>
         ) : (

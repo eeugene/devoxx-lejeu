@@ -48,6 +48,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: HP
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
                   name: BONUS
                   type: int
                   constraints:
