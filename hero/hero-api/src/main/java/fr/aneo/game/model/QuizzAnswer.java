@@ -1,9 +1,12 @@
 package fr.aneo.game.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -18,6 +21,7 @@ import static javax.persistence.GenerationType.AUTO;
 @NoArgsConstructor
 @Entity
 @Table(name = "QUIZZ_ANSWER")
+@ToString(exclude = "quizz")
 public class QuizzAnswer {
 
     @Id
@@ -32,7 +36,9 @@ public class QuizzAnswer {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     boolean isCorrectAnswer;
 
-    @NotNull
-    @Column(name = "QUIZZ_ID")
-    private Long quizzId;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "QUIZZ_ID")
+    private Quizz quizz;
+
 }

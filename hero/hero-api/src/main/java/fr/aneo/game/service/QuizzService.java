@@ -14,26 +14,21 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class QuizzService {
-    Quizz currentQuizz = null;
+
+    @Autowired
     private QuizzRepository quizzRepository;
     @Autowired
     private QuizzHeroAnswerRepository quizzHeroAnswerRepository;
 
-    @Autowired
-    public QuizzService(QuizzRepository quizzRepository) {
-        this.quizzRepository = quizzRepository;
-        currentQuizz = getNextQuizz();
-    }
-
     public Quizz getCurrentQuizz() {
-        return currentQuizz;
+        return getNextAvailableQuizz();
     }
 
     public boolean heroHasAnsweredQuizz(String heroEmail, Long quizzId) {
         return quizzHeroAnswerRepository.findOne(new QuizzHeroAnswer.Id(heroEmail, quizzId)) != null;
     }
 
-    public void saveAnswerToCurrentQuizz(String heroEmail, long quizzId, Long answerId) {
+    public void saveHeroAnswerToQuizz(String heroEmail, Long quizzId, Long answerId) {
         if (!heroHasAnsweredQuizz(heroEmail, quizzId)) {
             QuizzHeroAnswer answer = new QuizzHeroAnswer();
             answer.setId(new QuizzHeroAnswer.Id(heroEmail, quizzId));
@@ -42,25 +37,29 @@ public class QuizzService {
         }
     }
 
-    void changeCurrentQuizz() {
-        log.info("changeCurrentQuizz called: currentQuizz " + currentQuizz + " is being disabled");
+    void disableCurrentQuizz() {
+        Quizz currentQuizz = getCurrentQuizz();
         if (currentQuizz != null) {
             currentQuizz.setActive(false);
             quizzRepository.save(currentQuizz);
         }
-        currentQuizz = getNextQuizz();
     }
 
-    private Quizz getNextQuizz() {
+    private Quizz getNextAvailableQuizz() {
         log.info("Loading next available quizz");
         Quizz quizz;
         quizz = quizzRepository.findAll()
                 .stream().filter(q -> q.isActive() && q.isBonus()).findFirst().orElse(null);
-        if (quizz == null) {
+        if (quizz == null) { // no bonus quizz, try normal quizz
             quizz = quizzRepository.findAll()
                 .stream().filter(q -> q.isActive() && !q.isBonus()).findFirst().orElse(null);
         }
-        log.info("getNextQuizz: " + quizz);
+        log.info("Found NextQuizz: " + quizz);
         return quizz;
+    }
+
+    public void saveQuizz(Quizz quizz) {
+        quizz.getAnswers().stream().forEach(a -> a.setQuizz(quizz));
+        quizzRepository.save(quizz);
     }
 }
