@@ -3,9 +3,10 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { createHeroLoggedInAction, createHeroLoginErrorAction, createHeroOpenRegisteringAction } from 'state/hero/heroAction'
-import { heroApi } from 'api/heroApi'
-import { login } from 'state/hero/heroService'
+import {
+    createHeroOpenRegisteringAction,
+    createHeroSubmitLoginAction,
+} from 'state/hero/heroAction';
 
 interface ILoginProps {
     onLogin:(email:string,password:string)=>void;
@@ -18,12 +19,9 @@ const component = (props: ILoginProps) => (
         
         <div className="jumbotron">
             <h2>Login</h2>
-            { 
-                (props.error != null) ? (
+            {props.error &&
                 <div className="alert alert-danger">{props.error.toString()}</div>
-            ) : (
-                <div></div>
-            )}
+            }
             <form onSubmit={(event) => {
                 event.preventDefault();
                 return props.onLogin(this.email.value,this.password.value);
@@ -31,13 +29,13 @@ const component = (props: ILoginProps) => (
             <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input type="text" className="form-control" id="email" placeholder="Email"
-                    ref={node => {this.email = node}}
+                    ref={node => {this.email = node;}}
                 />
             </div>
             <div className="form-group">
                 <label htmlFor="password">Mot de passe</label>
                 <input type="password" className="form-control" id="password" placeholder="Mot de passe"
-                    ref={node => {this.password = node}}
+                    ref={node => {this.password = node;}}
                 />
             </div>
             <input type="submit" className="btn btn-primary" value="Connexion" />
@@ -62,8 +60,7 @@ function mapStateToProps(state: AppState) {
 
 function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
-    onLogin: (email:string,password:string) => login(email, password,
-                () => dispatch(createHeroLoggedInAction(email)), (error:any) => dispatch(createHeroLoginErrorAction(error))),
+    onLogin: (email:string,password:string) => dispatch(createHeroSubmitLoginAction(email,password)),
     onRegister: () => dispatch(createHeroOpenRegisteringAction())
-  }
+  };
 }

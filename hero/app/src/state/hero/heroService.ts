@@ -22,18 +22,3 @@ export const getAuthorizationHeader = () => {
     const authentication = getAuthenticationFromLocalStorage();
     return isHeroAuthenticated() ? { 'Authorization': 'Bearer ' + authentication.token } : {};
 };
-
-export const login = (email: string, password: string, onSuccess: (data: any) => void, onError: (error: any) => void) => {
-    heroApi.login(email, password)
-        .subscribe(
-        data => {
-            if (data.status === 201 || data.status === 200) {
-                setAuthenticationInLocalStorage(email, data.response.token);
-                onSuccess(data);
-            } else {
-                onError("Login error: bad status " + data.status + " received");
-            }
-        },
-        error => onError(error)
-        );
-};

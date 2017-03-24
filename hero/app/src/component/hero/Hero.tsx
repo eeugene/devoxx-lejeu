@@ -23,24 +23,23 @@ type IHeroProps = IHeroOwnProps & IHeroPropsFromState & IHeroDispatchProps;
 
 function getStat(stats:IHeroStats, key:string):number {
     if (stats) {
-        let value = stats[key]
+        let value = stats[key];
         if (value)
             return value;
     }
-    return 0
+    return 0;
 }
 
 const component = (props: IHeroProps) => {
-    let stats = props.hero.heroStats
-    console.log(stats)
-    let currentRanking = getStat(stats, 'currentRanking')
-    let bestRanking = getStat(stats, 'bestRanking')
-    let wins = getStat(stats, 'wins')
-    let losses = getStat(stats, 'losses')
+    const stats = props.hero.heroStats;
+    const currentRanking = getStat(stats, 'currentRanking');
+    const bestRanking = getStat(stats, 'bestRanking');
+    const wins = getStat(stats, 'wins');
+    const losses = getStat(stats, 'losses');
     return (
     <div>
         <div className="hero-header">
-            <Avatar id={props.hero.avatarId} />
+            {props.hero.avatarId && <Avatar id={props.hero.avatarId} /> }
             <h1>{props.hero.firstname} {props.hero.lastname}</h1>
             <h2>{props.hero.nickname}</h2>
             <span>{props.hero.email}</span>

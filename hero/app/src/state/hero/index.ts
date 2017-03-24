@@ -28,3 +28,12 @@ export interface IHeroState {
     loginErrors?:string;
     registerErrors?:string[];
 };
+
+export interface IHeroRegistrationForm {
+    email:string;
+    password:string;
+    firstname:string;
+    lastname:string;
+    nickname:string;
+    avatarId:string;
+}

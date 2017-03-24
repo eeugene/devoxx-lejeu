@@ -1,12 +1,15 @@
-import { IHero, IAvatar } from '.';
+import { IHero, IAvatar, IHeroRegistrationForm } from '.';
 
 export type HeroAction =
     // list of hero actions
     | HeroLoggedInAction
     | HeroLoggedOutAction
     | HeroLoginErrorAction
+    | HeroSubmitLoginAction
     | HeroOpenRegisteringAction
     | HeroExitRegisteringAction
+    | HeroRegistrationDoneAction
+    | HeroSubmitRegistrationAction
     | HeroDetailsReceivedAction
     | HeroAvatarsReceivedAction
     | HeroRegisteringErrorMissingValueAction
@@ -17,6 +20,9 @@ export type HeroAction =
 export interface HeroLoggedOutAction { type: 'HERO_LOGGED_OUT'; }
 export interface HeroOpenRegisteringAction { type: 'HERO_OPEN_REGISTERING'; }
 export interface HeroExitRegisteringAction { type: 'HERO_EXIT_REGISTERING'; }
+export interface HeroSubmitLoginAction { type: 'HERO_SUBMIT_LOGIN'; email: string; password: string; }
+export interface HeroRegistrationDoneAction { type: 'HERO_REGISTRATION_DONE'; email: string; password: string; }
+export interface HeroSubmitRegistrationAction { type: 'HERO_SUBMIT_REGISTRATION'; form: IHeroRegistrationForm; }
 
 export interface HeroLoggedInAction {
     type: 'HERO_LOGGED_IN';
@@ -49,6 +55,9 @@ export const createHeroLoggedInAction = (email: string): HeroLoggedInAction => (
 export const createHeroLoggedOutAction = (): HeroLoggedOutAction => ({ type: 'HERO_LOGGED_OUT' });
 export const createHeroOpenRegisteringAction = (): HeroOpenRegisteringAction => ({ type: 'HERO_OPEN_REGISTERING' });
 export const createHeroExitRegisteringAction = (): HeroExitRegisteringAction => ({ type: 'HERO_EXIT_REGISTERING' });
+export const createHeroRegistrationDoneAction = (email:string,password:string): HeroRegistrationDoneAction => ({ type: 'HERO_REGISTRATION_DONE', email, password });
+export const createHeroSubmitLoginAction = (email:string,password:string): HeroSubmitLoginAction => ({ type: 'HERO_SUBMIT_LOGIN', email, password });
 export const createHeroRegisteringErrorMissingValueAction = (errors: string[]): HeroRegisteringErrorMissingValueAction => ({ type: 'HERO_REGISTERING_ERROR_MISSING_VALUE', errors });
 export const createHeroRegisteringServerErrorAction = (errors: string): HeroRegisteringServerErrorAction => ({ type: 'HERO_REGISTERING_SERVER_ERROR', errors });
 export const createHeroLoginErrorAction = (errors: string): HeroLoginErrorAction => ({ type: 'HERO_LOGIN_ERROR', errors });
+export const createHeroSubmitRegistrationAction = (form: IHeroRegistrationForm): HeroSubmitRegistrationAction => ({ type: 'HERO_SUBMIT_REGISTRATION', form });
