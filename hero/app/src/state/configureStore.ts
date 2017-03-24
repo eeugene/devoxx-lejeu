@@ -1,7 +1,7 @@
 import { combineEpics, createEpicMiddleware} from 'redux-observable';
 import { combineReducers, compose, createStore, applyMiddleware } from 'redux';
 import { AppState } from '.';
-import { quizzReducer, getCurrentQuizz, postQuizzAnswer } from './quizz';
+import { quizzReducer, getCurrentQuizz, postQuizzAnswer, setUpdateMechanism } from './quizz';
 
 import { quizzApi } from 'api/quizzApi';
 import { heroApi } from 'api/heroApi';
@@ -20,7 +20,8 @@ export function configureStore() {
     const rootEpic = combineEpics(
         getHeroDetails(heroApi),
         getCurrentQuizz(quizzApi),
-        postQuizzAnswer(quizzApi)
+        postQuizzAnswer(quizzApi),
+        setUpdateMechanism()
     );
 
     const epicMiddleware = createEpicMiddleware(rootEpic);

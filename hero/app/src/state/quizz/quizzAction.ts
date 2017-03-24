@@ -4,6 +4,7 @@ export type QuizzAction =
     | QuizzAnswerSelectedAction
     | QuizzReceivedAction
     | SubmitQuizzAction
+    | RefreshQuizzAction
     | QuizzSubmittedAction;
 
 
@@ -43,3 +44,11 @@ export interface QuizzSubmittedAction {
 export const createQuizzSubmittedAction =
     (): QuizzSubmittedAction =>
         ({ type: 'QUIZZ_SUBMITTED' });
+
+export interface RefreshQuizzAction {
+    type: 'REFRESH_QUIZZ';
+};
+
+export const createRefreshQuizzAction =
+    (): RefreshQuizzAction =>
+        ({ type: 'REFRESH_QUIZZ' });

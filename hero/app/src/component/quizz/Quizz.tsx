@@ -38,14 +38,14 @@ const component = (props: IQuizzProps) => (
                 </div>
             ))
         }
-        { props.quizz && props.quizz.answers ? (
+        {props.quizz && props.quizz.answers ? (
             <button className="btn btn-success"
                 onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
                 disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
                 submit
             </button>
         ) : (
-            <div></div>            
+                <div></div>
             )
         }
         {
@@ -75,7 +75,7 @@ function mapDispatchToProps(dispatch: Dispatch<any>, { id }: IQuizzOwnProps): IQ
             dispatch(createQuizzAnswerSelectedAction(answerId));
         },
         onQuizzSubmit(quizzId: number, anserId: number) {
-            dispatch(createSubmitQuizzAction(quizzId, anserId))
+            dispatch(createSubmitQuizzAction(quizzId, anserId));
         }
     };
 }
