@@ -2,8 +2,11 @@ package fr.aneo.game.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -16,12 +19,16 @@ import static javax.persistence.EnumType.STRING;
  * Created by raouf on 04/03/17.
  */
 @Data
-@NoArgsConstructor
 @Entity
+@Builder
+@EqualsAndHashCode(of = "email")
 public class Hero {
 
     private static final int DEFAULT_ATTACK_LEVEL = 100;
     private static final int DEFAULT_HP_LEVEL = 100;
+
+    @Tolerate
+    public Hero() {}
 
     @Id
     @Email

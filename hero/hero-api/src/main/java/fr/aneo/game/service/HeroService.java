@@ -2,9 +2,11 @@ package fr.aneo.game.service;
 
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.model.HeroStats;
+import fr.aneo.game.model.Role;
 import fr.aneo.game.repository.HeroRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class HeroService {
     }
 
     public List<Hero> findAllHeroes() {
-        return heroRepository.findAll();
+        return heroRepository.findByRole(Role.PLAYER);
     }
 
     public Hero createHero(Hero hero) {
