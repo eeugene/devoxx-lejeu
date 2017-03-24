@@ -1,6 +1,7 @@
 package fr.aneo.game.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import static javax.persistence.GenerationType.AUTO;
  * Created by raouf on 04/03/17.
  */
 @Data
+@Builder
 @NoArgsConstructor
 @Entity
 @Cacheable

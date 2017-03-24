@@ -15,6 +15,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.*;
 
 /**
@@ -41,7 +42,7 @@ public class HeroResource {
         return ok(hero);
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<HeroResponse> createHero(@RequestBody Hero hero) {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/")
