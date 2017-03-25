@@ -48,12 +48,15 @@ public class HeroStatsView implements Consumer<BattleFinished> {
         hero1Stats.incTotalLossCount(battleFinished.isHero1Won() ? 0 : 1);
         hero1Stats.setRank(getHeroRank(hero1Stats));
         hero1Stats.getOpponentCount().compute(hero2, (k,v) -> v == null ? 1 : v+1);
+        hero1Stats.getLastFiveBattles().add(HeroStats.BattleDetail.builder().opponent(hero2).battleWined(battleFinished.isHero1Won()).build());
+
         // computing stats hero2
         hero2Stats.incTotalFightCount(1);
         hero2Stats.incTotalVictoryCount(battleFinished.isHero1Won() ? 0 : 1);
         hero2Stats.incTotalLossCount(battleFinished.isHero1Won() ? 1 : 0);
         hero2Stats.setRank(getHeroRank(hero2Stats));
         hero2Stats.getOpponentCount().compute(hero1, (k, v) -> v == null ? 1 : v+1);
+        hero2Stats.getLastFiveBattles().add(HeroStats.BattleDetail.builder().opponent(hero1).battleWined(!battleFinished.isHero1Won()).build());
     }
 
     private int getHeroRank(HeroStats heroStats) {

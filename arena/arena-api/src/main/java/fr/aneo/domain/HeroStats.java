@@ -1,10 +1,11 @@
 package fr.aneo.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by eeugene on 19/03/2017.
@@ -18,6 +19,7 @@ public class HeroStats {
     int totalVictoryCount;
     int totalLossCount;
     int bestRank = Integer.MAX_VALUE;
+    SligingWindow<BattleDetail> lastFiveBattles = new SligingWindow<>(5);
 
     public HeroStats(Hero hero) {
         this.hero = hero;
@@ -47,5 +49,32 @@ public class HeroStats {
     public void setRank(int rank) {
         this.rank = rank;
         this.bestRank = Math.min(rank, bestRank);
+    }
+
+    @Data
+    @Builder
+    public static class BattleDetail {
+        Hero opponent;
+        boolean battleWined;
+    }
+
+    public static class SligingWindow<T> {
+        Deque<T> window;
+
+        public SligingWindow(int size) {
+            this.window = new LinkedBlockingDeque<>(size);
+        }
+
+        public void add(T value) {
+            boolean success = window.offerFirst(value);
+            if (!success) {
+                window.pollLast();
+                window.offerFirst(value);
+            }
+        }
+
+        public Deque<T> getWindow() {
+            return window;
+        }
     }
  }

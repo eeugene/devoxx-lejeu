@@ -10,7 +10,9 @@ export interface IHeroStats {
     losses:number;
     currentRanking:number;
     bestRanking:number;
+    lastFiveBattles:string;
 }
+
 export interface IHero {
     email: string;
     firstname: string;

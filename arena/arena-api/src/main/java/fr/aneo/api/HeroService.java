@@ -34,7 +34,7 @@ public class HeroService {
         header = createAuthenticationHeader(jwtService);
     }
 
-    private List<Hero> loadHeros() {
+    public List<Hero> loadHeros() {
         heros = heroApi.heros(header);
         return heros;
     }
@@ -52,6 +52,14 @@ public class HeroService {
                                 .losses(s.getTotalLossCount())
                                 .currentRanking(s.getRank())
                                 .bestRanking(s.getBestRank())
+                                .lastFiveBattles(
+                                        s.getLastFiveBattles().getWindow()
+                                                .stream()
+                                                .map(b -> (b.isBattleWined() ? "[W]" : "[L]")
+                                                        + " " +
+                                                        b.getOpponent().getNickname()
+                                                ).collect(Collectors.joining(";"))
+                                )
                                 .build()
                         )
                         .build()

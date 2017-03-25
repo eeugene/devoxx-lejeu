@@ -24,4 +24,6 @@ insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, 
 #
 insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('eeugene@aneo.fr', 'emmanuel','eugene','manu', 'ADMIN', 2, 100, 100, '$2a$10$6TajU85/gVrGUm5fv5Z8beVF37rlENohyLk3BEpZJFi6Av9JNkw9O');
 #
-insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('toto@aneo.fr', 'toto','toto','toto', 'PLAYER', 2, 100, 100, '$2a$10$6TajU85/gVrGUm5fv5Z8beVF37rlENohyLk3BEpZJFi6Av9JNkw9O');
+insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('toto@aneo.fr', 'toto','toto','toto', 'PLAYER', 1, 100, 100, '$2a$10$6TajU85/gVrGUm5fv5Z8beVF37rlENohyLk3BEpZJFi6Av9JNkw9O');
+#
+insert into HERO(EMAIL, FIRSTNAME, LASTNAME, NICKNAME, ROLE, AVATAR_ID, ATTACK, HP, PASSWORD) values('titi@aneo.fr', 'titi','titi','titi', 'PLAYER', 2, 100, 100, '$2a$10$6TajU85/gVrGUm5fv5Z8beVF37rlENohyLk3BEpZJFi6Av9JNkw9O');

@@ -77,6 +77,11 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: true
+              - column:
+                  name: LAST_FIVE_BATTLES
+                  type: varchar(250)
+                  constraints:
+                    nullable: true
 
         - createTable:
             tableName: AVATAR

@@ -36,7 +36,7 @@ public class Arena {
     private LeaderboardService leaderboardService;
 
     public void start() {
-        List<Hero> heros = heroService.getHeros();
+        List<Hero> heros = heroService.loadHeros();
         Optional<BattleResults> battleResults = startBattles(heros);
         if (battleResults.isPresent()) {
             saveBattleResults(battleResults.get());

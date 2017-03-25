@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.util.List;
 
 /**
  * Created by raouf on 04/03/17.
@@ -24,4 +25,7 @@ public class HeroStats {
 
     @Column(name = "BEST_RANK")
     private int bestRanking;
+
+    @Column(name = "LAST_FIVE_BATTLES")
+    private String lastFiveBattles;
 }

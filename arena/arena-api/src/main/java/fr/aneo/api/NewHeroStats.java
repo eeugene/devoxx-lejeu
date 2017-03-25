@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
 
+import java.util.List;
+
 /**
  * Created by eeugene on 24/03/2017.
  */
@@ -17,9 +19,10 @@ public class NewHeroStats {
     @Data
     @Builder
     static class HeroStatsInfo {
-        private Integer wins;
-        private Integer losses;
-        private Integer currentRanking;
-        private Integer bestRanking;
+        Integer wins;
+        Integer losses;
+        Integer currentRanking;
+        Integer bestRanking;
+        String lastFiveBattles;
     }
 }

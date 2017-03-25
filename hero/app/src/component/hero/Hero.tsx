@@ -21,7 +21,7 @@ interface IHeroOwnProps {
 
 type IHeroProps = IHeroOwnProps & IHeroPropsFromState & IHeroDispatchProps;
 
-function getStat(stats:IHeroStats, key:string):number {
+function getStat(stats:IHeroStats, key:string):any {
     if (stats) {
         let value = stats[key];
         if (value)
@@ -30,12 +30,20 @@ function getStat(stats:IHeroStats, key:string):number {
     return 0;
 }
 
+function split(text:string, delimiter:string) {
+    if (text) {
+        return text.split(delimiter);
+    }
+    return [];
+}
+
 const component = (props: IHeroProps) => {
     const stats = props.hero.heroStats;
     const currentRanking = getStat(stats, 'currentRanking');
     const bestRanking = getStat(stats, 'bestRanking');
     const wins = getStat(stats, 'wins');
     const losses = getStat(stats, 'losses');
+    const lastFiveBattles = split(getStat(stats, 'lastFiveBattles'), ";");
     return (
     <div>
         <div className="hero-header">
@@ -47,8 +55,10 @@ const component = (props: IHeroProps) => {
         { props.hero.heroStats ? (
         <div className="flex">
             <div className="item">
-                <span className='item-label'>Rank</span>
-                <p className="item-value">{currentRanking}</p>
+                <div className="item-content">
+                    <span className='item-label'>Rank</span>
+                    <p className="item-value">{currentRanking}</p>
+                </div>
             </div>
             <div className="item">
                 <span className='item-label'>Best Rank</span>
@@ -61,6 +71,12 @@ const component = (props: IHeroProps) => {
             <div className="item">
                 <span className='item-label'>Losses</span>
                 <p className="item-value">{losses}</p>
+            </div>
+            <div className="item">
+                <span className='item-label'>Last Five Battles</span>
+                <p className="item-label">
+                    <ol>{lastFiveBattles.map(result => <li>{result}</li>)}</ol>
+                </p>
             </div>
         </div>
         ) : (
