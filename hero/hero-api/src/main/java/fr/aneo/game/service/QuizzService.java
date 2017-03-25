@@ -7,6 +7,7 @@ import fr.aneo.game.model.QuizzHeroAnswer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by rcollard on 09/03/2017.
@@ -61,5 +62,11 @@ public class QuizzService {
     public void saveQuizz(Quizz quizz) {
         quizz.getAnswers().stream().forEach(a -> a.setQuizz(quizz));
         quizzRepository.save(quizz);
+    }
+
+    @Transactional
+    public void activateQuizz(Long quizzId) {
+        Quizz quizz = quizzRepository.findOne(quizzId);
+        quizz.setActive(true);
     }
 }

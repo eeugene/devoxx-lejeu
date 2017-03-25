@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -70,6 +71,21 @@ public class QuizzResource {
         if (adminAuthority.isPresent()) {
             quizzService.saveQuizz(quizz);
             return ok().body("quizz created");
+        } else {
+            return status(HttpStatus.INTERNAL_SERVER_ERROR).body("Admin role required to access this service");
+        }
+    }
+
+    @GetMapping(value = "/{quizzId}/activate")
+    public ResponseEntity activateQuizz(@PathVariable Long quizzId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new RuntimeException("Not authenticated");
+        }
+        Optional<? extends GrantedAuthority> adminAuthority = authentication.getAuthorities().stream().filter(a -> a.getAuthority().equals(Role.ADMIN.authority())).findFirst();
+        if (adminAuthority.isPresent()) {
+            quizzService.activateQuizz(quizzId);
+            return ok("quizz activated");
         } else {
             return status(HttpStatus.INTERNAL_SERVER_ERROR).body("Admin role required to access this service");
         }
