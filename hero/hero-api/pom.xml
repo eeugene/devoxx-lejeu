@@ -15,10 +15,6 @@
         <relativePath>../../aneo-parent/pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <jjwt.version>0.6.0</jjwt.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,6 +36,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
         <!-- DB -->
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -49,11 +49,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
