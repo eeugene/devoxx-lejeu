@@ -5,10 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
-
-import static javax.persistence.EnumType.STRING;
 
 /**
  * Created by raouf on 04/03/17.

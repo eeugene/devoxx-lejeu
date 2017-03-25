@@ -4,28 +4,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.EmitterProcessor;
-import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
 
 @RestController
 public class StreamController {
-    EmitterProcessor<LeaderBoard> stream;
-    Flux<LeaderBoard> updates;
+    SseEmitter sseEmitter;
 
     public StreamController() {
-        stream = EmitterProcessor.<LeaderBoard>create().connect();
-        updates = stream.publishOn(Schedulers.newSingle("schedulor"));
+        sseEmitter = new SseEmitter(Long.MAX_VALUE);
     }
 
     @GetMapping(value = "/stream")
-    Flux<LeaderBoard> stream() {
-        return updates;
+    SseEmitter stream() {
+        return sseEmitter;
     }
 
     @PostMapping(value = "/update", consumes = "application/json")
-    public void update(@RequestBody LeaderBoard leaderBoard) {
+    public void update(@RequestBody LeaderBoard leaderBoard) throws IOException {
         System.out.println("receive update " + leaderBoard);
-        stream.onNext(leaderBoard);
+        sseEmitter.send(leaderBoard);
     }
 }

@@ -2,13 +2,9 @@ package fr.aneo.api;
 
 import feign.HeaderMap;
 import feign.Headers;
-import feign.Param;
 import feign.RequestLine;
-import fr.aneo.domain.BattleResults;
 import fr.aneo.domain.Hero;
-import fr.aneo.domain.HeroStats;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

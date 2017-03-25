@@ -1,15 +1,11 @@
 package fr.aneo.game.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import java.util.Collection;
 import java.util.List;
 
 import static javax.persistence.GenerationType.AUTO;

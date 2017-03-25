@@ -55,7 +55,7 @@
     })();
 
     // SUBSCRIBE TO EVENT STREAM
-    (function () {
+    function subscribeToEventStream(heroApiUrl) {
 
         var leaderboard = document.getElementById("leaderboard");
         var stringEventSource = new EventSource("/stream");
@@ -64,12 +64,15 @@
             var html = "";
             var i = 0;
             json.list.forEach(
-                l => html += "<tr><td>"+(++i)+"</td><td><img class='img-responsive img-circle' style='max-width:50px' src='http://localhost:8080/api/avatar/"+l.avatarId+"' /></td><td>"+l.heroName+"</td><td>"+l.winRatio+"</td></tr>"
+                l => html += "<tr><td>"+(++i)+"</td><td><img class='img-responsive img-circle' style='max-width:50px' src='"+heroApiUrl+"/api/avatar/"+l.avatarId+"' /></td><td>"+l.heroName+"</td><td>"+l.winRatio+"</td></tr>"
             )
 
             leaderboard.innerHTML = html;
         }
-    })();
+    }
+
+    var heroApiUrl = '{{heroApiUrl}}';
+    subscribeToEventStream(heroApiUrl);
 
     </script>
 </body>

@@ -1,9 +1,9 @@
 package fr.aneo.game.service;
 
 import fr.aneo.game.model.Quizz;
+import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.repository.QuizzHeroAnswerRepository;
 import fr.aneo.game.repository.QuizzRepository;
-import fr.aneo.game.model.QuizzHeroAnswer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

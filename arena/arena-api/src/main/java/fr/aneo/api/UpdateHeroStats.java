@@ -2,7 +2,6 @@ package fr.aneo.api;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
 
 import java.util.Collection;

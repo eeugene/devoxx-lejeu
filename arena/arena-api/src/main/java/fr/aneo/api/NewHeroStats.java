@@ -1,12 +1,8 @@
 package fr.aneo.api;
 
-import fr.aneo.domain.HeroStats;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Tolerate;
-
-import javax.persistence.Column;
 
 /**
  * Created by eeugene on 24/03/2017.
