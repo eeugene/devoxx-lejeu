@@ -51,6 +51,7 @@ public class HeroService {
                                 .wins(s.getTotalVictoryCount())
                                 .losses(s.getTotalLossCount())
                                 .currentRanking(s.getRank())
+                                .bestRanking(s.getBestRank())
                                 .build()
                         )
                         .build()

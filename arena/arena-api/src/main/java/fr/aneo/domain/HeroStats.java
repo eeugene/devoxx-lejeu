@@ -17,6 +17,7 @@ public class HeroStats {
     int totalFightCount;
     int totalVictoryCount;
     int totalLossCount;
+    int bestRank = Integer.MAX_VALUE;
 
     public HeroStats(Hero hero) {
         this.hero = hero;
@@ -42,4 +43,9 @@ public class HeroStats {
     public void incTotalLossCount(int i) {
         totalLossCount += i;
     }
-}
+
+    public void setRank(int rank) {
+        this.rank = rank;
+        this.bestRank = Math.min(rank, bestRank);
+    }
+ }
