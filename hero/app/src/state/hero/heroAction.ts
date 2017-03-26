@@ -3,6 +3,7 @@ import { IHero, IAvatar, IHeroRegistrationForm } from '.';
 export type HeroAction =
     // list of hero actions
     | HeroLoggedInAction
+    | HeroLogoutAction
     | HeroLoggedOutAction
     | HeroLoginErrorAction
     | HeroSubmitLoginAction
@@ -17,6 +18,7 @@ export type HeroAction =
     ;
 
 
+export interface HeroLogoutAction { type: 'HERO_LOG_OUT'; }
 export interface HeroLoggedOutAction { type: 'HERO_LOGGED_OUT'; }
 export interface HeroOpenRegisteringAction { type: 'HERO_OPEN_REGISTERING'; }
 export interface HeroExitRegisteringAction { type: 'HERO_EXIT_REGISTERING'; }
@@ -53,6 +55,7 @@ export const createHeroReceivedAction = (hero: IHero): HeroDetailsReceivedAction
 export const createHeroAvatarsReceivedAction = (avatars: IAvatar[]): HeroAvatarsReceivedAction => ({ type: 'HERO_AVATARS_RECEIVED', avatars });
 export const createHeroLoggedInAction = (email: string): HeroLoggedInAction => ({ type: 'HERO_LOGGED_IN', email });
 export const createHeroLoggedOutAction = (): HeroLoggedOutAction => ({ type: 'HERO_LOGGED_OUT' });
+export const createHeroLogoutAction = (): HeroLogoutAction => ({ type: 'HERO_LOG_OUT' });
 export const createHeroOpenRegisteringAction = (): HeroOpenRegisteringAction => ({ type: 'HERO_OPEN_REGISTERING' });
 export const createHeroExitRegisteringAction = (): HeroExitRegisteringAction => ({ type: 'HERO_EXIT_REGISTERING' });
 export const createHeroRegistrationDoneAction = (email:string,password:string): HeroRegistrationDoneAction => ({ type: 'HERO_REGISTRATION_DONE', email, password });

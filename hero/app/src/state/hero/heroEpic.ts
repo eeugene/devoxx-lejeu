@@ -7,6 +7,7 @@ import { IHero } from '.';
 import {
     createHeroReceivedAction,
     createHeroLoggedInAction,
+    createHeroLoggedOutAction,
     createHeroLoginErrorAction,
     createHeroRegistrationDoneAction,
     createHeroRegisteringServerErrorAction,
@@ -15,7 +16,7 @@ import {
     HeroSubmitLoginAction
     } from './heroAction';
 import { IHeroApi } from 'api/heroApi';
-import { setAuthenticationInLocalStorage } from './heroService';
+import { setAuthenticationInLocalStorage, removeAuthenticationFromLocalStorage } from './heroService';
 
 export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
@@ -56,6 +57,17 @@ export function loginHero(api: IHeroApi, scheduler?: IScheduler): Epic<Action, A
                         }
                     })
                     .catch(error => Observable.of(createHeroLoginErrorAction(error)))
+        );
+    };
+}
+
+export function logoutHero(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
+    return (action$, _) => {
+        return action$.ofType('HERO_LOG_OUT').mergeMap(
+            (action: any) =>{
+                removeAuthenticationFromLocalStorage();
+                return Observable.of(createHeroLoggedOutAction())
+            }
         );
     };
 }

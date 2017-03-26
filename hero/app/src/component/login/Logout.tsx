@@ -3,8 +3,7 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
-import { createHeroLoggedOutAction } from 'state/hero/heroAction'
-import { removeAuthenticationFromLocalStorage } from 'state/hero/heroService'
+import { createHeroLogoutAction } from 'state/hero/heroAction';
 
 interface ILogoutProps {
     onLogout:any;
@@ -25,8 +24,7 @@ function mapStateToProps(state: AppState) {
 function mapDispatchToProps(dispatch: Dispatch<any>) {
   return {
     onLogout: () => {
-        removeAuthenticationFromLocalStorage()
-        return dispatch(createHeroLoggedOutAction())
+        return dispatch(createHeroLogoutAction());
     }
   }
 }

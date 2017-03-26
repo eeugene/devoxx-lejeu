@@ -1,5 +1,3 @@
-import { heroApi } from 'api/heroApi';
-
 export const AUTHENTICATION_STORAGE_KEY = "Authentication";
 
 export const getAuthenticationFromLocalStorage = () => {

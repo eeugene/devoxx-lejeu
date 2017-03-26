@@ -5,7 +5,7 @@ import { quizzReducer, getCurrentQuizz, postQuizzAnswer, setUpdateMechanism } fr
 
 import { quizzApi } from 'api/quizzApi';
 import { heroApi } from 'api/heroApi';
-import { getHeroDetails, loginHero, submitHeroRegistration } from './hero/heroEpic';
+import { getHeroDetails, loginHero, logoutHero, submitHeroRegistration } from './hero/heroEpic';
 import { heroReducer } from './hero/heroReducer';
 
 export function configureStore() {
@@ -21,6 +21,7 @@ export function configureStore() {
         getHeroDetails(heroApi),
         submitHeroRegistration(heroApi),
         loginHero(heroApi),
+        logoutHero(heroApi),
         getCurrentQuizz(quizzApi),
         postQuizzAnswer(quizzApi),
         setUpdateMechanism()
