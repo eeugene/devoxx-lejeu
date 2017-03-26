@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { AppState } from 'state';
 import { getHero } from 'state/selectors';
 import { IHero, IHeroStats } from 'state/hero';
-import { Avatar } from './Avatar'
+import { Avatar } from './Avatar';
+import Logout from 'component/login/Logout';
 import './hero.css';
 
 interface IHeroPropsFromState {
     hero: IHero;
-    // stat: IHeroStats;
 }
 
 interface IHeroDispatchProps {
@@ -47,12 +47,19 @@ const component = (props: IHeroProps) => {
     return (
     <div>
         <div className="hero-header">
-            {props.hero.avatarId && <Avatar id={props.hero.avatarId} /> }
-            <h1>{props.hero.firstname} {props.hero.lastname}</h1>
-            <h2>{props.hero.nickname}</h2>
-            <span>{props.hero.email}</span>
+            <div className="hero-info">{props.hero.avatarId && <Avatar id={props.hero.avatarId} /> }</div>
+            <div className="hero-info">
+                <span className="nickname">{props.hero.nickname}</span>
+            </div>
+            <div className="hero-info">
+                <span>
+                    {props.hero.firstname} {props.hero.lastname}
+                    <br/>{props.hero.email}
+                </span>
+            </div>
+            <div className="hero-info"><Logout /></div>
         </div>
-        { props.hero.heroStats ? (
+        { props.hero.heroStats &&
         <div className="flex">
             <div className="item">
                 <div className="item-content">
@@ -79,9 +86,6 @@ const component = (props: IHeroProps) => {
                 </p>
             </div>
         </div>
-        ) : (
-            <div></div>
-        )
         }
     </div>
 )}

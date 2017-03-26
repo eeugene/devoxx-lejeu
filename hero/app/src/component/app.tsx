@@ -5,7 +5,6 @@ import { AppState } from 'state';
 import Quizz from './quizz/Quizz';
 import Hero from './hero/Hero';
 import Login from './login/Login';
-import Logout from './login/Logout';
 import Register from './login/Register';
 
 import { IQuizz } from 'state/quizz';
@@ -26,10 +25,9 @@ const component = (props: IAppProps) => {
                 isRegistering ? (
                     <Register />
                 ) : (
-                        <Login />
-                    ) : (
+                    <Login />
+                ) : (
                     <div>
-                        <Logout />
                         <Hero />
                         <Quizz id={1} />
                     </div>

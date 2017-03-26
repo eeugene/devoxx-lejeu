@@ -152,10 +152,10 @@ function mapDispatchToProps(dispatch: Dispatch<any>) {
         const nickname = event.target.querySelector('#nickname').value;
         const avatarId = event.target.querySelector('#avatarId').value;
 
-        const heroForm = {email,password,firstname,lastname,nickname, avatarId}
-        const formErrors = validateForm(heroForm)
+        const heroForm = {email,password,firstname,lastname,nickname, avatarId};
+        const formErrors = validateForm(heroForm);
         if (formErrors.length == 0) {
-            dispatch(createHeroSubmitRegistrationAction(heroForm))
+            dispatch(createHeroSubmitRegistrationAction(heroForm));
         } else {
             dispatch(createHeroRegisteringErrorMissingValueAction(formErrors));
         }

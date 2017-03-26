@@ -11,7 +11,7 @@ export class Avatar extends React.Component<IAvatarProps, any> {
     }
     render() {
         return (
-            <img src={this.state.url} className='hero-avatar'/>
+            <img src={this.state.url} className='hero-avatar-img'/>
         );
     }
     getState(id:number) {

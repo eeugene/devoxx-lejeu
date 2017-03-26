@@ -3,7 +3,6 @@
     display:flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    
 }
 
 /* Petit écran */
@@ -38,10 +37,29 @@
     font-size: 3em;
 }
 
-.hero-avatar {
+.hero-avatar-img {
     max-width: 70px;
 }
 
 .hero-header {
-    margin:20px;
+    display:flex;
+    flex-wrap: wrap;
+    
+}
+.hero-info {
+    padding:10px;
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: center;
+}
+.hero-info:nth-child(2) {
+  flex-grow: 1;
+}
+
+.hero-info .nickname {
+    font-size: 3em;
+}
+.hero-avatar {
+    
 }
