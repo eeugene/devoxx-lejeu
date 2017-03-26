@@ -1,7 +1,9 @@
 import { IQuizzState, QuizzAnswerSelectedAction, QuizzSubmittedAction, QuizzReceivedAction } from '.';
 import { Action } from 'state/actions';
 
-const onQuizzReceived = (state: IQuizzState, action: QuizzReceivedAction) => ({ ...state, quizz: action.quizz });
+const onQuizzReceived = (state: IQuizzState, action: QuizzReceivedAction) => {
+    return action.quizz? { ...state, quizz: action.quizz, isQuizzSubmitted: false }: state;
+};
 const onSelectedAnswer = (state: IQuizzState, action: QuizzAnswerSelectedAction) => ({ ...state, selectedAnswer: action.answerId });
 const onQuizzSubmitted = (state: IQuizzState, action: QuizzSubmittedAction) => ({ ...state, isQuizzSubmitted: true });
 

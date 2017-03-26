@@ -27,30 +27,28 @@ const styles = require('./Quizz.less');
 
 const component = (props: IQuizzProps) => (
     <div>
-        <label>{props.quizz.question}</label>
-        {props.quizz.answers &&
+        {props.quizz &&
+            <label>{props.quizz.question}</label>
+            &&
             props.quizz.answers.map(answer => (
                 <div className="radio" key={answer.id}>
                     <div><input type="radio"
                         checked={answer.id === props.selectedAnswer}
-                        onChange={() => props.onAnswerSelected(answer.id)} /> {answer.answer}
+                        onChange={() => props.onAnswerSelected(answer.id)}
+                        disabled={props.isQuizzSubmitted} /> {answer.answer}
                     </div>
                 </div>
             ))
-        }
-        {props.quizz && props.quizz.answers ? (
+            &&
             <button className="btn btn-success"
                 onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
                 disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
                 submit
             </button>
-        ) : (
-                <div></div>
-            )
         }
         {
             props.isQuizzSubmitted &&
-            <h1> THANK YOU FOR YOUR ANSWER </h1>
+            <h1> THANK YOU FOR YOUR ANSWER! </h1>
         }
     </div>
 
