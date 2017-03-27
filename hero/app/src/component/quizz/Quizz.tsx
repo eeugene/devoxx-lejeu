@@ -27,31 +27,38 @@ const styles = require('./Quizz.less');
 
 const component = (props: IQuizzProps) => (
     <div>
-        {props.quizz &&
+    {props.quizz && props.quizz.answers &&
+    <div className="quizz panel panel-default">
+        <div className="panel-heading">
+            <h3 className="panel-title">Bonus quizz</h3>
+        </div>
+        <div className="panel-body">
             <label>{props.quizz.question}</label>
-            &&
-            props.quizz.answers.map(answer => (
-                <div className="radio" key={answer.id}>
-                    <div><input type="radio"
-                        checked={answer.id === props.selectedAnswer}
-                        onChange={() => props.onAnswerSelected(answer.id)}
-                        disabled={props.isQuizzSubmitted} /> {answer.answer}
+            {props.quizz.answers &&
+                props.quizz.answers.map(answer => (
+                    <div className="radio answer" key={answer.id}>
+                        <label><input type="radio"
+                            checked={answer.id === props.selectedAnswer}
+                            onChange={() => props.onAnswerSelected(answer.id)} /> <span>{answer.answer}</span>
+                        </label>
                     </div>
-                </div>
-            ))
-            &&
-            <button className="btn btn-success"
-                onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
-                disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
-                submit
-            </button>
-        }
-        {
-            props.isQuizzSubmitted &&
-            <h1> THANK YOU FOR YOUR ANSWER! </h1>
-        }
+                ))
+            }
+            {props.quizz && props.quizz.answers &&
+                <button className="btn btn-success"
+                    onClick={() => props.onQuizzSubmit(props.quizz.id, props.selectedAnswer)}
+                    disabled={!props.selectedAnswer || props.isQuizzSubmitted}>
+                    submit
+                </button>
+            }
+            {
+                props.isQuizzSubmitted &&
+                <h1> THANK YOU FOR YOUR ANSWER </h1>
+            }
+        </div>
     </div>
-
+    }
+</div>
 );
 
 export const Quizz = cssmodules(component, styles);
