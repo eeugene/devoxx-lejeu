@@ -1,9 +1,12 @@
 package fr.aneo.api;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -13,5 +16,7 @@ import java.util.Collection;
 @Builder
 public class UpdateHeroStats {
     @Tolerate UpdateHeroStats() {}
-    Collection<NewHeroStats> list;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime tournamentStartTime;
+    private Collection<NewHeroStats> list;
 }

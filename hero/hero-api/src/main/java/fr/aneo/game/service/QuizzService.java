@@ -20,6 +20,8 @@ public class QuizzService {
     private QuizzRepository quizzRepository;
     @Autowired
     private QuizzHeroAnswerRepository quizzHeroAnswerRepository;
+    @Autowired
+    private HeroService heroService;
 
     public Quizz getCurrentQuizz() {
         return getNextAvailableQuizz();
@@ -29,12 +31,17 @@ public class QuizzService {
         return quizzHeroAnswerRepository.findOne(new QuizzHeroAnswer.Id(heroEmail, quizzId));
     }
 
+    @Transactional
     public void saveHeroAnswerToQuizz(String heroEmail, Long quizzId, Long answerId) {
         if (heroHasAnsweredQuizz(heroEmail, quizzId) == null) {
             QuizzHeroAnswer answer = new QuizzHeroAnswer();
             answer.setId(new QuizzHeroAnswer.Id(heroEmail, quizzId));
             answer.setQuizzAnswerId(answerId);
             quizzHeroAnswerRepository.save(answer);
+            Quizz quizz = quizzRepository.findOne(quizzId);
+            if (quizz != null && quizz.isCorrectAnswer(answerId)) {
+                heroService.giveBonus(heroEmail);
+            }
         }
     }
 

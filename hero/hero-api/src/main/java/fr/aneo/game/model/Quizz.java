@@ -35,4 +35,13 @@ public class Quizz {
     @Column(name = "IS_BONUS")
     private boolean bonus;
 
+    public boolean isCorrectAnswer(Long answerId) {
+        if (answers != null) {
+            return answers.stream()
+                    .filter(a -> a.getId().equals(answerId))
+                    .map(a -> a.isCorrectAnswer())
+                    .findFirst().orElse(false);
+        }
+        return false;
+    }
 }

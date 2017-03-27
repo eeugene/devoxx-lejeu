@@ -35,7 +35,7 @@ public class ArenaTests {
     }
     @Test
     public void fightDefinitionTests_Hero1StartAttacking() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.FORCE_START_ATTACKING), buildHero(2, null));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.BOOST_FIRST_START), buildHero(2, null));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -49,7 +49,7 @@ public class ArenaTests {
     }
     @Test
     public void fightDefinitionTests_Hero2StartAttacking() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, null), buildHero(2, Bonus.FORCE_START_ATTACKING));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, null), buildHero(2, Bonus.BOOST_FIRST_START));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -63,7 +63,7 @@ public class ArenaTests {
     }
     @Test
     public void fightDefinitionTests_BothStartAttacking() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.FORCE_START_ATTACKING), buildHero(2, Bonus.FORCE_START_ATTACKING));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.BOOST_FIRST_START), buildHero(2, Bonus.BOOST_FIRST_START));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -77,7 +77,7 @@ public class ArenaTests {
 
     @Test
     public void fightDefinitionTests_CancelHero2FirstAttack() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.CANCEL_OPPONENT_FIRST_ATTACK), buildHero(2, Bonus.FORCE_START_ATTACKING));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.HANDICAP_ATTACK_CANCEL), buildHero(2, Bonus.BOOST_FIRST_START));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -92,7 +92,7 @@ public class ArenaTests {
 
     @Test
     public void fightDefinitionTests_CancelBothHeroFirstAttack() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.CANCEL_OPPONENT_FIRST_ATTACK), buildHero(2, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.HANDICAP_ATTACK_CANCEL), buildHero(2, Bonus.HANDICAP_ATTACK_CANCEL));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -106,7 +106,7 @@ public class ArenaTests {
 
     @Test
     public void fightDefinitionTests_Add10PercentHpToHero1() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.ADD_10_PERCENT_HP), buildHero(2, null));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.BOOST_HP_10), buildHero(2, null));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(110);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -120,7 +120,7 @@ public class ArenaTests {
 
     @Test
     public void fightDefinitionTests_Hero2StartAt50PercentHp() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.OPPONENT_START_AT_50_PERCENT_HP), buildHero(2, null));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.HANDICAP_HP_50), buildHero(2, null));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(50);
         assertThat(fightDefinition.getHero1Attack()).isEqualTo(1);
@@ -134,7 +134,7 @@ public class ArenaTests {
 
     @Test
     public void fightDefinitionTests_Add20PercentPowerOnFirstAttack() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK), buildHero(2, null));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.BOOST_ATTACK_20), buildHero(2, null));
         assertThat(fightDefinition.getHero1Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Hp()).isEqualTo(100);
         assertThat(fightDefinition.getHero2Attack()).isEqualTo(1);

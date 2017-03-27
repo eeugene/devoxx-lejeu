@@ -1,5 +1,9 @@
 package fr.aneo.game.resource;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.model.HeroStats;
 import fr.aneo.game.service.HeroService;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -70,30 +76,26 @@ public class HeroResource {
         if (stats == null) {
             return;
         }
-        stats.getList().stream()
-                .forEach( s ->
-                    {
-                        Hero hero = heroService.findHeroByEmail(s.email);
-                        if (hero != null) {
-                            heroService.updateStats(hero, s.getStats());
-                        }
-                    }
-                );
+
+        heroService.updateStats(stats);
     }
 
     @Data
     @Builder
     public static class UpdateHeroStats {
         @Tolerate UpdateHeroStats() {}
-        Collection<NewHeroStats> list;
+        @JsonSerialize(using = LocalDateTimeSerializer.class)
+        @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+        private LocalDateTime tournamentStartTime;
+        private Collection<NewHeroStats> list;
     }
 
     @Data
     @Builder
     public static class NewHeroStats {
         @Tolerate NewHeroStats() {}
-        String email;
-        HeroStats stats;
+        private String email;
+        private HeroStats stats;
     }
 
     @Data

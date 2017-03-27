@@ -1,15 +1,20 @@
 package fr.aneo.game.service;
 
+import fr.aneo.game.model.Bonus;
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.model.HeroStats;
 import fr.aneo.game.model.Role;
 import fr.aneo.game.repository.HeroRepository;
+import fr.aneo.game.resource.HeroResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang.math.RandomUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,6 +28,7 @@ public class HeroService {
     private HeroRepository heroRepository;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private Bonus randomBonus;
 
     public Hero findHeroByEmail(String email) {
         return heroRepository.findOne(email);
@@ -43,8 +49,36 @@ public class HeroService {
         return heroRepository.save(hero);
     }
 
-    public void updateStats(Hero hero, HeroStats stats) {
-        hero.setHeroStats(stats);
-        heroRepository.save(hero);
+    @Transactional
+    public void updateStats(HeroResource.UpdateHeroStats stats) {
+        stats.getList().stream()
+            .forEach( s ->
+            {
+                Hero hero = heroRepository.findOne(s.getEmail());
+                if (hero != null) {
+                    hero.setHeroStats(s.getStats());
+
+                    // reset bonus ?
+                    LocalDateTime bonusCreationTime = hero.getBonusCreationLocalDateTime();
+                    if (hero.getCurrentBonus() != null && stats.getTournamentStartTime().isAfter(bonusCreationTime)) {
+                        hero.setCurrentBonus(null);
+                    }
+                }
+            }
+            );
     }
+
+    public void giveBonus(String heroEmail) {
+        Hero hero = heroRepository.findOne(heroEmail);
+        if (hero != null) {
+            hero.setCurrentBonus(getRandomBonus());
+        }
+    }
+
+    public Bonus getRandomBonus() {
+        Bonus[] values = Bonus.values();
+        int i = RandomUtils.nextInt(values.length-1);
+        return values[i];
+    }
+
 }

@@ -12,6 +12,10 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
 import static javax.persistence.EnumType.STRING;
 
 /**
@@ -70,7 +74,22 @@ public class Hero {
     @Enumerated(value = STRING)
     private Bonus currentBonus;
 
+    @Column(name = "BONUS_CREATION_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date currentBonusCreationTime;
+
     @Embedded
     private HeroStats heroStats;
 
+    public void setCurrentBonus(Bonus b) {
+        this.currentBonus = b;
+        setCurrentBonusCreationTime(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+    }
+
+    public LocalDateTime getBonusCreationLocalDateTime() {
+        if (getCurrentBonusCreationTime() != null) {
+            return LocalDateTime.ofInstant(getCurrentBonusCreationTime().toInstant(), ZoneId.systemDefault());
+        }
+        return null;
+    }
 }

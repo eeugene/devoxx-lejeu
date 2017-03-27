@@ -41,7 +41,7 @@ public class FightExecutorTests {
 
     @Test
     public void fightExecutorTests_Combi1() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.ADD_10_PERCENT_HP), buildHero(2, Bonus.FORCE_START_ATTACKING));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, Bonus.BOOST_HP_10), buildHero(2, Bonus.BOOST_FIRST_START));
         log.info(valueOf(fightDefinition));
         boolean hero1Won = fightExecutor.fight(fightDefinition);
         assertThat(hero1Won).isTrue();
@@ -49,7 +49,7 @@ public class FightExecutorTests {
 
     @Test
     public void fightExecutorTests_CancelFirstAttack() {
-        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, null), buildHero(2, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
+        FightDefinition fightDefinition = arena.getFightDefinition(buildHero(1, null), buildHero(2, Bonus.HANDICAP_ATTACK_CANCEL));
         log.info(valueOf(fightDefinition));
         boolean hero1Won = fightExecutor.fight(fightDefinition);
         assertThat(hero1Won).isFalse();

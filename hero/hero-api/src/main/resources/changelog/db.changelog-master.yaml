@@ -54,7 +54,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: BONUS
-                  type: int
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: BONUS_CREATION_TIME
+                  type: datetime
                   constraints:
                     nullable: true
               - column:

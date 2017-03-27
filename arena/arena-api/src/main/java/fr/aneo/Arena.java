@@ -36,16 +36,17 @@ public class Arena {
     private LeaderboardService leaderboardService;
 
     public void start() {
+        LocalDateTime tournamentStartTime = LocalDateTime.now();
         List<Hero> heros = heroService.loadHeros();
         Optional<BattleResults> battleResults = startBattles(heros);
         if (battleResults.isPresent()) {
-            saveBattleResults(battleResults.get());
+            saveBattleResults(battleResults.get(), tournamentStartTime);
         }
     }
 
-    private void saveBattleResults(BattleResults battleResults) {
+    private void saveBattleResults(BattleResults battleResults, LocalDateTime tournamentStartTime) {
         eventStore.saveEvents(battleResults);
-        heroService.saveStats(heroStatsView.getStats());
+        heroService.saveStats(heroStatsView.getStats(), tournamentStartTime);
         leaderboardService.updateLeaderboard(heroStatsView.getStats());
         if (log.isDebugEnabled()) {
             printBattleResult(battleResults);
@@ -110,32 +111,32 @@ public class Arena {
             fightDefinitionBuilder.startWithHero1(RandomUtils.nextBoolean());
         }
 
-        fightDefinitionBuilder.cancelHero1FirstAttack(hasBonus(hero2Bonus, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
-        fightDefinitionBuilder.cancelHero2FirstAttack(hasBonus(hero1Bonus, Bonus.CANCEL_OPPONENT_FIRST_ATTACK));
+        fightDefinitionBuilder.cancelHero1FirstAttack(hasBonus(hero2Bonus, Bonus.HANDICAP_ATTACK_CANCEL));
+        fightDefinitionBuilder.cancelHero2FirstAttack(hasBonus(hero1Bonus, Bonus.HANDICAP_ATTACK_CANCEL));
 
         // other params
         int hero1Hp = hero1.getHpLevel();
         int hero2Hp = hero2.getHpLevel();
-        if (hasBonus(hero1Bonus, Bonus.ADD_10_PERCENT_HP)) {
+        if (hasBonus(hero1Bonus, Bonus.BOOST_HP_10)) {
             hero1Hp = (int)(hero1Hp + (hero1Hp*0.1));
         }
-        if (hasBonus(hero2Bonus, Bonus.ADD_10_PERCENT_HP)) {
+        if (hasBonus(hero2Bonus, Bonus.BOOST_HP_10)) {
             hero2Hp = (int)(hero2Hp + (hero2Hp*0.1));
         }
-        if (hasBonus(hero1Bonus, Bonus.OPPONENT_START_AT_50_PERCENT_HP)) {
+        if (hasBonus(hero1Bonus, Bonus.HANDICAP_HP_50)) {
             hero2Hp = (int)(hero2Hp*0.5);
         }
-        if (hasBonus(hero2Bonus, Bonus.OPPONENT_START_AT_50_PERCENT_HP)) {
+        if (hasBonus(hero2Bonus, Bonus.HANDICAP_HP_50)) {
             hero1Hp = (int)(hero1Hp*0.5);
         }
         fightDefinitionBuilder.hero1Hp(hero1Hp);
         fightDefinitionBuilder.hero2Hp(hero2Hp);
         fightDefinitionBuilder.hero1Attack(hero1.getAttackLevel());
         fightDefinitionBuilder.hero2Attack(hero2.getAttackLevel());
-        if (hasBonus(hero1Bonus, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK)) {
+        if (hasBonus(hero1Bonus, Bonus.BOOST_ATTACK_20)) {
             fightDefinitionBuilder.hero1FirstAttackHas20PercentMorePower(true);
         }
-        if (hasBonus(hero2Bonus, Bonus.ADD_20_PERCENT_ON_FIRST_ATTACK)) {
+        if (hasBonus(hero2Bonus, Bonus.BOOST_ATTACK_20)) {
             fightDefinitionBuilder.hero2FirstAttackHas20PercentMorePower(true);
         }
         return fightDefinitionBuilder.build();
@@ -146,8 +147,8 @@ public class Arena {
     }
 
     private boolean heroStartAttacking(Optional<Bonus> hero1Bonus, Optional<Bonus> hero2Bonus) {
-        return hasBonus(hero1Bonus, Bonus.FORCE_START_ATTACKING)
-                && !hasBonus(hero2Bonus, Bonus.FORCE_START_ATTACKING);
+        return hasBonus(hero1Bonus, Bonus.BOOST_FIRST_START)
+                && !hasBonus(hero2Bonus, Bonus.BOOST_FIRST_START);
     }
 
     private Optional<Bonus> getBonus(Hero hero) {

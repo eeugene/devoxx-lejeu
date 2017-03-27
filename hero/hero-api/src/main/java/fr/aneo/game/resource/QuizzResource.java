@@ -3,6 +3,7 @@ package fr.aneo.game.resource;
 import fr.aneo.game.model.Quizz;
 import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.model.Role;
+import fr.aneo.game.service.HeroService;
 import fr.aneo.game.service.QuizzService;
 import lombok.Builder;
 import lombok.Data;
@@ -66,7 +67,8 @@ public class QuizzResource {
         }
         String heroEmail = authentication.getName();
         quizzService.saveHeroAnswerToQuizz(heroEmail, quizzAnswer.getQuizzId(), quizzAnswer.getAnswerId());
-        return ok(currentQuizz.getAnswers().stream().filter(q -> q.getId().equals(quizzAnswer.getAnswerId())).findFirst().get().isCorrectAnswer());
+        boolean isCorrectAnswer = currentQuizz.isCorrectAnswer(quizzAnswer.getAnswerId());
+        return ok(isCorrectAnswer);
     }
 
     @PostMapping("/bonus")

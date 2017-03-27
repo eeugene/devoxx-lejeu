@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class HeroService {
         return heros;
     }
 
-    public void saveStats(Collection<HeroStats> stats) {
+    public void saveStats(Collection<HeroStats> stats, LocalDateTime tournamentStartTime) {
         log.debug("Hero stats to be saved");
         log.debug(stats.toString());
         Collection<NewHeroStats> list = stats.stream().map(
@@ -64,7 +65,7 @@ public class HeroService {
                         )
                         .build()
         ).collect(Collectors.toList());
-        UpdateHeroStats updateHeroStats = UpdateHeroStats.builder().list(list).build();
+        UpdateHeroStats updateHeroStats = UpdateHeroStats.builder().list(list).tournamentStartTime(tournamentStartTime).build();
         heroApi.saveStats(header, updateHeroStats);
     }
 
