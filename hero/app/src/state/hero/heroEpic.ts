@@ -35,8 +35,8 @@ export function submitHeroRegistration(api: IHeroApi, scheduler?: IScheduler): E
             (action: HeroSubmitRegistrationAction) =>
                 api.register(action.form)
                     .timeout(api.timeout, scheduler)
-                    .map(data => createHeroRegistrationDoneAction(action.form.email, action.form.password))
-                    .catch(error => Observable.of(createHeroRegisteringServerErrorAction(error.xhr.response.errors)))
+                    .map(data => {return createHeroRegistrationDoneAction(action.form.email, action.form.password)})
+                    .catch(error => {return Observable.of(createHeroRegisteringServerErrorAction(error.xhr.response.errors))})
         );
     };
 }

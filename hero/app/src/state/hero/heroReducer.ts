@@ -16,6 +16,11 @@ export function heroReducer(state: IHeroState = {}, action: Action): IHeroState 
             };
         case 'HERO_LOGGED_OUT':
             return {
+                email: null,
+                hero: null,
+                loginErrors: null,
+                registerErrors: null,
+                isRegistering: false,
                 isLoggedIn: false
             };
         case 'HERO_LOGIN_ERROR':

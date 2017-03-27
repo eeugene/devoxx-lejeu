@@ -24,7 +24,7 @@ export function configureStore() {
         logoutHero(heroApi),
         getCurrentQuizz(quizzApi),
         postQuizzAnswer(quizzApi),
-        setUpdateMechanism()
+        //setUpdateMechanism()
     );
 
     const epicMiddleware = createEpicMiddleware(rootEpic);
