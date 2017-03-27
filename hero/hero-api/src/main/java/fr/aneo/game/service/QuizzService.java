@@ -25,12 +25,12 @@ public class QuizzService {
         return getNextAvailableQuizz();
     }
 
-    public boolean heroHasAnsweredQuizz(String heroEmail, Long quizzId) {
-        return quizzHeroAnswerRepository.findOne(new QuizzHeroAnswer.Id(heroEmail, quizzId)) != null;
+    public QuizzHeroAnswer heroHasAnsweredQuizz(String heroEmail, Long quizzId) {
+        return quizzHeroAnswerRepository.findOne(new QuizzHeroAnswer.Id(heroEmail, quizzId));
     }
 
     public void saveHeroAnswerToQuizz(String heroEmail, Long quizzId, Long answerId) {
-        if (!heroHasAnsweredQuizz(heroEmail, quizzId)) {
+        if (heroHasAnsweredQuizz(heroEmail, quizzId) == null) {
             QuizzHeroAnswer answer = new QuizzHeroAnswer();
             answer.setId(new QuizzHeroAnswer.Id(heroEmail, quizzId));
             answer.setQuizzAnswerId(answerId);

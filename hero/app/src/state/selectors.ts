@@ -1,8 +1,8 @@
 import { AppState } from '.';
-import { IQuizz } from './quizz';
+import { IQuizzDto } from './quizz';
 import { IHero, IHeroState } from './hero';
 
-export function getQuizz(state: AppState): IQuizz {
+export function getQuizz(state: AppState): IQuizzDto {
     return state.quizzState.quizz;
 }
 
@@ -12,6 +12,10 @@ export function getSelectedAnswer(state: AppState): number {
 
 export function getIsQuizzSubmitted(state: AppState): boolean {
     return state.quizzState.isQuizzSubmitted;
+}
+
+export function getIsCorrectAnswer(state: AppState): boolean {
+    return state.quizzState.isCorrectAnswer;
 }
 
 export function getHero(state: AppState): IHero {

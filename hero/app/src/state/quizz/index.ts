@@ -3,10 +3,18 @@ export * from './quizzReducer';
 export * from './quizzEpic';
 
 export interface IQuizzState {
-    quizz?: IQuizz;
+    quizz?: IQuizzDto;
     selectedAnswer?: number;
     isQuizzSubmitted?: boolean;
+    isCorrectAnswer?: boolean;
 };
+
+export interface IQuizzDto {
+    quizz: IQuizz;
+    quizzAnswered:boolean;
+    correctAnswer:boolean;
+    selectedAnswer:number;
+}
 
 export interface IQuizz {
     id: number;
