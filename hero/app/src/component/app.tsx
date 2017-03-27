@@ -6,8 +6,8 @@ import Quizz from './quizz/Quizz';
 import Hero from './hero/Hero';
 import Login from './login/Login';
 import Register from './login/Register';
-
 import { IQuizz } from 'state/quizz';
+import './app.css';
 
 interface IAppProps {
     quizzReducer?: IQuizz;
@@ -16,25 +16,23 @@ interface IAppProps {
     isRegistering: boolean;
 }
 
-const component = (props: IAppProps) => {
-    let isLoggedIn = props.isAuthenticated;
-    let isRegistering = props.isRegistering;
-    return (
-        <div>
-            {!isLoggedIn ?
-                isRegistering ? (
-                    <Register />
-                ) : (
-                    <Login />
-                ) : (
-                    <div>
-                        <Hero />
-                        <Quizz id={1} />
-                    </div>
-                )}
+const component = (props: IAppProps) => (
+    <div>
+        <div className="header">
+            <img src="http://www.aneo.eu/assets/img/aneo.gif" className="text-center logo" />
+            <p className="h4">Grand jeu <strong>Devoxx</strong>, soyez le meilleur <span className="orange">combattant</span></p>
+            <p className="h4">et tentez de gagner de <span className="orange">nombreux lots!</span></p>
         </div>
-    );
-};
+        {props.isAuthenticated &&
+            <div>
+                <Hero />
+                <Quizz id={1} />
+            </div>
+        }
+        {!props.isAuthenticated && props.isRegistering && <Register /> }
+        {!props.isAuthenticated && !props.isRegistering && <Login /> }
+    </div>
+);
 
 export default connect(mapStateToProps)(component);
 

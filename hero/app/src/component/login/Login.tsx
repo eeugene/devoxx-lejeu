@@ -17,7 +17,7 @@ interface ILoginProps {
 
 const component = (props: ILoginProps) => (
     <div className="login">
-        <h2 className="text-center">Login</h2>
+        <h1 className="text-center">Login</h1>
         <div className="jumbotron">
             {props.error &&
                 <div className="alert alert-danger">{props.error.toString()}</div>
@@ -27,16 +27,16 @@ const component = (props: ILoginProps) => (
                 return props.onLogin(this.email.value,this.password.value);
                 }}>
             <div className="form-group">
-                <label htmlFor="email" className="col-sm-2 label-control">Email</label>
-                <div className="col-sm-10">
+                <label htmlFor="email" className="col-sm-3 label-control">Email</label>
+                <div className="col-sm-9">
                 <input type="text" className="form-control" id="email" placeholder="Email"
                     ref={node => {this.email = node;}}
                 />
                 </div>
             </div>
             <div className="form-group">
-                <label htmlFor="password" className="col-sm-2 label-control">Mot de passe</label>
-                <div className="col-sm-10">
+                <label htmlFor="password" className="col-sm-3 label-control">Mot de passe</label>
+                <div className="col-sm-9">
                 <input type="password" className="form-control" id="password" placeholder="Mot de passe"
                     ref={node => {this.password = node;}}
                 />
