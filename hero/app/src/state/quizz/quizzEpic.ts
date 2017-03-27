@@ -4,7 +4,7 @@ import { Epic } from 'redux-observable';
 import { Action } from 'state/actions';
 import { AppState } from 'state';
 import {
-    IQuizz,
+    IQuizzDto,
     createQuizzReceivedAction,
     createQuizzSubmittedAction,
     SubmitQuizzAction,
@@ -12,8 +12,8 @@ import {
 } from '.';
 
 export interface IQuizzApi {
-    getQuizz: () => Observable<IQuizz>;
-    postQuizzAnswer: (quizzId: number, answerId: number) => Observable<number>;
+    getQuizz: () => Observable<IQuizzDto>;
+    postQuizzAnswer: (quizzId: number, answerId: number) => Observable<boolean>;
     timeout: number;
 }
 export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Action, AppState> {
@@ -23,7 +23,7 @@ export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
             (action) =>
                 api.getQuizz()
                     .timeout(api.timeout, scheduler)
-                    .map((quizz: IQuizz) => createQuizzReceivedAction(quizz))
+                    .map((quizz: IQuizzDto) => createQuizzReceivedAction(quizz))
         );
     };
 }
@@ -31,7 +31,7 @@ export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
 export function setUpdateMechanism(scheduler?: IScheduler): Epic<Action, AppState> {
     return action$ => {
         return action$.ofType('QUIZZ_RECEIVED').delay(15000).map(() =>createRefreshQuizzAction());
-    }
+    };
 }
 
 export function postQuizzAnswer(api: IQuizzApi, scheduler?: IScheduler): Epic<Action, AppState> {
@@ -41,7 +41,7 @@ export function postQuizzAnswer(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
             (action: SubmitQuizzAction) =>
                 api.postQuizzAnswer(action.quizzId, action.answerId)
                     .timeout(api.timeout, scheduler)
-                    .map(_ => createQuizzSubmittedAction())
+                    .map((response:boolean) => createQuizzSubmittedAction(response))
         );
     };
 }

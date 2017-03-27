@@ -1,8 +1,10 @@
 package fr.aneo.game.resource;
 
 import fr.aneo.game.model.Quizz;
+import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.model.Role;
 import fr.aneo.game.service.QuizzService;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class QuizzResource {
     private QuizzService quizzService;
 
     @GetMapping
-    public ResponseEntity<Quizz> currentQuizz() {
+    public ResponseEntity<QuizzDto> currentQuizz() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new RuntimeException("Not authenticated");
@@ -38,15 +40,22 @@ public class QuizzResource {
             return ok(null);
         }
         String heroEmail = authentication.getName();
-        if (quizzService.heroHasAnsweredQuizz(heroEmail, currentQuizz.getId())) {
-            return ok(null);
+        QuizzHeroAnswer quizzHeroAnswer = quizzService.heroHasAnsweredQuizz(heroEmail, currentQuizz.getId());
+        if (quizzHeroAnswer != null) {
+            return ok(QuizzDto.builder()
+                    .quizzAnswered(true)
+                    .quizz(currentQuizz)
+                    .selectedAnswer(quizzHeroAnswer.getQuizzAnswerId())
+                    .correctAnswer(quizzHeroAnswer.getAnswer().isCorrectAnswer())
+                    .build());
         } else {
-            return ok(currentQuizz);
+            return ok(QuizzDto.builder()
+                    .quizz(currentQuizz).build());
         }
     }
 
     @PostMapping
-    public void answerCurrentQuizz(@RequestBody QuizzAnswer quizzAnswer) {
+    public ResponseEntity<Boolean> answerCurrentQuizz(@RequestBody QuizzAnswer quizzAnswer) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new RuntimeException("Not authenticated");
@@ -57,7 +66,7 @@ public class QuizzResource {
         }
         String heroEmail = authentication.getName();
         quizzService.saveHeroAnswerToQuizz(heroEmail, quizzAnswer.getQuizzId(), quizzAnswer.getAnswerId());
-        return;
+        return ok(currentQuizz.getAnswers().stream().filter(q -> q.getId().equals(quizzAnswer.getAnswerId())).findFirst().get().isCorrectAnswer());
     }
 
     @PostMapping("/bonus")
@@ -94,5 +103,13 @@ public class QuizzResource {
     static class QuizzAnswer {
         Long quizzId;
         Long answerId;
+    }
+    @Data
+    @Builder
+    static class QuizzDto {
+        Quizz quizz;
+        Boolean quizzAnswered = false;
+        Boolean correctAnswer;
+        Long selectedAnswer;
     }
 }

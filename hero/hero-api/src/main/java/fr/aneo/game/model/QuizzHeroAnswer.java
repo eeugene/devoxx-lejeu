@@ -23,6 +23,10 @@ public class QuizzHeroAnswer {
     @Column(name = "QUIZZ_ANSWER_ID")
     long quizzAnswerId;
 
+    @ManyToOne
+    @JoinColumn(name = "QUIZZ_ANSWER_ID", insertable = false, updatable = false)
+    QuizzAnswer answer;
+
     @Embeddable
     public static class Id implements Serializable {
         private static final long serialVersionUID = 1322120000551624359L;

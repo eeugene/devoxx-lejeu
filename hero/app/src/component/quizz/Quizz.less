@@ -1,12 +1,33 @@
 .quizz  {
     margin-top:15px;
     font-size: 1.5em;
-
+    position: relative;
 }
 
 .answer {
     border:1px solid #f4f4f4;
     padding:5px;
+}
+
+.answer-feedback {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.1);
+  display: block;
+  top:0;
+  left:0;
+  z-index: 1;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.good-answer {
+  background-image: url('http://matchingtool.basic-check.ch/static/imgs/check-mark.svg');
+}
+
+.bad-answer {
+  background-image: url('http://matchingtool.basic-check.ch/static/imgs/x-mark.svg');
 }
 
 [type="radio"] {
