@@ -40,14 +40,14 @@ public class QuizzService {
 
     void disableCurrentQuizz() {
         Quizz currentQuizz = getCurrentQuizz();
-        if (currentQuizz != null) {
+        if (currentQuizz != null && currentQuizz.isActive()) {
             currentQuizz.setActive(false);
             quizzRepository.save(currentQuizz);
         }
     }
 
     private Quizz getNextAvailableQuizz() {
-        log.info("Loading next available quizz");
+        log.debug("Loading next available quizz");
         Quizz quizz;
         quizz = quizzRepository.findAll()
                 .stream().filter(q -> q.isActive() && q.isBonus()).findFirst().orElse(null);
@@ -55,7 +55,7 @@ public class QuizzService {
             quizz = quizzRepository.findAll()
                 .stream().filter(q -> q.isActive() && !q.isBonus()).findFirst().orElse(null);
         }
-        log.info("Found NextQuizz: " + quizz);
+        log.debug("Found NextQuizz: " + quizz);
         return quizz;
     }
 

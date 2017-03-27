@@ -61,7 +61,7 @@ public class QuizzResource {
             throw new RuntimeException("Not authenticated");
         }
         Quizz currentQuizz = quizzService.getCurrentQuizz();
-        if (currentQuizz.getId() != quizzAnswer.getQuizzId()) {
+        if (!currentQuizz.isActive() || currentQuizz.getId() != quizzAnswer.getQuizzId()) {
             throw new RuntimeException("the quizz is not active");
         }
         String heroEmail = authentication.getName();

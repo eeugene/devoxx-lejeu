@@ -7,6 +7,7 @@ import {
     createHeroOpenRegisteringAction,
     createHeroSubmitLoginAction,
 } from 'state/hero/heroAction';
+import './login.css';
 
 interface ILoginProps {
     onLogin:(email:string,password:string)=>void;
@@ -15,30 +16,37 @@ interface ILoginProps {
 }
 
 const component = (props: ILoginProps) => (
-    <div>
-        
+    <div className="login">
+        <h2 className="text-center">Login</h2>
         <div className="jumbotron">
-            <h2>Login</h2>
             {props.error &&
                 <div className="alert alert-danger">{props.error.toString()}</div>
             }
-            <form onSubmit={(event) => {
+            <form className="form-horizontal" onSubmit={(event) => {
                 event.preventDefault();
                 return props.onLogin(this.email.value,this.password.value);
                 }}>
             <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className="col-sm-2 label-control">Email</label>
+                <div className="col-sm-10">
                 <input type="text" className="form-control" id="email" placeholder="Email"
                     ref={node => {this.email = node;}}
                 />
+                </div>
             </div>
             <div className="form-group">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password" className="col-sm-2 label-control">Mot de passe</label>
+                <div className="col-sm-10">
                 <input type="password" className="form-control" id="password" placeholder="Mot de passe"
                     ref={node => {this.password = node;}}
                 />
+                </div>
             </div>
-            <input type="submit" className="btn btn-primary" value="Connexion" />
+            <div className="form-group">
+                <div className="text-center">
+                    <input type="submit" className="btn btn-primary" value="Connexion" />
+                </div>
+            </div>
             </form>
         </div>
         <div>

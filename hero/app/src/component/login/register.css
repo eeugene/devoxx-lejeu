@@ -1,3 +1,18 @@
+@media (min-width: 750px) {
+    .register {
+        display:flex;
+        flex-flow: row wrap;
+    }
+
+    .register > * { 
+        flex: 1 auto;
+    }
+
+    .register>div:nth-child(2) {
+        width: 100%;
+        margin:20px 200px 30px 200px;
+    }
+}
 
 .avatar-selected {
     border: 3px solid red;
@@ -5,4 +20,9 @@
 
 .avatar, .avatar-selected {
     max-width: 60px;
+}
+
+.register-button {
+    margin-top:20px;
+    padding:0 90px;
 }

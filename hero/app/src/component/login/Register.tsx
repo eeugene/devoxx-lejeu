@@ -63,64 +63,80 @@ class Avatars extends React.Component<any,IStateAvatars>{
 
     render() {
         return (
-            <div>
-                Liste des avatars
+            <div className="form-group">
+                <label className="col-sm-3">Choisi ton avatar </label>
+                <div className="col-sm-9">
                 {
                     this.state.avatars.map(a => (
-                        <Avatar avatar={a} onSelectAvatar={(id) => this.selectAvatar(id)}/>
+                            <Avatar avatar={a} onSelectAvatar={(id) => this.selectAvatar(id)}/>
                     ))
                 }
+                </div>
             </div>
         )
     }
 }
 
 const component = (props: IRegisterProps) => (
-    <div>
-        <div className="jumbotron">
-            <h2>Inscription</h2>
+    <div className="register">
+        <h2 className="text-center">Inscription au jeu</h2>
+        <div className="jumbotron">    
             {props.errors &&
                 <div className="alert alert-danger">
                     {props.errors.map(e => <div>{e}</div>)}
                 </div>
             }
-            <form onSubmit={(event) => props.handleSubmit(event)}>
+            <form onSubmit={(event) => props.handleSubmit(event)} className="form-horizontal">
             <div className="form-group">
-                <label htmlFor="lastName">Nom</label>
+                <label htmlFor="lastName" className="col-sm-3 control_label">Nom</label>
+                <div className="col-sm-9">
                 <input type="text" className="form-control" id="lastName" placeholder="Nom"
                     ref={node => {this.lastName = node;}}
                 />
+                </div>
             </div>
             <div className="form-group">
-                <label htmlFor="firtsName">Prénom</label>
+                <label htmlFor="firtsName" className="col-sm-3 control_label">Prénom</label>
+                <div className="col-sm-9">
                 <input type="text" className="form-control" id="firstName" placeholder="Prénom"
                     ref={node => {this.firstName = node;}}
                 />
+                </div>
             </div>
             <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className="col-sm-3 control_label">Email</label>
+                <div className="col-sm-9">
                 <input type="text" className="form-control" id="email" placeholder="Email"
                     ref={node => {this.email = node;}}
                 />
+                </div>
             </div>
             <div className="form-group">
-                <label htmlFor="password">Mot de passe</label>
+                <label htmlFor="password" className="col-sm-3 control_label">Mot de passe</label>
+                <div className="col-sm-9">
                 <input type="password" className="form-control" id="password" placeholder="Mot de passe"
                     ref={node => {this.password = node;}}
                 />
+                </div>
             </div>
             <hr />
             <div className="form-group">
-                <label htmlFor="nickname">Nom du Héro</label>
+                <label htmlFor="nickname" className="col-sm-3 control_label">Nom du Héro</label>
+                <div className="col-sm-9">
                 <input type="text" className="form-control" id="nickname" placeholder="Nickname"
                     ref={node => {this.nickname = node;}}
                 />
+                </div>
             </div>
             
             <input type="hidden" id="avatarId" ref={node => {this.avatarId = node;}} />
             <Avatars onSelectAvatar={(id:string) => this.avatarId.value = id} />
 
-            <input type="submit" className="btn btn-primary" value="S'inscrire" />
+            <div className="register-button">
+                <div className="text-center">
+                <input type="submit" className="btn btn-primary btn-block" value="S'inscrire" />
+                </div>
+            </div>
             </form>
         </div>
         
