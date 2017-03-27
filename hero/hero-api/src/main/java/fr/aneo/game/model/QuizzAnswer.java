@@ -32,7 +32,7 @@ public class QuizzAnswer {
     @NotNull
     @Column(name = "IS_CORRECT_ANSWER")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    boolean isCorrectAnswer;
+    boolean correctAnswer;
 
     @JsonIgnore
     @ManyToOne
