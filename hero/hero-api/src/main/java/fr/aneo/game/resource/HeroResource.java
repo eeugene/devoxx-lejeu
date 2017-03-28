@@ -6,7 +6,10 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.model.HeroStats;
+import fr.aneo.game.model.Quizz;
+import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.service.HeroService;
+import fr.aneo.game.service.QuizzService;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -18,7 +21,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class HeroResource {
 
     @Autowired
     private HeroService heroService;
+    @Autowired
+    private QuizzService quizzService;
 
     @GetMapping
     public List<Hero> getAllHeroes() {
@@ -49,6 +53,26 @@ public class HeroResource {
             return notFound().build();
         }
         return ok(hero);
+    }
+
+    @GetMapping("/quizz-stats/{email:.*}")
+    public ResponseEntity<HeroQuizzStats> getHeroQuizzStats(@PathVariable @Email String email) {
+        Hero hero = heroService.findHeroByEmail(email);
+        if(hero == null) {
+            return notFound().build();
+        }
+        List<QuizzHeroAnswer> quizzHeroAnswers = quizzService.getQuizzHeroAnswers(email);
+        long tga = 0;
+        if (quizzHeroAnswers != null) {
+            tga = quizzHeroAnswers.stream()
+                    .map(a -> {
+                        Long quizzId = a.getId().getQuizzId();
+                        Quizz q = quizzService.getQuizzById(quizzId);
+                        return q.isCorrectAnswer(a.getQuizzAnswerId());
+                    }).filter(b -> b)
+                    .count();
+        }
+        return ok(HeroQuizzStats.builder().totalGoodAnswered(tga).totalQuizzAnswered(quizzHeroAnswers.size()).build());
     }
 
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
@@ -103,5 +127,12 @@ public class HeroResource {
     public static class HeroRegisterResponse {
         private String message;
         private String errors;
+    }
+
+    @Data
+    @Builder
+    public static class HeroQuizzStats {
+        private long totalQuizzAnswered;
+        private long totalGoodAnswered;
     }
 }

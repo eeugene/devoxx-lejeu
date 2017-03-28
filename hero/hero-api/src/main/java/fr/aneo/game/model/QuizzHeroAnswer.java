@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class QuizzHeroAnswer {
 
     @EmbeddedId
-    Id id = new Id();
+    private Id id = new Id();
 
     @NotNull
     @Column(name = "QUIZZ_ANSWER_ID")
@@ -27,13 +27,14 @@ public class QuizzHeroAnswer {
     @JoinColumn(name = "QUIZZ_ANSWER_ID", insertable = false, updatable = false)
     QuizzAnswer answer;
 
+    @Data
     @Embeddable
     public static class Id implements Serializable {
         private static final long serialVersionUID = 1322120000551624359L;
         @Column(name = "HERO_EMAIL")
-        protected String heroEmail;
+        private String heroEmail;
         @Column(name = "QUIZZ_ID")
-        protected long quizzId;
+        private long quizzId;
 
         public Id() {
         }

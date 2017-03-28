@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by rcollard on 09/03/2017.
  */
@@ -75,5 +77,13 @@ public class QuizzService {
     public void activateQuizz(Long quizzId) {
         Quizz quizz = quizzRepository.findOne(quizzId);
         quizz.setActive(true);
+    }
+
+    public List<QuizzHeroAnswer> getQuizzHeroAnswers(String email) {
+        return quizzHeroAnswerRepository.findByIdHeroEmail(email);
+    }
+
+    public Quizz getQuizzById(Long quizzId) {
+        return quizzRepository.findOne(quizzId);
     }
 }
