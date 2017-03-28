@@ -29,6 +29,9 @@ const styles = require('./Quizz.less');
 const component = (props: IQuizzProps) => (
 
     <div>
+    {!props.quizz.quizz &&
+        <p className="alert">Pas de quizz bonus pour l'instant, réessaye plus tard.</p>
+    }
     {props.quizz.quizz && props.quizz.quizz.answers &&
     <div className="quizz panel panel-default">
         <div className="panel-heading">

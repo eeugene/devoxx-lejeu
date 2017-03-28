@@ -9,8 +9,9 @@ import { createAppReadyAction } from 'state/actions';
 import { isHeroAuthenticated, getAuthenticationFromLocalStorage } from 'state/hero/heroService';
 import { createHeroLoggedInAction } from 'state/hero/heroAction';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function bootstrap() {
-  
   let store = configureStore();
 
   render(
@@ -22,8 +23,6 @@ function bootstrap() {
 
   store.dispatch(createAppReadyAction());
   if(isHeroAuthenticated()) {
-    console.log('hero is authenticated');
-    
     store.dispatch(createHeroLoggedInAction(getAuthenticationFromLocalStorage().email))
   }
 }
