@@ -20,8 +20,14 @@ const component = (props: IAppProps) => (
     <div>
         <div className="header">
             <img src="http://www.aneo.eu/assets/img/aneo.gif" className="text-center logo" />
-            <p className="h4">Grand jeu <strong>Devoxx</strong>, soyez le meilleur <span className="orange">combattant</span></p>
-            <p className="h4">et tentez de gagner de <span className="orange">nombreux lots!</span></p>
+        {!props.isAuthenticated &&
+            <h2 className="slogan">
+                <p className="">
+                    <p>Grand jeu <strong>Devoxx</strong>, soyez le meilleur <span className="orange">combattant</span></p>
+                    <p>et tentez de gagner de <span className="orange">nombreux lots!</span></p>
+                </p>
+            </h2>
+        }
         </div>
         {props.isAuthenticated &&
             <div>
