@@ -31,6 +31,8 @@ public class ArenaScheduler {
     int endAt;
     @Value("${arena.inSimuMode}")
     boolean inSimuMode;
+    @Value("${arena.simuModeInterval}")
+    int simuModeInterval;
 
     int currentHour = 0;
 
@@ -44,7 +46,7 @@ public class ArenaScheduler {
 
     public void start() {
         if (inSimuMode) {
-            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(arena::start, 0, 10, TimeUnit.SECONDS);
+            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(arena::start, 0, simuModeInterval, TimeUnit.SECONDS);
             try {
                 handle.get();
             } catch (ExecutionException e) {

@@ -24,7 +24,8 @@ logging:
 arena:
   startAt: 9
   endAt: 17
-  inSimuMode: true # if true, schedules fights every 10 seconds, if false, apply the prod model between startAt and endAt
+  inSimuMode: true # if true, schedules fights every simuModeInterval seconds, if false, apply the model between startAt and endAt
+  simuModeInterval: 10 # define the interval to schedules fights at
 
 leaderboardUrl: "http://localhost:8081"
 heroApiUrl: "http://localhost:8080"

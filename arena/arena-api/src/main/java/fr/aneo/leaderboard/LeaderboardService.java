@@ -8,7 +8,9 @@ import fr.aneo.domain.HeroStats;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.EmitterProcessor;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class LeaderboardService {
-
+    EmitterProcessor<Collection<HeroStats>> emitter;
     private LeaderboardApi leaderboardApi;
 
     public LeaderboardService(@Value("${leaderboardUrl}") String leaderboardUrl) {
@@ -31,9 +33,18 @@ public class LeaderboardService {
                 .decoder(new JacksonDecoder())
                 .requestInterceptor(requestTemplate -> log.debug(requestTemplate.toString()))
                 .target(LeaderboardApi.class, leaderboardUrl, fallbackFactory);
+
+        emitter = EmitterProcessor.<Collection<HeroStats>>create().connect();
+
+        emitter.sample(Duration.ofSeconds(10))
+                .subscribe(v -> updateLeaderboardInternal(v));
     }
 
     public void updateLeaderboard(Collection<HeroStats> stats) {
+        emitter.onNext(stats);
+    }
+
+    private void updateLeaderboardInternal(Collection<HeroStats> stats) {
         List<LeaderBoardLine> list = stats
                 .stream()
                 .sorted((o1, o2) -> o2.getWinRatio().compareTo(o1.getWinRatio()))
