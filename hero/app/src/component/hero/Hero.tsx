@@ -64,34 +64,54 @@ const component = (props: IHeroProps) => {
         <div className="flex">
             <div className="item">
                 <div className="item-content">
-                    <span className='item-label'>Rank</span>
+                    <span className='item-label'>Rang</span>
                     <p className="item-value">{currentRanking}</p>
                 </div>
             </div>
             <div className="item">
-                <span className='item-label'>Best Rank</span>
+                <span className='item-label'>Meilleurs Rang</span>
                 <p className="item-value">{bestRanking}</p>
             </div>
             <div className="item">
-                <span className='item-label'>Wins</span>
+                <span className='item-label'>Victoires</span>
                 <p className="item-value">{wins}</p>
             </div>
             <div className="item">
-                <span className='item-label'>Losses</span>
+                <span className='item-label'>Défaites</span>
                 <p className="item-value">{losses}</p>
             </div>
             <div className="item">
-                <span className='item-label'>Last Five Battles</span>
+                <span className='item-label'>Force</span>
+                <p className="item-value">{props.hero.attackLevel}</p>
+            </div>
+            <div className="item">
+                <span className='item-label'>Vie</span>
+                <p className="item-value">{props.hero.hpLevel}</p>
+            </div>
+            <div className="item">
+                <span className='item-label'>5 derniers combats</span>
                 <p className="item-label">
-                    <ol>{lastFiveBattles.map(result => <li>{result}</li>)}</ol>
+                    <ol className="text-left">{lastFiveBattles.map(result => <li>{result}</li>)}</ol>
                 </p>
             </div>
             {props.quizzStats &&
             <div className="item">
                 <span className='item-label'>Quizz</span>
                 <p className="item-label">
-                    <p>{props.quizzStats.totalGoodAnswered} / {props.quizzStats.totalQuizzAnswered}</p>
-                    <p>{props.quizzStats.bonusesWined}</p>
+                    <p>{props.quizzStats.totalGoodAnswered} / {props.quizzStats.totalQuizzAnswered} bonnes réponses</p>
+                </p>
+            </div>
+            }
+            {props.quizzStats &&
+            <div className="item">
+                <span className='item-label'>Bonus gagnés</span>
+                <p className="item-label">  
+                    {props.quizzStats.bonusesWined.length> 0 ?
+                    <ol className="text-left">{props.quizzStats.bonusesWined.map(b =>
+                        <li>{b}</li>
+                        )}
+                    </ol>
+                    : <p>Aucun</p>}
                 </p>
             </div>
             }

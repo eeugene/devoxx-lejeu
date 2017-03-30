@@ -6,12 +6,8 @@ export function heroReducer(state: IHeroState = {}, action: Action): IHeroState 
         case 'HERO_DETAILS_RECEIVED':
             return {
                 ...state,
-                hero: action.hero
-            };
-        case 'HERO_QUIZZ_STATS_RECEIVED':
-            return {
-                ...state,
-                quizzStats: action.result
+                hero: action.data.hero,
+                quizzStats: action.data.quizzStats
             };
         case 'HERO_LOGGED_IN':
             return {
@@ -19,15 +15,7 @@ export function heroReducer(state: IHeroState = {}, action: Action): IHeroState 
                 email: action.email,
                 isLoggedIn: true
             };
-        case 'HERO_LOGGED_OUT':
-            return {
-                email: null,
-                hero: null,
-                loginErrors: null,
-                registerErrors: null,
-                isRegistering: false,
-                isLoggedIn: false
-            };
+        case 'HERO_LOGGED_OUT': return <IHeroState>{};
         case 'HERO_LOGIN_ERROR':
             return {
                 ...state,

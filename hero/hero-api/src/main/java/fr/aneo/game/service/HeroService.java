@@ -1,10 +1,9 @@
 package fr.aneo.game.service;
 
-import fr.aneo.game.model.Bonus;
-import fr.aneo.game.model.Hero;
-import fr.aneo.game.model.HeroStats;
-import fr.aneo.game.model.Role;
+import fr.aneo.game.model.*;
 import fr.aneo.game.repository.HeroRepository;
+import fr.aneo.game.repository.QuizzHeroAnswerRepository;
+import fr.aneo.game.model.HeroQuizzStats;
 import fr.aneo.game.resource.HeroResource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Created by raouf on 04/03/17.
@@ -26,9 +28,9 @@ public class HeroService {
 
     @Autowired
     private HeroRepository heroRepository;
-
+    @Autowired
+    private QuizzHeroAnswerRepository quizzHeroAnswerRepository;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private Bonus randomBonus;
 
     public Hero findHeroByEmail(String email) {
         return heroRepository.findOne(email);
@@ -87,5 +89,33 @@ public class HeroService {
     public void resetBonusForAll() {
         heroRepository.findAll().stream()
                 .forEach(h -> h.setCurrentBonus(null));
+    }
+
+    public HeroQuizzStats getHeroQuizzStats(String email) {
+        Hero hero = findHeroByEmail(email);
+        if(hero == null) {
+            return null;
+        }
+        List<QuizzHeroAnswer> quizzHeroAnswers = quizzHeroAnswerRepository.findByIdHeroEmail(email);
+        long totalGoodAnswers = 0;
+        List<String> bonusesWined = null;
+        if (quizzHeroAnswers != null) {
+            totalGoodAnswers = quizzHeroAnswers.stream()
+                    .map(heroAnswer -> {
+                        Quizz q = heroAnswer.getQuizz();
+                        return q.isCorrectAnswer(heroAnswer.getQuizzAnswerId());
+                    }).filter(b -> b)
+                    .count();
+            bonusesWined = quizzHeroAnswers.stream()
+                    .map(a -> a.getBonusWined())
+                    .filter(Objects::nonNull)
+                    .map(bonus -> bonus.getDescription())
+                    .collect(Collectors.toList());
+        }
+        return HeroQuizzStats.builder()
+                .totalGoodAnswered(totalGoodAnswers)
+                .totalQuizzAnswered(quizzHeroAnswers.size())
+                .bonusesWined(bonusesWined)
+                .build();
     }
 }

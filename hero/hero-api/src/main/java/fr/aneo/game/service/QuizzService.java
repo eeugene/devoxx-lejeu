@@ -81,11 +81,4 @@ public class QuizzService {
         quizz.setActive(true);
     }
 
-    public List<QuizzHeroAnswer> getQuizzHeroAnswers(String email) {
-        return quizzHeroAnswerRepository.findByIdHeroEmail(email);
-    }
-
-    public Quizz getQuizzById(Long quizzId) {
-        return quizzRepository.findOne(quizzId);
-    }
 }

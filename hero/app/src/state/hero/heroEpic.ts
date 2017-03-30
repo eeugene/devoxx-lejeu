@@ -3,7 +3,7 @@ import { Epic } from 'redux-observable';
 
 import { Action } from 'state/actions';
 import { AppState } from 'state';
-import { IHero, IHeroQuizzStats } from '.';
+import { IHeroDto } from '.';
 import {
     createHeroReceivedAction,
     createHeroLoggedInAction,
@@ -11,9 +11,7 @@ import {
     createHeroLoginErrorAction,
     createHeroRegistrationDoneAction,
     createHeroRegisteringServerErrorAction,
-    createHeroQuizzStatsReceivedAction,
     createErrorOnGetHeroDetailsAction,
-    createErrorOnGetHeroQuizzStatsAction,
     HeroLoggedInAction,
     HeroSubmitRegistrationAction,
     HeroSubmitLoginAction
@@ -27,20 +25,8 @@ export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Acti
             (action: HeroLoggedInAction) =>
                 api.getHero(action.email)
                     .timeout(api.timeout, scheduler)
-                    .map((h: IHero) => createHeroReceivedAction(h))
+                    .map((h: IHeroDto) => createHeroReceivedAction(h))
                     .catch(err => Observable.of(createErrorOnGetHeroDetailsAction(err.message)))
-        );
-    };
-}
-
-export function getHeroQuizzStats(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
-    return (action$, _) => {
-        return action$.ofType('HERO_LOGGED_IN').mergeMap(
-            (action: HeroLoggedInAction) =>
-                api.getQuizzStats(action.email)
-                    .timeout(api.timeout, scheduler)
-                    .map((stats: IHeroQuizzStats) => createHeroQuizzStatsReceivedAction(stats))
-                    .catch(error => Observable.of(createErrorOnGetHeroQuizzStatsAction(error.message)))
         );
     };
 }

@@ -33,6 +33,10 @@ public class QuizzHeroAnswer {
     @JoinColumn(name = "QUIZZ_ANSWER_ID", insertable = false, updatable = false)
     QuizzAnswer answer;
 
+    @ManyToOne
+    @JoinColumn(name = "QUIZZ_ID", insertable = false, updatable = false)
+    Quizz quizz;
+
     @Data
     @Embeddable
     public static class Id implements Serializable {

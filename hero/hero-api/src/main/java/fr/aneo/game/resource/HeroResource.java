@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import fr.aneo.game.model.Hero;
-import fr.aneo.game.model.HeroStats;
-import fr.aneo.game.model.Quizz;
-import fr.aneo.game.model.QuizzHeroAnswer;
+import fr.aneo.game.model.*;
 import fr.aneo.game.service.HeroService;
 import fr.aneo.game.service.QuizzService;
 import lombok.Builder;
@@ -16,6 +13,8 @@ import lombok.experimental.Tolerate;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,42 +48,12 @@ public class HeroResource {
     }
 
     @GetMapping("/{email:.*}")
-    public ResponseEntity<Hero> getHeroByEmail(@PathVariable @Email String email) {
+    public ResponseEntity<HeroDto> getHeroByEmail(@PathVariable @Email String email) {
         Hero hero = heroService.findHeroByEmail(email);
         if(hero == null) {
             return notFound().build();
         }
-        return ok(hero);
-    }
-
-    @GetMapping("/{email:.*}/quizz-stats")
-    public ResponseEntity<HeroQuizzStats> getHeroQuizzStats(@PathVariable @Email String email) {
-        Hero hero = heroService.findHeroByEmail(email);
-        if(hero == null) {
-            return notFound().build();
-        }
-        List<QuizzHeroAnswer> quizzHeroAnswers = quizzService.getQuizzHeroAnswers(email);
-        long tga = 0;
-        List<String> bonusesWined = null;
-        if (quizzHeroAnswers != null) {
-            tga = quizzHeroAnswers.stream()
-                    .map(a -> {
-                        Long quizzId = a.getId().getQuizzId();
-                        Quizz q = quizzService.getQuizzById(quizzId);
-                        return q.isCorrectAnswer(a.getQuizzAnswerId());
-                    }).filter(b -> b)
-                    .count();
-            bonusesWined = quizzHeroAnswers.stream()
-                    .map(a -> a.getBonusWined())
-                    .filter(Objects::nonNull)
-                    .map(bonus -> bonus.getDescription())
-                    .collect(Collectors.toList());
-        }
-        return ok(HeroQuizzStats.builder()
-                .totalGoodAnswered(tga)
-                .totalQuizzAnswered(quizzHeroAnswers.size())
-                .bonusesWined(bonusesWined)
-                .build());
+        return ok(HeroDto.builder().hero(hero).quizzStats(heroService.getHeroQuizzStats(email)).build());
     }
 
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
@@ -107,12 +76,16 @@ public class HeroResource {
                         hero.getNickname(), hero.getEmail())).build());
     }
 
+    // TODO: sécuriser
     @PostMapping(value = "/stats")
     public void updateStats(@RequestBody UpdateHeroStats stats) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new RuntimeException("Not authenticated");
+        }
         if (stats == null) {
             return;
         }
-
         heroService.updateStats(stats);
     }
 
@@ -143,9 +116,8 @@ public class HeroResource {
 
     @Data
     @Builder
-    public static class HeroQuizzStats {
-        private long totalQuizzAnswered;
-        private long totalGoodAnswered;
-        private List<String> bonusesWined;
+    public static class HeroDto {
+        private Hero hero;
+        private HeroQuizzStats quizzStats;
     }
 }
