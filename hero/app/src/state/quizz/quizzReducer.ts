@@ -20,6 +20,12 @@ const onQuizzSubmitted = (state: IQuizzState, action: QuizzSubmittedAction) =>
 const onQuizzError = (state: IQuizzState, action: ErrorOnQuizzAction) =>
     ({ ...state, errors: action.error });
 
+const onHeroLoggedIn = (state: IQuizzState, action: any) =>
+    (<IQuizzState>{});
+
+const onHeroLoggedOut = (state: IQuizzState, action: any) =>
+    (<IQuizzState>{});
+
 export function quizzReducer(state: IQuizzState = {}, action: Action): IQuizzState {
     switch (action.type) {
         case 'QUIZZ_RECEIVED':
@@ -30,6 +36,10 @@ export function quizzReducer(state: IQuizzState = {}, action: Action): IQuizzSta
             return onQuizzSubmitted(state, action);
         case 'ERROR_ON_QUIZZ':
             return onQuizzError(state, action);
+        case 'HERO_LOGGED_IN':
+            return onHeroLoggedIn(state, action);
+        case 'HERO_LOGGED_OUT':
+            return onHeroLoggedOut(state, action);
         default:
             return state;
     }
