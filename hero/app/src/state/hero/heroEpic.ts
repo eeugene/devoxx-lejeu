@@ -12,8 +12,11 @@ import {
     createHeroRegistrationDoneAction,
     createHeroRegisteringServerErrorAction,
     createErrorOnGetHeroDetailsAction,
+    createRefreshHeroStatsAction,
     HeroLoggedInAction,
     HeroSubmitRegistrationAction,
+    HeroDetailsReceivedAction,
+    RefreshHeroStatsAction,
     HeroSubmitLoginAction
 } from './heroAction';
 import { IHeroApi } from 'api/heroApi';
@@ -21,8 +24,8 @@ import { setAuthenticationInLocalStorage, removeAuthenticationFromLocalStorage }
 
 export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
-        return action$.ofType('HERO_LOGGED_IN').mergeMap(
-            (action: HeroLoggedInAction) =>
+        return action$.ofType('HERO_LOGGED_IN', 'REFRESH_HERO_STATS').mergeMap(
+            (action: HeroLoggedInAction | RefreshHeroStatsAction) =>
                 api.getHero(action.email)
                     .timeout(api.timeout, scheduler)
                     .map((h: IHeroDto) => createHeroReceivedAction(h))
@@ -31,6 +34,11 @@ export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Acti
     };
 }
 
+export function setUpdateHeroStatsMechanism(scheduler?: IScheduler): Epic<Action, AppState> {
+    return action$ =>
+        action$.ofType('HERO_DETAILS_RECEIVED').delay(5000).map(
+            (action: HeroDetailsReceivedAction) => createRefreshHeroStatsAction(action.data.hero.email));
+}
 export function submitHeroRegistration(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
         return action$.ofType('HERO_SUBMIT_REGISTRATION').mergeMap(
