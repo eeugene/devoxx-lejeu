@@ -1,5 +1,6 @@
 package fr.aneo.game.service;
 
+import fr.aneo.game.model.Bonus;
 import fr.aneo.game.model.Quizz;
 import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.repository.QuizzHeroAnswerRepository;
@@ -36,14 +37,15 @@ public class QuizzService {
     @Transactional
     public void saveHeroAnswerToQuizz(String heroEmail, Long quizzId, Long answerId) {
         if (heroHasAnsweredQuizz(heroEmail, quizzId) == null) {
-            QuizzHeroAnswer answer = new QuizzHeroAnswer();
-            answer.setId(new QuizzHeroAnswer.Id(heroEmail, quizzId));
-            answer.setQuizzAnswerId(answerId);
-            quizzHeroAnswerRepository.save(answer);
+            QuizzHeroAnswer quizzHeroAnswer = new QuizzHeroAnswer();
+            quizzHeroAnswer.setId(new QuizzHeroAnswer.Id(heroEmail, quizzId));
+            quizzHeroAnswer.setQuizzAnswerId(answerId);
             Quizz quizz = quizzRepository.findOne(quizzId);
             if (quizz != null && quizz.isCorrectAnswer(answerId)) {
-                heroService.giveBonus(heroEmail);
+                Bonus bonus = heroService.offerRandomBonus(heroEmail);
+                quizzHeroAnswer.setBonusWined(bonus);
             }
+            quizzHeroAnswerRepository.save(quizzHeroAnswer);
         }
     }
 

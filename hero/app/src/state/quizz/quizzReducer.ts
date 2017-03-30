@@ -15,7 +15,7 @@ const onSelectedAnswer = (state: IQuizzState, action: QuizzAnswerSelectedAction)
     ({ ...state, selectedAnswer: action.answerId });
 
 const onQuizzSubmitted = (state: IQuizzState, action: QuizzSubmittedAction) =>
-    ({ ...state, isQuizzSubmitted: true, isCorrectAnswer: action.response });
+    ({ ...state, isQuizzSubmitted: true, isCorrectAnswer: action.result.isCorrectAnswer, bonusWined: action.result.bonusWined });
 
 const onQuizzError = (state: IQuizzState, action: ErrorOnQuizzAction) =>
     ({ ...state, errors: action.error });

@@ -5,7 +5,7 @@ import { quizzReducer, getCurrentQuizz, postQuizzAnswer, setUpdateMechanism } fr
 
 import { quizzApi } from 'api/quizzApi';
 import { heroApi } from 'api/heroApi';
-import { getHeroDetails, loginHero, logoutHero, submitHeroRegistration } from './hero/heroEpic';
+import { getHeroDetails, getHeroQuizzStats, loginHero, logoutHero, submitHeroRegistration } from './hero/heroEpic';
 import { heroReducer } from './hero/heroReducer';
 
 export function configureStore() {
@@ -19,6 +19,7 @@ export function configureStore() {
 
     const rootEpic = combineEpics(
         getHeroDetails(heroApi),
+        getHeroQuizzStats(heroApi),
         submitHeroRegistration(heroApi),
         loginHero(heroApi),
         logoutHero(heroApi),

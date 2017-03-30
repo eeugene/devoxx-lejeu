@@ -1,4 +1,5 @@
-import { IQuizzDto } from '.';
+import { IQuizzDto, IQuizzAnswerResult } from '.';
+
 export type QuizzAction =
     // list of quizz actions
     | QuizzAnswerSelectedAction
@@ -40,12 +41,12 @@ export const createSubmitQuizzAction =
 
 export interface QuizzSubmittedAction {
     type: 'QUIZZ_SUBMITTED';
-    response: boolean;
+    result: IQuizzAnswerResult;
 };
 
 export const createQuizzSubmittedAction =
-    (response: boolean): QuizzSubmittedAction =>
-        ({ type: 'QUIZZ_SUBMITTED', response });
+    (result: IQuizzAnswerResult): QuizzSubmittedAction =>
+        ({ type: 'QUIZZ_SUBMITTED', result });
 
 export interface RefreshQuizzAction {
     type: 'REFRESH_QUIZZ';

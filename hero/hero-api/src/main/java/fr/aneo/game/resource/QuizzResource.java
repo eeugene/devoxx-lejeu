@@ -29,6 +29,8 @@ public class QuizzResource {
 
     @Autowired
     private QuizzService quizzService;
+    @Autowired
+    private HeroService heroService;
 
     @GetMapping
     public ResponseEntity<QuizzDto> currentQuizz() {
@@ -56,19 +58,23 @@ public class QuizzResource {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> answerCurrentQuizz(@RequestBody QuizzAnswer quizzAnswer) {
+    public ResponseEntity<QuizzAnswerResult> answerCurrentQuizz(@RequestBody QuizzAnswerSubmitted quizzAnswerSubmitted) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new RuntimeException("Not authenticated");
         }
         Quizz currentQuizz = quizzService.getCurrentQuizz();
-        if (!currentQuizz.isActive() || currentQuizz.getId() != quizzAnswer.getQuizzId()) {
+        if (!currentQuizz.isActive() || currentQuizz.getId() != quizzAnswerSubmitted.getQuizzId()) {
             throw new RuntimeException("the quizz is not active");
         }
         String heroEmail = authentication.getName();
-        quizzService.saveHeroAnswerToQuizz(heroEmail, quizzAnswer.getQuizzId(), quizzAnswer.getAnswerId());
-        boolean isCorrectAnswer = currentQuizz.isCorrectAnswer(quizzAnswer.getAnswerId());
-        return ok(isCorrectAnswer);
+        quizzService.saveHeroAnswerToQuizz(heroEmail, quizzAnswerSubmitted.getQuizzId(), quizzAnswerSubmitted.getAnswerId());
+        boolean isCorrectAnswer = currentQuizz.isCorrectAnswer(quizzAnswerSubmitted.getAnswerId());
+        String bonusWined = "";
+        if (isCorrectAnswer) {
+            bonusWined = heroService.getCurrentBonusDescription(heroEmail);
+        }
+        return ok(QuizzAnswerResult.builder().isCorrectAnswer(isCorrectAnswer).bonusWined(bonusWined).build());
     }
 
     @PostMapping("/bonus")
@@ -102,9 +108,15 @@ public class QuizzResource {
     }
 
     @Data
-    static class QuizzAnswer {
+    static class QuizzAnswerSubmitted {
         Long quizzId;
         Long answerId;
+    }
+    @Data
+    @Builder
+    static class QuizzAnswerResult {
+        Boolean isCorrectAnswer;
+        String bonusWined;
     }
     @Data
     @Builder

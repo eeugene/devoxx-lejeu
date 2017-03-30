@@ -5,6 +5,7 @@ import { Action } from 'state/actions';
 import { AppState } from 'state';
 import {
     IQuizzDto,
+    IQuizzAnswerResult,
     createQuizzReceivedAction,
     createQuizzSubmittedAction,
     SubmitQuizzAction,
@@ -14,9 +15,10 @@ import {
 
 export interface IQuizzApi {
     getQuizz: () => Observable<IQuizzDto>;
-    postQuizzAnswer: (quizzId: number, answerId: number) => Observable<boolean>;
+    postQuizzAnswer: (quizzId: number, answerId: number) => Observable<IQuizzAnswerResult>;
     timeout: number;
 }
+
 export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return action$ => {
 
@@ -43,7 +45,7 @@ export function postQuizzAnswer(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
             (action: SubmitQuizzAction) =>
                 api.postQuizzAnswer(action.quizzId, action.answerId)
                     .timeout(api.timeout, scheduler)
-                    .map((response: boolean) => createQuizzSubmittedAction(response))
+                    .map((response: IQuizzAnswerResult) => createQuizzSubmittedAction(response))
                     .catch((err, caught) => Observable.of(createErrorOnQuizzAction(err.message)))
         );
     };

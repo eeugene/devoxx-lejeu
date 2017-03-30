@@ -23,6 +23,8 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -55,7 +57,7 @@ public class HeroResource {
         return ok(hero);
     }
 
-    @GetMapping("/quizz-stats/{email:.*}")
+    @GetMapping("/{email:.*}/quizz-stats")
     public ResponseEntity<HeroQuizzStats> getHeroQuizzStats(@PathVariable @Email String email) {
         Hero hero = heroService.findHeroByEmail(email);
         if(hero == null) {
@@ -63,6 +65,7 @@ public class HeroResource {
         }
         List<QuizzHeroAnswer> quizzHeroAnswers = quizzService.getQuizzHeroAnswers(email);
         long tga = 0;
+        List<String> bonusesWined = null;
         if (quizzHeroAnswers != null) {
             tga = quizzHeroAnswers.stream()
                     .map(a -> {
@@ -71,8 +74,17 @@ public class HeroResource {
                         return q.isCorrectAnswer(a.getQuizzAnswerId());
                     }).filter(b -> b)
                     .count();
+            bonusesWined = quizzHeroAnswers.stream()
+                    .map(a -> a.getBonusWined())
+                    .filter(Objects::nonNull)
+                    .map(bonus -> bonus.getDescription())
+                    .collect(Collectors.toList());
         }
-        return ok(HeroQuizzStats.builder().totalGoodAnswered(tga).totalQuizzAnswered(quizzHeroAnswers.size()).build());
+        return ok(HeroQuizzStats.builder()
+                .totalGoodAnswered(tga)
+                .totalQuizzAnswered(quizzHeroAnswers.size())
+                .bonusesWined(bonusesWined)
+                .build());
     }
 
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
@@ -134,5 +146,6 @@ public class HeroResource {
     public static class HeroQuizzStats {
         private long totalQuizzAnswered;
         private long totalGoodAnswered;
+        private List<String> bonusesWined;
     }
 }

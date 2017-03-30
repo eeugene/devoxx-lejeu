@@ -68,11 +68,14 @@ public class HeroService {
             );
     }
 
-    public void giveBonus(String heroEmail) {
+    public Bonus offerRandomBonus(String heroEmail) {
         Hero hero = heroRepository.findOne(heroEmail);
+        Bonus randomBonus = null;
         if (hero != null) {
-            hero.setCurrentBonus(getRandomBonus());
+            randomBonus = getRandomBonus();
+            hero.setCurrentBonus(randomBonus);
         }
+        return randomBonus;
     }
 
     public Bonus getRandomBonus() {
@@ -81,4 +84,9 @@ public class HeroService {
         return values[i];
     }
 
+    public String getCurrentBonusDescription(String heroEmail) {
+        Hero hero = heroRepository.findOne(heroEmail);
+        Bonus currentBonus = hero.getCurrentBonus();
+        return currentBonus != null ? currentBonus.getDescription() : "";
+    }
 }

@@ -1,5 +1,5 @@
 import { Observable,ajax } from 'rx';
-import { IQuizzApi, IQuizzDto } from 'state/quizz';
+import { IQuizzApi, IQuizzDto, IQuizzAnswerResult } from 'state/quizz';
 import { getAuthorizationHeader } from 'state/hero/heroService';
 
 export const quizzApi: IQuizzApi = {
@@ -7,7 +7,7 @@ export const quizzApi: IQuizzApi = {
         const header = getAuthorizationHeader();
         return ajax.getJSON<IQuizzDto>('api/quizz', header);
     },
-    postQuizzAnswer(quizzId: number, answerId: number):Observable<boolean> {
+    postQuizzAnswer(quizzId: number, answerId: number):Observable<IQuizzAnswerResult> {
         let headers = { 'Content-Type': 'application/json' };
         headers = Object.assign(headers, getAuthorizationHeader());
         return ajax.post('api/quizz', { quizzId, answerId }, headers).map(resp => resp.response);

@@ -1,5 +1,5 @@
 import { Observable, ajax, AjaxResponse } from 'rx';
-import { IHero, IAvatar, IHeroRegistrationForm } from 'state/hero';
+import { IHero, IAvatar, IHeroQuizzStats, IHeroRegistrationForm } from 'state/hero';
 import { getAuthorizationHeader } from 'state/hero/heroService';
 
 export interface IHeroApi {
@@ -7,6 +7,7 @@ export interface IHeroApi {
     login: (username:string,password:string) => Observable<AjaxResponse>;
     register: (hero:IHeroRegistrationForm) => Observable<AjaxResponse>;
     getAvatars: () => Observable<IAvatar[]>;
+    getQuizzStats: (email:string) => Observable<IHeroQuizzStats>;
     timeout: number;
 }
 
@@ -26,6 +27,9 @@ export const heroApi: IHeroApi = {
         const body = JSON.stringify(hero);
         const headers = {'Content-Type': 'application/json'};
         return ajax.post('api/hero/register', body, headers);
+    },
+    getQuizzStats(email:string) {
+        return ajax.getJSON<IHeroQuizzStats>('api/hero/'+email+'/quizz-stats', getAuthorizationHeader());
     },
     timeout: 5000
 };

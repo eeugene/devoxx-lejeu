@@ -27,3 +27,8 @@ interface IAnswer {
     id: number;
     answer: string;
 }
+
+export interface IQuizzAnswerResult {
+    isCorrectAnswer:boolean;
+    bonusWined:string;
+}

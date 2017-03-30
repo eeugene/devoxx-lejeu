@@ -4,13 +4,14 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppState } from 'state';
 import { getHero } from 'state/selectors';
-import { IHero, IHeroStats } from 'state/hero';
+import { IHero, IHeroStats, IHeroQuizzStats } from 'state/hero';
 import { Avatar } from './Avatar';
 import Logout from 'component/login/Logout';
 import './hero.css';
 
 interface IHeroPropsFromState {
     hero: IHero;
+    quizzStats: IHeroQuizzStats;
 }
 
 interface IHeroDispatchProps {
@@ -85,6 +86,15 @@ const component = (props: IHeroProps) => {
                     <ol>{lastFiveBattles.map(result => <li>{result}</li>)}</ol>
                 </p>
             </div>
+            {props.quizzStats &&
+            <div className="item">
+                <span className='item-label'>Quizz</span>
+                <p className="item-label">
+                    <p>{props.quizzStats.totalGoodAnswered} / {props.quizzStats.totalQuizzAnswered}</p>
+                    <p>{props.quizzStats.bonusesWined}</p>
+                </p>
+            </div>
+            }
         </div>
         }
     </div>
@@ -94,7 +104,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(component);
 
 function mapStateToProps(state: AppState) {
     const propsFromState: IHeroPropsFromState = {
-        hero: { ...getHero(state) }
+        hero: { ...getHero(state) },
+        quizzStats: state.heroState.quizzStats
     };
     return propsFromState;
 }

@@ -29,6 +29,7 @@ export interface IHeroState {
     isRegistering?: boolean;
     loginErrors?:string;
     registerErrors?:string[];
+    quizzStats?: IHeroQuizzStats;
 };
 
 export interface IHeroRegistrationForm {
@@ -38,4 +39,10 @@ export interface IHeroRegistrationForm {
     lastname:string;
     nickname:string;
     avatarId:string;
+}
+
+export interface IHeroQuizzStats {
+    totalQuizzAnswered: number;
+    totalGoodAnswered: number;
+    bonusesWined: string[];
 }

@@ -1,4 +1,4 @@
-import { IHero, IAvatar, IHeroRegistrationForm } from '.';
+import { IHero, IAvatar, IHeroRegistrationForm, IHeroQuizzStats } from '.';
 
 export type HeroAction =
     // list of hero actions
@@ -15,6 +15,9 @@ export type HeroAction =
     | HeroAvatarsReceivedAction
     | HeroRegisteringErrorMissingValueAction
     | HeroRegisteringServerErrorAction
+    | HeroQuizzStatsReceivedAction
+    | ErrorOnGetHeroDetailsAction
+    | ErrorOnGetHeroQuizzStatsAction
     ;
 
 
@@ -25,6 +28,7 @@ export interface HeroExitRegisteringAction { type: 'HERO_EXIT_REGISTERING'; }
 export interface HeroSubmitLoginAction { type: 'HERO_SUBMIT_LOGIN'; email: string; password: string; }
 export interface HeroRegistrationDoneAction { type: 'HERO_REGISTRATION_DONE'; email: string; password: string; }
 export interface HeroSubmitRegistrationAction { type: 'HERO_SUBMIT_REGISTRATION'; form: IHeroRegistrationForm; }
+export interface HeroQuizzStatsReceivedAction { type: 'HERO_QUIZZ_STATS_RECEIVED'; result: IHeroQuizzStats; }
 
 export interface HeroLoggedInAction {
     type: 'HERO_LOGGED_IN';
@@ -64,3 +68,20 @@ export const createHeroRegisteringErrorMissingValueAction = (errors: string[]): 
 export const createHeroRegisteringServerErrorAction = (errors: string): HeroRegisteringServerErrorAction => ({ type: 'HERO_REGISTERING_SERVER_ERROR', errors });
 export const createHeroLoginErrorAction = (errors: string): HeroLoginErrorAction => ({ type: 'HERO_LOGIN_ERROR', errors });
 export const createHeroSubmitRegistrationAction = (form: IHeroRegistrationForm): HeroSubmitRegistrationAction => ({ type: 'HERO_SUBMIT_REGISTRATION', form });
+export const createHeroQuizzStatsReceivedAction = (result: IHeroQuizzStats): HeroQuizzStatsReceivedAction => ({ type: 'HERO_QUIZZ_STATS_RECEIVED', result });
+
+
+export interface ErrorOnGetHeroDetailsAction {
+    type: 'ERROR_ON_GET_HERO_DETAILS';
+    error: string;
+};
+
+export interface ErrorOnGetHeroQuizzStatsAction {
+    type: 'ERROR_ON_GET_HERO_QUIZZ_STATS';
+    error: string;
+};
+export const createErrorOnGetHeroDetailsAction = (error: string): ErrorOnGetHeroDetailsAction =>
+({ type: 'ERROR_ON_GET_HERO_DETAILS', error });
+
+export const createErrorOnGetHeroQuizzStatsAction = (error: string): ErrorOnGetHeroQuizzStatsAction =>
+({ type: 'ERROR_ON_GET_HERO_QUIZZ_STATS', error });

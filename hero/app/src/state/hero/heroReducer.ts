@@ -8,6 +8,11 @@ export function heroReducer(state: IHeroState = {}, action: Action): IHeroState 
                 ...state,
                 hero: action.hero
             };
+        case 'HERO_QUIZZ_STATS_RECEIVED':
+            return {
+                ...state,
+                quizzStats: action.result
+            };
         case 'HERO_LOGGED_IN':
             return {
                 ...state,

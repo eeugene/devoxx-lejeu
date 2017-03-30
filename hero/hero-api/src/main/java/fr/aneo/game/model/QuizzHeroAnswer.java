@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+import static javax.persistence.EnumType.STRING;
+
 /**
  * Created by eeugene on 23/03/2017.
  */
@@ -21,7 +23,11 @@ public class QuizzHeroAnswer {
 
     @NotNull
     @Column(name = "QUIZZ_ANSWER_ID")
-    long quizzAnswerId;
+    private long quizzAnswerId;
+
+    @Column(name = "BONUS_WINED")
+    @Enumerated(value = STRING)
+    private Bonus bonusWined;
 
     @ManyToOne
     @JoinColumn(name = "QUIZZ_ANSWER_ID", insertable = false, updatable = false)
