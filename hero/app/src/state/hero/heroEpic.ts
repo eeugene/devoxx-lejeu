@@ -33,6 +33,11 @@ export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Acti
     };
 }
 
+export function setUpdateHeroStatsMechanism(scheduler?: IScheduler): Epic<Action, AppState> {
+    return action$ =>
+        action$.ofType('HERO_DETAILS_RECEIVED').delay(1000).map(
+            (action: HeroDetailsReceivedAction) => createRefreshHeroStatsAction(action.hero.email));
+}
 export function getHeroQuizzStats(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
         return action$.ofType('HERO_LOGGED_IN').mergeMap(
