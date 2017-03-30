@@ -57,15 +57,8 @@ public class HeroService {
                 Hero hero = heroRepository.findOne(s.getEmail());
                 if (hero != null) {
                     hero.setHeroStats(s.getStats());
-
-                    // reset bonus ?
-                    LocalDateTime bonusCreationTime = hero.getBonusCreationLocalDateTime();
-                    if (hero.getCurrentBonus() != null && stats.getTournamentStartTime().isAfter(bonusCreationTime)) {
-                        hero.setCurrentBonus(null);
-                    }
                 }
-            }
-            );
+            });
     }
 
     public Bonus offerRandomBonus(String heroEmail) {
@@ -88,5 +81,11 @@ public class HeroService {
         Hero hero = heroRepository.findOne(heroEmail);
         Bonus currentBonus = hero.getCurrentBonus();
         return currentBonus != null ? currentBonus.getDescription() : "";
+    }
+
+    @Transactional
+    public void resetBonusForAll() {
+        heroRepository.findAll().stream()
+                .forEach(h -> h.setCurrentBonus(null));
     }
 }

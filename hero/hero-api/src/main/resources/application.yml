@@ -17,5 +17,5 @@ liquibase:
 quizz:
   startAt: 9
   endAt: 17
-  intervalInMinutes: 60
+  intervalInMinutes: 30
   inSimuMode: true # if true, the quizz changes every 10 seconds

@@ -20,15 +20,16 @@ public class QuizzScheduler {
     boolean inSimuMode;
     boolean quizzSchedulerStarted = false;
 
-    private QuizzService quizzService;
-
     @Autowired
+    private QuizzService quizzService;
+    @Autowired
+    private HeroService heroService;
+
     public QuizzScheduler(@Value("${quizz.startAt}")int startAt,
                           @Value("${quizz.endAt}")int endAt,
                           @Value("${quizz.intervalInMinutes}")int interval,
-                          @Value("${quizz.inSimuMode}")boolean inSimuMode,
-                          QuizzService quizzService) {
-        this.quizzService = quizzService;
+                          @Value("${quizz.inSimuMode}")boolean inSimuMode
+                          ) {
         this.startAt = startAt;
         this.endAt = endAt;
         this.interval = interval;
@@ -80,5 +81,6 @@ public class QuizzScheduler {
 
     private void incCurrentQuizz() {
         quizzService.disableCurrentQuizz();
+        heroService.resetBonusForAll();
     }
 }
