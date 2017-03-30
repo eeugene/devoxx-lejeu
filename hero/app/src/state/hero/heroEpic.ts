@@ -14,7 +14,7 @@ import {
     HeroLoggedInAction,
     HeroSubmitRegistrationAction,
     HeroSubmitLoginAction
-    } from './heroAction';
+} from './heroAction';
 import { IHeroApi } from 'api/heroApi';
 import { setAuthenticationInLocalStorage, removeAuthenticationFromLocalStorage } from './heroService';
 
@@ -35,8 +35,8 @@ export function submitHeroRegistration(api: IHeroApi, scheduler?: IScheduler): E
             (action: HeroSubmitRegistrationAction) =>
                 api.register(action.form)
                     .timeout(api.timeout, scheduler)
-                    .map(data => {return createHeroRegistrationDoneAction(action.form.email, action.form.password)})
-                    .catch(error => {return Observable.of(createHeroRegisteringServerErrorAction(error.xhr.response.errors))})
+                    .map(data => createHeroRegistrationDoneAction(action.form.email, action.form.password))
+                    .catch(error => Observable.of(createHeroRegisteringServerErrorAction(error.xhr.response.errors)))
         );
     };
 }
@@ -51,9 +51,9 @@ export function loginHero(api: IHeroApi, scheduler?: IScheduler): Epic<Action, A
                     data => {
                         if (data.status === 201 || data.status === 200) {
                             setAuthenticationInLocalStorage(action.email, data.response.token);
-                            return createHeroLoggedInAction(action.email)
+                            return createHeroLoggedInAction(action.email);
                         } else {
-                            return createHeroLoginErrorAction("Login error: bad status " + data.status + " received")
+                            return createHeroLoginErrorAction("Login error: bad status " + data.status + " received");
                         }
                     })
                     .catch(error => Observable.of(createHeroLoginErrorAction(error)))
@@ -64,9 +64,9 @@ export function loginHero(api: IHeroApi, scheduler?: IScheduler): Epic<Action, A
 export function logoutHero(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
         return action$.ofType('HERO_LOG_OUT').mergeMap(
-            (action: any) =>{
+            (action: any) => {
                 removeAuthenticationFromLocalStorage();
-                return Observable.of(createHeroLoggedOutAction())
+                return Observable.of(createHeroLoggedOutAction());
             }
         );
     };

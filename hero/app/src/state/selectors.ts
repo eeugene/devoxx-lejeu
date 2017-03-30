@@ -18,6 +18,10 @@ export function getIsCorrectAnswer(state: AppState): boolean {
     return state.quizzState.isCorrectAnswer;
 }
 
+export function getErrors(state: AppState): string {
+    return state.quizzState.errors;
+}
+
 export function getHero(state: AppState): IHero {
     return state.heroState.hero;
 }

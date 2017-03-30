@@ -8,7 +8,8 @@ import {
     createQuizzReceivedAction,
     createQuizzSubmittedAction,
     SubmitQuizzAction,
-    createRefreshQuizzAction
+    createRefreshQuizzAction,
+    createErrorOnQuizzAction
 } from '.';
 
 export interface IQuizzApi {
@@ -24,13 +25,14 @@ export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
                 api.getQuizz()
                     .timeout(api.timeout, scheduler)
                     .map((quizz: IQuizzDto) => createQuizzReceivedAction(quizz))
+                    .catch(err => Observable.of(createErrorOnQuizzAction(err.message)))
         );
     };
 }
 
 export function setUpdateMechanism(scheduler?: IScheduler): Epic<Action, AppState> {
     return action$ => {
-        return action$.ofType('QUIZZ_RECEIVED').delay(15000).map(() =>createRefreshQuizzAction());
+        return action$.ofType('QUIZZ_RECEIVED').delay(5000).map(() => createRefreshQuizzAction());
     };
 }
 
@@ -41,7 +43,8 @@ export function postQuizzAnswer(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
             (action: SubmitQuizzAction) =>
                 api.postQuizzAnswer(action.quizzId, action.answerId)
                     .timeout(api.timeout, scheduler)
-                    .map((response:boolean) => createQuizzSubmittedAction(response))
+                    .map((response: boolean) => createQuizzSubmittedAction(response))
+                    .catch((err, caught) => Observable.of(createErrorOnQuizzAction(err.message)))
         );
     };
 }

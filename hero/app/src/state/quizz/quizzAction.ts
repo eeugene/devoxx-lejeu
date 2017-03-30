@@ -5,7 +5,8 @@ export type QuizzAction =
     | QuizzReceivedAction
     | SubmitQuizzAction
     | RefreshQuizzAction
-    | QuizzSubmittedAction;
+    | QuizzSubmittedAction
+    | ErrorOnQuizzAction;
 
 
 export interface QuizzReceivedAction {
@@ -39,11 +40,11 @@ export const createSubmitQuizzAction =
 
 export interface QuizzSubmittedAction {
     type: 'QUIZZ_SUBMITTED';
-    response:boolean;
+    response: boolean;
 };
 
 export const createQuizzSubmittedAction =
-    (response:boolean): QuizzSubmittedAction =>
+    (response: boolean): QuizzSubmittedAction =>
         ({ type: 'QUIZZ_SUBMITTED', response });
 
 export interface RefreshQuizzAction {
@@ -53,3 +54,12 @@ export interface RefreshQuizzAction {
 export const createRefreshQuizzAction =
     (): RefreshQuizzAction =>
         ({ type: 'REFRESH_QUIZZ' });
+
+export interface ErrorOnQuizzAction {
+    type: 'ERROR_ON_QUIZZ';
+    error: string;
+};
+
+export const createErrorOnQuizzAction =
+    (error: string): ErrorOnQuizzAction =>
+        ({ type: 'ERROR_ON_QUIZZ', error });

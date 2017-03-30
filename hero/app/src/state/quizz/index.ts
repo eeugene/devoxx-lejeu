@@ -7,6 +7,7 @@ export interface IQuizzState {
     selectedAnswer?: number;
     isQuizzSubmitted?: boolean;
     isCorrectAnswer?: boolean;
+    errors?: string;
 };
 
 export interface IQuizzDto {
