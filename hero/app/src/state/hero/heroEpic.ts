@@ -14,7 +14,10 @@ import {
     createHeroQuizzStatsReceivedAction,
     createErrorOnGetHeroDetailsAction,
     createErrorOnGetHeroQuizzStatsAction,
+    createRefreshHeroStatsAction,
     HeroLoggedInAction,
+    HeroDetailsReceivedAction,
+    RefreshHeroStatsAction,
     HeroSubmitRegistrationAction,
     HeroSubmitLoginAction
 } from './heroAction';
@@ -23,8 +26,8 @@ import { setAuthenticationInLocalStorage, removeAuthenticationFromLocalStorage }
 
 export function getHeroDetails(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
-        return action$.ofType('HERO_LOGGED_IN').mergeMap(
-            (action: HeroLoggedInAction) =>
+        return action$.ofType('HERO_LOGGED_IN', 'REFRESH_HERO_STATS').mergeMap(
+            (action: HeroLoggedInAction | RefreshHeroStatsAction) =>
                 api.getHero(action.email)
                     .timeout(api.timeout, scheduler)
                     .map((h: IHero) => createHeroReceivedAction(h))
@@ -40,8 +43,8 @@ export function setUpdateHeroStatsMechanism(scheduler?: IScheduler): Epic<Action
 }
 export function getHeroQuizzStats(api: IHeroApi, scheduler?: IScheduler): Epic<Action, AppState> {
     return (action$, _) => {
-        return action$.ofType('HERO_LOGGED_IN').mergeMap(
-            (action: HeroLoggedInAction) =>
+        return action$.ofType('HERO_LOGGED_IN', 'REFRESH_HERO_STATS').mergeMap(
+            (action: HeroLoggedInAction | RefreshHeroStatsAction) =>
                 api.getQuizzStats(action.email)
                     .timeout(api.timeout, scheduler)
                     .map((stats: IHeroQuizzStats) => createHeroQuizzStatsReceivedAction(stats))
