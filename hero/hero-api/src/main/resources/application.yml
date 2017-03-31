@@ -10,6 +10,7 @@ spring.datasource:
 spring.jpa:
   hibernate.ddl-auto: update
   database-platform: org.hibernate.dialect.MySQL5Dialect
+  hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 liquibase:
   change-log: classpath:/changelog/db.changelog-master.yaml
