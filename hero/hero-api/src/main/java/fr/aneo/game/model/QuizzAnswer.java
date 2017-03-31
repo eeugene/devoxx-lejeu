@@ -24,9 +24,11 @@ public class QuizzAnswer {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "ID")
     private Long id;
 
     @NotBlank
+    @Column(name = "ANSWER")
     private String answer;
 
     @NotNull

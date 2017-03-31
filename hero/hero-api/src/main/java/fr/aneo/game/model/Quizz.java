@@ -16,19 +16,23 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "QUIZZ")
 public class Quizz {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "ID")
     private Long id;
 
     @NotBlank
+    @Column(name = "QUESTION")
     private String question;
 
     @OneToMany(mappedBy = "quizz", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<QuizzAnswer> answers;
 
     @NotNull
+    @Column(name = "ACTIVE")
     private boolean active;
 
     @NotNull

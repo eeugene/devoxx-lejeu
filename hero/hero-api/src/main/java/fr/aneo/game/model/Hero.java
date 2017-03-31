@@ -24,7 +24,8 @@ import static javax.persistence.EnumType.STRING;
 @Data
 @Entity
 @Builder
-@EqualsAndHashCode(of = "email")
+@EqualsAndHashCode(of = "EMAIL")
+@Table(name = "HERO")
 public class Hero {
 
     private static final int DEFAULT_ATTACK_LEVEL = 100;
@@ -35,23 +36,29 @@ public class Hero {
 
     @Id
     @Email
+    @Column(name = "EMAIL")
     private String email;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "PASSWORD")
     private String password;
 
     @NotBlank
+    @Column(name = "FIRSTNAME")
     private String firstname;
 
     @NotBlank
+    @Column(name = "LASTNAME")
     private String lastname;
 
     @NotNull
     @Enumerated(STRING)
+    @Column(name = "ROLE")
     private Role role = Role.PLAYER;
 
     @NotBlank
+    @Column(name = "NICKNAME")
     private String nickname;
 
     @JsonIgnore

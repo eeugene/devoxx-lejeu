@@ -17,6 +17,7 @@ import static javax.persistence.GenerationType.AUTO;
 @Builder
 @Entity
 @Cacheable
+@Table(name = "AVATAR")
 public class Avatar implements Serializable {
 
     @Tolerate
@@ -24,6 +25,7 @@ public class Avatar implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @Column(name = "ID")
     private long id;
 
     @Column(name = "MIME_TYPE")
@@ -31,6 +33,7 @@ public class Avatar implements Serializable {
 
     @Lob
     @JsonIgnore
+    @Column(name = "DEPICTION")
     private byte[] depiction;
 
 }
