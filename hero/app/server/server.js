@@ -4,7 +4,7 @@ var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 var app = express();
 
-app.use('/', express.static(__dirname + '/'));
+app.use('/',  express.static('../dist/'));
 app.all('/*', function (req, res) {
     proxy.web(req, res, {
         target: 'http://localhost:8080'
