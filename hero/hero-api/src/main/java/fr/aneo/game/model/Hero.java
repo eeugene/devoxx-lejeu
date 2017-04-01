@@ -28,7 +28,7 @@ import static javax.persistence.EnumType.STRING;
 @Table(name = "HERO")
 public class Hero {
 
-    private static final int DEFAULT_ATTACK_LEVEL = 100;
+    private static final int DEFAULT_ATTACK_LEVEL = 10;
     private static final int DEFAULT_HP_LEVEL = 100;
 
     @Tolerate
