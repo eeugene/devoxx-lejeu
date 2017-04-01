@@ -48,7 +48,7 @@ const component = (props: IHeroProps) => {
     return (
     <div>
         <div className="hero-header">
-            <div className="hero-info">{props.hero.avatarId && <Avatar id={props.hero.avatarId} /> }</div>
+            <div className="hero-info">{props.hero.avatarId && <Avatar id={props.hero.avatarId} getClassName="hero-avatar-img" /> }</div>
             <div className="hero-info">
                 <span className="nickname">{props.hero.nickname}</span>
             </div>

@@ -7,6 +7,7 @@ export interface IHeroApi {
     login: (username:string,password:string) => Observable<AjaxResponse>;
     register: (hero:IHeroRegistrationForm) => Observable<AjaxResponse>;
     getAvatars: () => Observable<IAvatar[]>;
+    getAvatarUrl: (id:number) => string;
     timeout: number;
 }
 
@@ -16,6 +17,9 @@ export const heroApi: IHeroApi = {
     },
     getAvatars() {
         return ajax.getJSON<IAvatar[]>('api/avatar');
+    },
+    getAvatarUrl(id:number) {
+        return "api/avatar/"+id;
     },
     login(username:string,password:string) {
         const body = JSON.stringify({...{},username,password});

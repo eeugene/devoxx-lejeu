@@ -10,30 +10,12 @@ import {
  } from 'state/hero/heroAction';
 import { heroApi } from 'api/heroApi';
 import './register.css';
+import { Avatar } from 'component/hero/Avatar';
 
 interface IRegisterProps {
     onExitRegister: ()=>void;
     handleSubmit:(event:any)=>void;
     errors: string[];
-}
-
-interface IPropsAvatar{
-    avatar:IAvatar;
-    onSelectAvatar:(id:string)=>void;
-}
-class Avatar extends React.Component<IPropsAvatar, any> {
-    url:string;
-    constructor(props : IPropsAvatar) {
-      super(props);
-      this.url = "http://localhost:8080/api/avatar/"+this.props.avatar.id;
-    }
-    render() {
-        return (
-            <img src={this.url}
-                onClick={()=>this.props.onSelectAvatar(this.props.avatar.id)}
-                className={(this.props.avatar.isSelected?'avatar-selected':'avatar')} />
-        )
-    }
 }
 
 interface IStateAvatars{
@@ -50,7 +32,7 @@ class Avatars extends React.Component<any,IStateAvatars>{
         );
     }
 
-    selectAvatar(id:string) {
+    selectAvatar(id:number) {
         const {avatars} = this.state;
         const newAvatars = avatars.map( (avatar) => {
             return avatar.id === id ?
@@ -67,8 +49,13 @@ class Avatars extends React.Component<any,IStateAvatars>{
                 <label className="col-sm-3">Choisi ton avatar </label>
                 <div className="col-sm-9">
                 {
-                    this.state.avatars.map(a => (
-                            <Avatar avatar={a} onSelectAvatar={(id) => this.selectAvatar(id)}/>
+                    this.state.avatars.map(avatar => (
+                            <Avatar
+                                key={avatar.id}
+                                id={avatar.id}
+                                onClick={(id) => this.selectAvatar(id)}
+                                getClassName={(avatar.isSelected?'avatar-selected':'avatar')}
+                            />
                     ))
                 }
                 </div>

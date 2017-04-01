@@ -1,9 +1,13 @@
 import * as React from 'react';
 import './hero.css';
+import { heroApi } from 'api/heroApi';
 
 interface IAvatarProps {
     id:number;
+    onClick?: (id:number) => void;
+    getClassName?: string;
 }
+
 export class Avatar extends React.Component<IAvatarProps, any> {
     constructor(props:IAvatarProps) {
         super(props);
@@ -11,13 +15,16 @@ export class Avatar extends React.Component<IAvatarProps, any> {
     }
     render() {
         return (
-            <img src={this.state.url} className='hero-avatar-img'/>
+            <img src={this.state.url}
+                onClick={() => this.props.onClick(this.props.id)}
+                className={this.props.getClassName} />
         );
     }
     getState(id:number) {
-        return {url:"http://localhost:8080/api/avatar/"+id}
+        const url = heroApi.getAvatarUrl(id);
+        return { url };
     }
     componentWillReceiveProps(nextProps:IAvatarProps) {
-        this.setState(this.getState(this.props.id))
+        this.setState(this.getState(this.props.id));
     }
 }

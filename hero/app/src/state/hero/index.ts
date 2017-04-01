@@ -27,7 +27,7 @@ export interface IHero {
 }
 
 export interface IAvatar {
-    id:string;
+    id:number;
     isSelected?:boolean;
 }
 
