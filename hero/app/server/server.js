@@ -9,7 +9,17 @@ app.all('/*', function (req, res) {
     proxy.web(req, res, {
         target: 'http://localhost:8080'
     });
-  });
+});
+app.all('/leaderboard', function (req, res) {
+    proxy.web(req, res, {
+        target: 'http://localhost:8081'
+    });
+});
+app.all('/statistics', function (req, res) {
+    proxy.web(req, res, {
+        target: 'http://localhost:8083'
+    });
+});
 proxy.on('error', function(e) {
   console.log('Could not connect to proxy, please try again...');
 });
