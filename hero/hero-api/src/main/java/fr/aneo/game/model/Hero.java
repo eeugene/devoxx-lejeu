@@ -23,7 +23,7 @@ import static javax.persistence.EnumType.STRING;
 @Data
 @Entity
 @Builder
-@EqualsAndHashCode(of = "EMAIL")
+@EqualsAndHashCode(of = "email")
 @Table(name = "HERO")
 public class Hero {
 
@@ -86,6 +86,10 @@ public class Hero {
 
     @Embedded
     private HeroStats heroStats;
+
+    @Column(name = "REGISTER_TIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registerTime;
 
     public void setCurrentBonus(Bonus b) {
         this.currentBonus = b;

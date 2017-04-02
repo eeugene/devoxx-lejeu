@@ -192,3 +192,13 @@ databaseChangeLog:
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true
+  - changeSet:
+      id: addColumn-hero
+      author: eeugene
+      changes:
+      - addColumn:
+          tableName: HERO
+          columns:
+          - column:
+              name: REGISTER_TIME
+              type: datetime

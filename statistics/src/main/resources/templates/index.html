@@ -1,0 +1,78 @@
+<html>
+<head>
+</head>
+<body>
+
+<h3>Top 5</h3>
+<div id="heroTop5"></div>
+<br/>
+<div id="hero_chart" style="width: 600px; height: 400px;"></div>
+<br/>
+<div id="battle_chart" style="width: 600px; height: 400px;"></div>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="application/javascript">
+    google.charts.load('current', {'packages':['bar','table']});
+    google.charts.setOnLoadCallback(drawAll);
+
+    // PREPATE BATTLE DATA
+    var battleCount = {{{battleCount}}};
+    var battleDataTemp = [['Hour', 'Count']];
+    battleCount.forEach(b => battleDataTemp.push([b.hour, b.count]));
+    var battleData = [];
+    battleData = battleDataTemp;
+
+    // PREPATE HERO DATA
+    var heroCount = {{{heroCount}}};
+    var heroDataTemp = [['Hour', 'Count']];
+    heroCount.forEach(b => heroDataTemp.push([b.hour, b.count]));
+    var heroData = [];
+    heroData = heroDataTemp;
+
+    var heroTop5 = {{{heroTop5}}};
+    var heroTop5Data = heroTop5.map(h => [h.rank,h.nickname,h.email,h.wins,h.losses,h.totalGoodQuizzAnswer+'/'+h.totalQuizzAnswer]);
+
+    function drawAll() {
+        drawTopFive();
+        drawHeroChart();
+        drawBattleChart();
+    }
+    function drawTopFive() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', '#');
+        data.addColumn('string', 'Hero');
+        data.addColumn('string', 'Email');
+        data.addColumn('number', 'Win');
+        data.addColumn('number', 'Loss');
+        data.addColumn('string', 'Quizz');
+        data.addRows(heroTop5Data);
+
+        var table = new google.visualization.Table(document.getElementById('heroTop5'));
+        table.draw(data, {showRowNumber: false, width: '500px'});
+    }
+    function drawBattleChart() {
+        var data = google.visualization.arrayToDataTable(battleData);
+        var options = {
+          chart: {
+            title: 'Battle count',
+            subtitle: 'Battle count of today',
+          }
+        };
+        var chart = new google.charts.Bar(document.getElementById('battle_chart'));
+        chart.draw(data, options);
+    }
+    function drawHeroChart() {
+        var data = google.visualization.arrayToDataTable(heroData);
+        var options = {
+          chart: {
+            title: 'Hero count',
+            subtitle: 'Hero count of today',
+          }
+        };
+        var chart = new google.charts.Bar(document.getElementById('hero_chart'));
+        chart.draw(data, options);
+    }
+    </script>
+
+</body>
+</html>

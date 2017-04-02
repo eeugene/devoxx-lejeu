@@ -1,0 +1,17 @@
+server:
+  port: 8083
+
+hero.datasource:
+  url: "jdbc:mysql://localhost/herodb"
+  username: aneo
+  password: devoxx2017
+
+arena.datasource:
+  url: "jdbc:mysql://localhost/arenadb"
+  username: aneo
+  password: devoxx2017
+
+spring.jpa:
+  hibernate.ddl-auto: none
+  database-platform: org.hibernate.dialect.MySQL5Dialect
+  hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
