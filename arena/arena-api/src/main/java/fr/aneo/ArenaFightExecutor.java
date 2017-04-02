@@ -61,9 +61,9 @@ public class ArenaFightExecutor {
 
             if (roundId == 1) {
                 if (firstFighterState.isFirstAttackBonus())
-                    firstFighterAttack += (int)firstFighterAttack*0.2;
+                    firstFighterAttack += firstFighterAttack *0.2;
                 if (secondFighterState.isFirstAttackBonus())
-                    secondFighterAttack += (int)secondFighterAttack*0.2;
+                    secondFighterAttack += secondFighterAttack *0.2;
                 if (firstFighterState.isFirstAttackBlocked())
                     firstFighterAttack = 0;
                 if (secondFighterState.isFirstAttackBlocked())
@@ -90,11 +90,9 @@ public class ArenaFightExecutor {
 
         boolean hero1Won;
         if (fightDefinition.isStartWithHero1()) {
-            if (secondFighterState.getHp() <= 0) hero1Won = true;
-            else hero1Won = false;
+            hero1Won = secondFighterState.getHp() <= 0;
         } else {
-            if (firstFighterState.getHp() <= 0) hero1Won = true;
-            else hero1Won = false;
+            hero1Won = firstFighterState.getHp() <= 0;
         }
 
         //publishEvents(rounds);

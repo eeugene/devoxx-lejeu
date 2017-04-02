@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.List;
 
 /**
  * Created by raouf on 04/03/17.

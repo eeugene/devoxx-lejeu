@@ -3,21 +3,18 @@ package fr.aneo.game.service;
 import fr.aneo.game.model.*;
 import fr.aneo.game.repository.HeroRepository;
 import fr.aneo.game.repository.QuizzHeroAnswerRepository;
-import fr.aneo.game.model.HeroQuizzStats;
 import fr.aneo.game.resource.HeroResource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Created by raouf on 04/03/17.

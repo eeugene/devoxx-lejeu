@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
