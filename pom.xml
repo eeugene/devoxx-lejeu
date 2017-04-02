@@ -15,6 +15,7 @@
 		<module>arena/arena-api</module>
 		<module>hero/hero-api</module>
 		<module>leaderboard/leaderboard-app</module>
+		<module>statistics</module>
 	</modules>
 
 </project>
