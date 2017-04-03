@@ -10,9 +10,7 @@ interface ILogoutProps {
 }
 
 const component = (props: ILogoutProps) => (
-    <div>
-        <button className="btn" onClick={props.onLogout}>log out</button>
-    </div>
+    <a onClick={props.onLogout} href='#'>Log out</a>
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(component);

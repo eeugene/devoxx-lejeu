@@ -1,3 +1,28 @@
+
+@media (min-width: 500px) {
+    .aneo {
+        position:absolute;
+        top:0;
+        left:50%;
+    }
+    .aneo a {
+        color:#ff981a;
+        font-weight: bold;
+        font-size: 21px;
+        text-decoration: none;
+    }
+    
+    .aneo a:hover {
+        color:#ffaf4d;
+        text-decoration: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .aneo {
+        display: none;
+    }
+}
 .logo {
     margin:5px;
     max-width: 150px;
@@ -6,10 +31,6 @@
 .header {
     width: 100%;
     text-align: center;
-    /*background-color: #f7f7f7;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border: 1px solid #efeff3;*/
     padding: 10px;
     border-top: 0;
     z-index:-20;
@@ -18,4 +39,47 @@
 .orange {
     font-weight: bold;
     color: darkorange;
+}
+
+.github {
+    background-image: url('./GitHub-Mark-Light-32px.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 50%;
+    width:20px;
+    margin:0 5px;
+}
+
+.menu-bar {
+    background-color: #222;
+    border-color: #080808;
+    display: block!important;
+    height: auto!important;
+    padding-bottom: 0;
+    overflow: visible!important;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.menu-bar > ul{
+    list-style: none;
+}
+.menu-bar > ul {
+    margin: 0;
+    padding: 0;
+}
+.menu-bar > ul >li {
+    float: left;
+}
+.menu-bar > ul >li>a {
+    position: relative;
+    display: block;
+    padding: 5px 8px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+}
+.menu-bar > ul >li>a:hover {
+    color:white;
 }

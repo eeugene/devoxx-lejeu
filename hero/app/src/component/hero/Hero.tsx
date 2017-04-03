@@ -58,7 +58,6 @@ const component = (props: IHeroProps) => {
                     <br/>{props.hero.email}
                 </span>
             </div>
-            <div className="hero-info"><Logout /></div>
         </div>
         { props.hero.heroStats &&
         <div className="flex">
