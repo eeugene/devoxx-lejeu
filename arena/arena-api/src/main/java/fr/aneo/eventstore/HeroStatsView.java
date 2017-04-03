@@ -1,6 +1,6 @@
 package fr.aneo.eventstore;
 
-import fr.aneo.api.HeroService;
+import fr.aneo.api.hero.HeroService;
 import fr.aneo.domain.Hero;
 import fr.aneo.domain.HeroStats;
 import org.springframework.beans.factory.annotation.Autowired;

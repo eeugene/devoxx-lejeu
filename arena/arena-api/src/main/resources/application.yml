@@ -27,6 +27,6 @@ arena:
   inSimuMode: true # if true, schedules fights every simuModeInterval seconds, if false, apply the model between startAt and endAt
   simuModeInterval: 10 # define the interval to schedules fights at
 
-leaderboardUrl: "http://localhost:8081"
+leaderboardUrl: "http://localhost:8081/leaderboard"
 heroApiUrl: "http://localhost:8080"
 

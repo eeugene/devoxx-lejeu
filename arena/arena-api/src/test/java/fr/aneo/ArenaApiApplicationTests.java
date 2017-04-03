@@ -1,6 +1,6 @@
 package fr.aneo;
 
-import fr.aneo.api.HeroService;
+import fr.aneo.api.hero.HeroService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

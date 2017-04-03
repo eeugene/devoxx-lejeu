@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
-var proxyStats = httpProxy.createProxyServer({
+var proxyNoPath = httpProxy.createProxyServer({
         ignorePath:true
 });
 var app = express();
@@ -22,7 +22,7 @@ app.all('/leaderboard', function (req, res) {
 });
 app.all('/statistics', function (req, res) {
     console.log('in /statistics');
-    proxyStats.web(req, res, {
+    proxyNoPath.web(req, res, {
         target: 'http://localhost:8083'
     });
 });

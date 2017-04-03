@@ -1,10 +1,10 @@
 package fr.aneo;
 
-import fr.aneo.api.HeroService;
+import fr.aneo.api.hero.HeroService;
 import fr.aneo.domain.*;
 import fr.aneo.eventstore.EventStore;
 import fr.aneo.eventstore.HeroStatsView;
-import fr.aneo.leaderboard.LeaderboardService;
+import fr.aneo.api.leaderboard.LeaderboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package fr.aneo.api;
+package fr.aneo.api.hero;
 
 import feign.HeaderMap;
 import feign.Headers;

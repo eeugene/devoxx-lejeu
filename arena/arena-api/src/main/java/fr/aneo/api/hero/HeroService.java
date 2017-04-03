@@ -1,4 +1,4 @@
-package fr.aneo.api;
+package fr.aneo.api.hero;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;

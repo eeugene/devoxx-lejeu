@@ -1,4 +1,4 @@
-package fr.aneo.api;
+package fr.aneo.api.hero;
 
 import lombok.Builder;
 import lombok.Data;

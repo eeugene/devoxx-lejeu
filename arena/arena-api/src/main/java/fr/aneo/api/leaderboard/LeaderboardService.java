@@ -1,4 +1,4 @@
-package fr.aneo.leaderboard;
+package fr.aneo.api.leaderboard;
 
 import feign.hystrix.FallbackFactory;
 import feign.hystrix.HystrixFeign;

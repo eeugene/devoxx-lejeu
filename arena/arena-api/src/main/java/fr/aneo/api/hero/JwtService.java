@@ -1,4 +1,4 @@
-package fr.aneo.api;
+package fr.aneo.api.hero;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

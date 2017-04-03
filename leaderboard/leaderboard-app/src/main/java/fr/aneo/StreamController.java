@@ -25,7 +25,7 @@ public class StreamController {
 
     @PostMapping(value = "/update", consumes = "application/json")
     public void update(@RequestBody LeaderBoard leaderBoard) throws IOException {
-        log.info("receive update " + leaderBoard);
+        log.debug("receive update " + leaderBoard);
         sseEmitter.send(leaderBoard);
     }
 }

@@ -1,4 +1,4 @@
-package fr.aneo.api;
+package fr.aneo.api.hero;
 
 import fr.aneo.domain.*;
 import fr.aneo.eventstore.HeroStatsView;
