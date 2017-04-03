@@ -34,7 +34,7 @@ export function getCurrentQuizz(api: IQuizzApi, scheduler?: IScheduler): Epic<Ac
 
 export function setUpdateMechanism(scheduler?: IScheduler): Epic<Action, AppState> {
     return action$ => {
-        return action$.ofType('QUIZZ_RECEIVED').delay(5000).map(() => createRefreshQuizzAction());
+        return action$.ofType('QUIZZ_RECEIVED').delay(60000).map(() => createRefreshQuizzAction());
     };
 }
 
