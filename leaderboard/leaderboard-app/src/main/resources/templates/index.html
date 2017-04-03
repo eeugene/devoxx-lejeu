@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <!-- Latest compiled and minified CSS -->
     <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"-->
     <!-- Optional theme -->
@@ -8,28 +9,30 @@
     <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css" /-->
     <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" /-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles.css"/>
 </head>
 <body>
     <div class="container">
         <div class="header text-center">
-            <h1>ANEO - DEVOXX - LE JEU</h1>
-            <h2>Leaderboard</h2>
-            <h3><span id="date"></span> - <span id="time"></span></h3>
+            <p><a href="http://www.aneo.eu"><img src="/aneo.gif" style="max-width: 150px;"></a></p>
+            <h2 class="slogan">
+                <p>Grand jeu <strong>Devoxx</strong>, soyez le meilleur <span class="orange">combattant</span></p>
+                <p>et tentez de gagner de <span class="orange">nombreux lots!</span></p>
+            </h2>
+            <div class="banner">
+                <p><img src="/leaderboard.png" style="max-width: 70px;"/></p>
+                <p><span id="date"></span> - <span id="time"></span></p>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th></th>
-                    <th>Hero</th>
-                    <th>Victory</th>
-                </tr>
-                </thead>
+
+        <div class="flex-container">
+        <div class="table-responsive item">
+            <table class="table table-striped leaderboard-table">
                 <tbody id="leaderboard">
 
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
     <script type="application/javascript">
@@ -64,7 +67,7 @@
             var html = "";
             var i = 0;
             json.list.forEach(
-                l => html += "<tr><td>"+(++i)+"</td><td><img class='img-responsive img-circle' style='max-width:50px' src='"+heroApiUrl+"/api/avatar/"+l.avatarId+"' /></td><td>"+l.heroName+"</td><td>"+l.winRatio+"</td></tr>"
+                l => html += "<tr><td class='rank'>"+(++i)+"</td><td><img class='img-responsive img-circle' style='max-width:50px' src='"+heroApiUrl+"/api/avatar/"+l.avatarId+"' /></td><td>"+l.heroName+"</td><td class='winRatio'>"+l.winRatio+"</td></tr>"
             )
 
             leaderboard.innerHTML = html;

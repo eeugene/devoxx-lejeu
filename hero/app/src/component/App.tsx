@@ -19,7 +19,7 @@ interface IAppProps {
 const component = (props: IAppProps) => (
     <div>
         <div className="header">
-            <img src="http://www.aneo.eu/assets/img/aneo.gif" className="text-center logo" />
+            <a href="http://www.aneo.eu"><img src="http://www.aneo.eu/assets/img/aneo.gif" className="text-center logo" /></a>
         {!props.isAuthenticated &&
             <h2 className="slogan">
                 <p className="">

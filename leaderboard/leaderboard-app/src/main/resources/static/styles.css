@@ -1,0 +1,45 @@
+
+.header {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.orange {
+    font-weight: bold;
+    color: darkorange;
+}
+.banner {
+    margin-top:50px;
+}
+
+.flex-container {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.item {
+    margin: auto;
+}
+.leaderboard-table {
+    font-size:1.5em;
+}
+.leaderboard-table>thead>tr>th, .leaderboard-table>tbody>tr>th, .leaderboard-table>tfoot>tr>th, .leaderboard-table>thead>tr>td, .leaderboard-table>tbody>tr>td, .leaderboard-table>tfoot>tr>td {
+    vertical-align:middle;
+}
+.leaderboard-table>tbody>tr:nth-of-type(-n+5) > .rank {
+    background-color: #666;
+}
+.winRatio {
+    color: #ffffff;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #ffa500;
+}
+.rank {
+    font-weight: bold;
+    color: #ffffff;
+    white-space: nowrap;
+    text-align: center;
+    background-color:#919191;
+}
