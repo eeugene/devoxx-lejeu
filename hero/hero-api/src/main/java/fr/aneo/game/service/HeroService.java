@@ -62,6 +62,7 @@ public class HeroService {
             });
     }
 
+    @Transactional
     public Bonus offerRandomBonus(String heroEmail) {
         Hero hero = heroRepository.findOne(heroEmail);
         Bonus randomBonus = null;
@@ -71,8 +72,8 @@ public class HeroService {
         }
         return randomBonus;
     }
-
-    public Bonus getRandomBonus() {
+    
+    private Bonus getRandomBonus() {
         Bonus[] values = Bonus.values();
         int i = RandomUtils.nextInt(values.length-1);
         return values[i];
@@ -116,5 +117,13 @@ public class HeroService {
                 .totalQuizzAnswered(quizzHeroAnswers.size())
                 .bonusesWined(bonusesWined)
                 .build();
+    }
+
+    @Transactional
+    public void incrementHp(String heroEmail) {
+        Hero hero = heroRepository.findOne(heroEmail);
+        if (hero != null) {
+            hero.incrementHp(Hero.DEFAULT_HP_INCREMENT);
+        }
     }
 }

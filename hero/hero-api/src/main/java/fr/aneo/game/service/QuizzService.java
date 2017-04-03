@@ -40,8 +40,12 @@ public class QuizzService {
             quizzHeroAnswer.setQuizzAnswerId(answerId);
             Quizz quizz = quizzRepository.findOne(quizzId);
             if (quizz != null && quizz.isCorrectAnswer(answerId)) {
-                Bonus bonus = heroService.offerRandomBonus(heroEmail);
-                quizzHeroAnswer.setBonusWined(bonus);
+                if (quizz.isBonus()) {
+                    Bonus bonus = heroService.offerRandomBonus(heroEmail);
+                    quizzHeroAnswer.setBonusWined(bonus);
+                } else {
+                    heroService.incrementHp(heroEmail);
+                }
             }
             quizzHeroAnswerRepository.save(quizzHeroAnswer);
         }

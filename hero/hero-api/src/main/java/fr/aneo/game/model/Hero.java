@@ -29,6 +29,7 @@ public class Hero {
 
     private static final int DEFAULT_ATTACK_LEVEL = 10;
     private static final int DEFAULT_HP_LEVEL = 100;
+    public static final int DEFAULT_HP_INCREMENT = 5;
 
     @Tolerate
     public Hero() {}
@@ -101,5 +102,9 @@ public class Hero {
             return LocalDateTime.ofInstant(getCurrentBonusCreationTime().toInstant(), ZoneId.systemDefault());
         }
         return null;
+    }
+
+    public void incrementHp(int hpIncrement) {
+        this.setHpLevel(this.getHpLevel() + hpIncrement);
     }
 }

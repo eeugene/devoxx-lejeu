@@ -71,7 +71,7 @@ public class QuizzResource {
         quizzService.saveHeroAnswerToQuizz(heroEmail, quizzAnswerSubmitted.getQuizzId(), quizzAnswerSubmitted.getAnswerId());
         boolean isCorrectAnswer = currentQuizz.isCorrectAnswer(quizzAnswerSubmitted.getAnswerId());
         String bonusWined = "";
-        if (isCorrectAnswer) {
+        if (isCorrectAnswer && currentQuizz.isBonus()) {
             bonusWined = heroService.getCurrentBonusDescription(heroEmail);
         }
         return ok(QuizzAnswerResult.builder().isCorrectAnswer(isCorrectAnswer).bonusWined(bonusWined).build());
