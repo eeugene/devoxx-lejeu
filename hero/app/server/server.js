@@ -9,19 +9,22 @@ var app = express();
 
 app.use('/',  express.static('../dist/'));
 app.all('/api/*', function (req, res) {
-    //console.log('in /api/*');
     proxy.web(req, res, {
         target: 'http://localhost:8080'
     });
 });
-app.all('/leaderboard', function (req, res) {
-    console.log('in /leaderboard');
+
+app.all('/leaderboard/', function (req, res) {
+    proxy.web(req, res, {
+        target: 'http://localhost:8081'
+    });
+});
+app.all('/leaderboard/*', function (req, res) {
     proxy.web(req, res, {
         target: 'http://localhost:8081'
     });
 });
 app.all('/statistics', function (req, res) {
-    console.log('in /statistics');
     proxyNoPath.web(req, res, {
         target: 'http://localhost:8083'
     });
