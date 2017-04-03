@@ -8,22 +8,26 @@ var proxyNoPath = httpProxy.createProxyServer({
 var app = express();
 
 app.use('/',  express.static('../dist/'));
-app.all('/api/*', function (req, res) {
-    proxy.web(req, res, {
+
+function routeToHeroApi(req,res) {
+   proxy.web(req, res, {
         target: 'http://localhost:8080'
     });
-});
+}
 
-app.all('/leaderboard/', function (req, res) {
-    proxy.web(req, res, {
+function routeToLeaderboard(req,res) {
+   proxy.web(req, res, {
         target: 'http://localhost:8081'
     });
-});
-app.all('/leaderboard/*', function (req, res) {
-    proxy.web(req, res, {
-        target: 'http://localhost:8081'
-    });
-});
+}
+
+app.all('/login', routeToHeroApi);
+app.all('/register', routeToHeroApi);
+app.all('/api/*', routeToHeroApi);
+
+app.all('/leaderboard/', routeToLeaderboard);
+app.all('/leaderboard/*', routeToLeaderboard);
+
 app.all('/statistics', function (req, res) {
     proxyNoPath.web(req, res, {
         target: 'http://localhost:8083'
