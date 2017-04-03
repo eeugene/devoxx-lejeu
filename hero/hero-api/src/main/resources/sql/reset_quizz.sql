@@ -1,0 +1,3 @@
+DELETE FROM `herodb`.`QUIZZ_HERO_ANSWER` WHERE `QUIZZ_ID` > 0;
+UPDATE `herodb`.`QUIZZ` SET ACTIVE = true WHERE `ID` > 0;
+
