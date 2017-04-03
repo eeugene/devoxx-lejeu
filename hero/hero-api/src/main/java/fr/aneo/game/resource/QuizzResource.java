@@ -33,7 +33,7 @@ public class QuizzResource {
     private HeroService heroService;
 
     @GetMapping
-    public ResponseEntity<QuizzDto> currentQuizz() {
+    public ResponseEntity<QuizzDto> getCurrentQuizz() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new RuntimeException("Not authenticated");

@@ -75,7 +75,7 @@ public class HeroService {
     
     private Bonus getRandomBonus() {
         Bonus[] values = Bonus.values();
-        int i = RandomUtils.nextInt(values.length-1);
+        int i = RandomUtils.nextInt(values.length);
         return values[i];
     }
 

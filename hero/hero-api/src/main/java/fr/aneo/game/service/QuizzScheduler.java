@@ -80,7 +80,7 @@ public class QuizzScheduler {
     }
 
     private void incCurrentQuizz() {
-        quizzService.disableCurrentQuizz();
+        quizzService.changeCurrentQuizz();
         heroService.resetBonusForAll();
     }
 }

@@ -6,9 +6,13 @@ import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.repository.QuizzHeroAnswerRepository;
 import fr.aneo.game.repository.QuizzRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by rcollard on 09/03/2017.
@@ -24,8 +28,12 @@ public class QuizzService {
     @Autowired
     private HeroService heroService;
 
+    private Quizz currentQuizz;
     public Quizz getCurrentQuizz() {
-        return getNextAvailableQuizz();
+        if (currentQuizz == null) {
+            currentQuizz = getNextAvailableQuizz();
+        }
+        return currentQuizz;
     }
 
     public QuizzHeroAnswer heroHasAnsweredQuizz(String heroEmail, Long quizzId) {
@@ -51,25 +59,36 @@ public class QuizzService {
         }
     }
 
-    void disableCurrentQuizz() {
-        Quizz currentQuizz = getCurrentQuizz();
+    void changeCurrentQuizz() {
         if (currentQuizz != null && currentQuizz.isActive()) {
             currentQuizz.setActive(false);
             quizzRepository.save(currentQuizz);
+            currentQuizz = null;
         }
+        getCurrentQuizz();
     }
 
     private Quizz getNextAvailableQuizz() {
-        log.debug("Loading next available quizz");
         Quizz quizz;
-        quizz = quizzRepository.findAll()
-                .stream().filter(q -> q.isActive() && q.isBonus()).findFirst().orElse(null);
-        if (quizz == null) { // no bonus quizz, try normal quizz
-            quizz = quizzRepository.findAll()
-                .stream().filter(q -> q.isActive() && !q.isBonus()).findFirst().orElse(null);
+        List<Quizz> quizzes = quizzRepository.findAll()
+                .stream().filter(q -> q.isActive() && q.isBonus()).collect(Collectors.toList());
+
+        if (quizzes.isEmpty()) { // no bonus quizz, try normal quizz
+            quizzes = quizzRepository.findAll()
+                    .stream().filter(q -> q.isActive() && !q.isBonus()).collect(Collectors.toList());
         }
+        quizz = getRandomQuizz(quizzes);
         log.debug("Found NextQuizz: " + quizz);
         return quizz;
+    }
+
+    private Quizz getRandomQuizz(List<Quizz> quizzes) {
+        if (quizzes == null || quizzes.isEmpty()) {
+            return null;
+        }
+        int size = quizzes.size();
+        int randomIndex = size > 1 ? RandomUtils.nextInt(size) : 0;
+        return quizzes.get(randomIndex);
     }
 
     public void saveQuizz(Quizz quizz) {
