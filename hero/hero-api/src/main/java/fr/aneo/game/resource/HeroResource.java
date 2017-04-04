@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import fr.aneo.game.model.Hero;
 import fr.aneo.game.model.HeroQuizzStats;
 import fr.aneo.game.model.HeroStats;
+import fr.aneo.game.model.Role;
 import fr.aneo.game.service.HeroService;
 import fr.aneo.game.service.QuizzService;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,6 +26,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -76,12 +79,15 @@ public class HeroResource {
                         hero.getNickname(), hero.getEmail())).build());
     }
 
-    // TODO: sécuriser
     @PostMapping(value = "/stats")
     public void updateStats(@RequestBody UpdateHeroStats stats) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             throw new RuntimeException("Not authenticated");
+        }
+        Optional<? extends GrantedAuthority> adminAuthority = authentication.getAuthorities().stream().filter(a -> a.getAuthority().equals(Role.ADMIN.authority())).findFirst();
+        if (!adminAuthority.isPresent()) {
+            throw new RuntimeException("Admin role required to access this service");
         }
         if (stats == null) {
             return;
