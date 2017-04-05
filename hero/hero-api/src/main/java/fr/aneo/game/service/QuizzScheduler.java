@@ -57,9 +57,6 @@ public class QuizzScheduler {
     }
 
     private void startQuizzScheduler() {
-        if (quizzSchedulerStarted) {
-            timer.shutdownNow();
-        }
         LocalTime now = LocalTime.now();
         int hour = now.getHour();
         if (hour >= endAt) {
