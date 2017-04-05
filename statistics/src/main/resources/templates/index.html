@@ -6,6 +6,7 @@
 <h3>Top 5</h3>
 <div id="heroTop5"></div>
 <br/>
+Total = {{totalHero}}
 <div id="hero_chart" style="width: 600px; height: 400px;"></div>
 <br/>
 <div id="battle_chart" style="width: 600px; height: 400px;"></div>
@@ -30,7 +31,19 @@
     heroData = heroDataTemp;
 
     var heroTop5 = {{{heroTop5}}};
-    var heroTop5Data = heroTop5.map(h => [h.rank,h.nickname,h.email,h.wins,h.losses,h.totalGoodQuizzAnswer+'/'+h.totalQuizzAnswer]);
+    console.log(heroTop5);
+    var heroTop5Data = heroTop5.map(h =>
+        [
+            h.rank,
+            h.nickname,
+            h.email,
+            (h.wins / (h.wins + h.losses)) * 100,
+            h.wins,
+            h.losses,
+            h.totalGoodQuizzAnswered + '/' + h.totalQuizzAnswered,
+            h.totalGoodBonusQuizzAnswered + '/' + h.totalBonusQuizzAnswered
+        ]
+    );
 
     function drawAll() {
         drawTopFive();
@@ -42,13 +55,15 @@
         data.addColumn('number', '#');
         data.addColumn('string', 'Hero');
         data.addColumn('string', 'Email');
+        data.addColumn('number', 'Ratio');
         data.addColumn('number', 'Win');
         data.addColumn('number', 'Loss');
         data.addColumn('string', 'Quizz');
+        data.addColumn('string', 'Bonus Quizz');
         data.addRows(heroTop5Data);
 
         var table = new google.visualization.Table(document.getElementById('heroTop5'));
-        table.draw(data, {showRowNumber: false, width: '500px'});
+        table.draw(data, {showRowNumber: false, width: '700px'});
     }
     function drawBattleChart() {
         var data = google.visualization.arrayToDataTable(battleData);

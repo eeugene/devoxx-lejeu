@@ -2,6 +2,7 @@ package fr.aneo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.aneo.model.CountByHour;
 import fr.aneo.service.BattleStatsService;
 import fr.aneo.service.HeroStatsService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by eeugene on 02/04/2017.
@@ -26,7 +30,10 @@ public class WebController {
 
     @GetMapping(path = "/")
     String index(Map<String, Object> model) {
-        model.put("heroCount", convertObjectToJson(heroStatsService.getHeroCount()));
+        List<CountByHour> heroCountByHour = heroStatsService.getHeroCount();
+        Long totalHero = heroCountByHour.stream().map(c -> c.getCount()).collect(Collectors.summingLong(x -> x));
+        model.put("totalHero", totalHero);
+        model.put("heroCount", convertObjectToJson(heroCountByHour));
         model.put("battleCount", convertObjectToJson(battleStatsService.getBattleCount()));
         model.put("heroTop5", convertObjectToJson(heroStatsService.getTopFive()));
         return "index";

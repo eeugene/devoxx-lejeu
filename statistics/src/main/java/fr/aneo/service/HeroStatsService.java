@@ -55,19 +55,41 @@ public class HeroStatsService {
         );
         heros.stream().forEach(h ->
                 {
-                    List<QuizzHeroAnswer> answers = heroJdbcTemplate.query("select a.QUIZZ_ID,a.QUIZZ_ANSWER_ID,a.BONUS_WINED from QUIZZ_HERO_ANSWER a where a.HERO_EMAIL = ?",
-                            new Object[]{h.getEmail()},
-                            (ResultSet res, int rowNum) ->
-                                    QuizzHeroAnswer.builder()
-                                    .quizzId(res.getInt(1))
-                                    .answerId(res.getInt(2))
-                                    .bonusWined(res.getString(3))
-                                    .build()
+                    List<QuizzHeroAnswer> allAnswers = getQuizzHeroAnswers(h);
+                    List<QuizzHeroAnswer> answers = allAnswers.stream().filter(q -> !q.isBonusQuizz()).collect(Collectors.toList());
+                    h.setTotalQuizzAnswered(answers.size());
+                    h.setTotalGoodQuizzAnswered(answers.stream()
+                            .filter(a -> a.isGoodAnswer())
+                            .collect(Collectors.counting())
                     );
-                    h.setTotalQuizzAnswer(answers.size());
-                    h.setTotalGoodQuizzAnswer(answers.stream().filter(a -> a.isGoodAnswer()).collect(Collectors.counting()));
+                    List<QuizzHeroAnswer> bonusAnswers = allAnswers.stream().filter(q -> q.isBonusQuizz()).collect(Collectors.toList());
+                    h.setTotalBonusQuizzAnswered(bonusAnswers.size());
+                    h.setTotalGoodBonusQuizzAnswered(bonusAnswers.stream()
+                            .filter(a -> a.isGoodAnswer())
+                            .collect(Collectors.counting())
+                    );
                 }
         );
         return heros;
     }
+
+    private List<QuizzHeroAnswer> getQuizzHeroAnswers(Hero h) {
+        return heroJdbcTemplate.query(
+                "select a.QUIZZ_ID,a.QUIZZ_ANSWER_ID,a.BONUS_WINED,q.IS_BONUS,qa.IS_CORRECT_ANSWER " +
+                        "FROM QUIZZ_HERO_ANSWER a " +
+                        "JOIN QUIZZ q ON q.ID = a.QUIZZ_ID " +
+                        "JOIN QUIZZ_ANSWER qa ON qa.QUIZZ_ID = q.ID AND qa.ID = a.QUIZZ_ANSWER_ID " +
+                        "WHERE a.HERO_EMAIL = ?",
+                        new Object[]{h.getEmail()},
+                        (ResultSet res, int rowNum) ->
+                                QuizzHeroAnswer.builder()
+                                .quizzId(res.getInt(1))
+                                .answerId(res.getInt(2))
+                                .bonusWined(res.getString(3))
+                                .isBonusQuizz(res.getBoolean(4))
+                                .isGoodAnswer(res.getBoolean(5))
+                                .build()
+                );
+    }
+
 }

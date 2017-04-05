@@ -40,7 +40,10 @@ public class Hero {
     private int rank;
     private int bestRanking;
     private String lastFiveBattles;
-    private long totalQuizzAnswer;
-    private long totalGoodQuizzAnswer;
 
+    private long totalQuizzAnswered;
+    private long totalGoodQuizzAnswered;
+
+    private long totalBonusQuizzAnswered;
+    private long totalGoodBonusQuizzAnswered;
 }

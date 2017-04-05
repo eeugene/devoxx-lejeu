@@ -13,7 +13,6 @@ public class QuizzHeroAnswer {
     private int quizzId;
     private int answerId;
     private String bonusWined;
-    public boolean isGoodAnswer() {
-        return !StringUtils.isEmpty(bonusWined);
-    }
+    private boolean isBonusQuizz;
+    private boolean isGoodAnswer;
 }
