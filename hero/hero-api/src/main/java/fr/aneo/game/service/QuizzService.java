@@ -29,10 +29,8 @@ public class QuizzService {
     private HeroService heroService;
 
     private Quizz currentQuizz;
+
     public Quizz getCurrentQuizz() {
-        if (currentQuizz == null) {
-            currentQuizz = getNextAvailableQuizz();
-        }
         return currentQuizz;
     }
 
@@ -63,9 +61,8 @@ public class QuizzService {
         if (currentQuizz != null && currentQuizz.isActive()) {
             currentQuizz.setActive(false);
             quizzRepository.save(currentQuizz);
-            currentQuizz = null;
         }
-        getCurrentQuizz();
+        this.currentQuizz = getNextAvailableQuizz();
     }
 
     private Quizz getNextAvailableQuizz() {

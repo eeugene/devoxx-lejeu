@@ -41,7 +41,7 @@ public class QuizzScheduler {
 
     public void start() {
         if (inSimuMode) {
-            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(this::incCurrentQuizz, 60, 60, TimeUnit.SECONDS);
+            ScheduledFuture<?> handle = timer.scheduleAtFixedRate(this::changeCurrentQuizz, 60, 60, TimeUnit.SECONDS);
             try {
                 handle.get();
             } catch (ExecutionException e) {
@@ -73,10 +73,10 @@ public class QuizzScheduler {
     }
 
     private void scheduleQuizz() {
-        quizzScheduler.scheduleAtFixedRate(this::incCurrentQuizz, interval, interval, TimeUnit.MINUTES);
+        quizzScheduler.scheduleAtFixedRate(this::changeCurrentQuizz, 0, interval, TimeUnit.MINUTES);
     }
 
-    private void incCurrentQuizz() {
+    private void changeCurrentQuizz() {
         quizzService.changeCurrentQuizz();
         heroService.resetBonusForAll();
     }
