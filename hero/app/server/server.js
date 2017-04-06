@@ -25,8 +25,8 @@ app.all('/login', routeToHeroApi);
 app.all('/register', routeToHeroApi);
 app.all('/api/*', routeToHeroApi);
 
-app.all('/leaderboard/', routeToLeaderboard);
-app.all('/leaderboard/*', routeToLeaderboard);
+app.get('/leaderboard/', routeToLeaderboard);
+app.get('/leaderboard/*', routeToLeaderboard);
 
 app.all('/statistics', function (req, res) {
     proxyNoPath.web(req, res, {
