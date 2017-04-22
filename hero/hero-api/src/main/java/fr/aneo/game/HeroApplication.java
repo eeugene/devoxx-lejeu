@@ -1,10 +1,17 @@
 package fr.aneo.game;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import fr.aneo.game.repository.QuizzRepository;
+import fr.aneo.game.service.HeroService;
 import fr.aneo.game.service.QuizzScheduler;
+import fr.aneo.game.service.QuizzProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 /**
  * Created by raouf on 07/03/17.
@@ -14,10 +21,22 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class HeroApplication {
 
     public static void main(String[] args) throws Throwable {
-        ConfigurableApplicationContext run = SpringApplication.run(HeroApplication.class, args);
+        SpringApplication.run(HeroApplication.class, args);
+    }
 
-        log.info("Start QuizzScheduler");
-        QuizzScheduler quizzScheduler = run.getBeanFactory().getBean(QuizzScheduler.class);
-        quizzScheduler.start();
+    @Bean
+    public ActorSystem actorSystem() {
+        return ActorSystem.create("MySystem");
+    }
+
+    @Bean
+    @Autowired
+    public ActorRef quizzScheduler(QuizzProperties quizzProperties, QuizzRepository quizzRepository, HeroService heroService) {
+        return actorSystem().actorOf(QuizzScheduler.props(quizzProperties, quizzRepository, heroService));
+    }
+
+    @Bean
+    public QuizzProperties quizzProps() {
+        return new QuizzProperties();
     }
 }

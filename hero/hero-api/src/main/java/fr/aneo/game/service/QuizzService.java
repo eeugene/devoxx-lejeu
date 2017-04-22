@@ -1,18 +1,20 @@
 package fr.aneo.game.service;
 
+import akka.actor.ActorRef;
 import fr.aneo.game.model.Bonus;
 import fr.aneo.game.model.Quizz;
 import fr.aneo.game.model.QuizzHeroAnswer;
 import fr.aneo.game.repository.QuizzHeroAnswerRepository;
 import fr.aneo.game.repository.QuizzRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+import static akka.pattern.PatternsCS.ask;
 
 /**
  * Created by rcollard on 09/03/2017.
@@ -21,17 +23,29 @@ import java.util.stream.Collectors;
 @Slf4j
 public class QuizzService {
 
-    @Autowired
     private QuizzRepository quizzRepository;
     @Autowired
     private QuizzHeroAnswerRepository quizzHeroAnswerRepository;
     @Autowired
     private HeroService heroService;
 
-    private Quizz currentQuizz;
+    @Autowired
+    private ActorRef quizzScheduler;
 
     public Quizz getCurrentQuizz() {
-        return currentQuizz;
+        CompletableFuture<Object> ask = ask(quizzScheduler, new QuizzScheduler.GetCurrentQuizz(), 1000).toCompletableFuture();
+        Object quizz = null;
+        try {
+            quizz = ask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (quizz == null || !(quizz instanceof Quizz)) {
+            return null;
+        }
+        return (Quizz) quizz;
     }
 
     public QuizzHeroAnswer heroHasAnsweredQuizz(String heroEmail, Long quizzId) {
@@ -55,37 +69,6 @@ public class QuizzService {
             }
             quizzHeroAnswerRepository.save(quizzHeroAnswer);
         }
-    }
-
-    void changeCurrentQuizz() {
-        if (currentQuizz != null && currentQuizz.isActive()) {
-            currentQuizz.setActive(false);
-            quizzRepository.save(currentQuizz);
-        }
-        this.currentQuizz = getNextAvailableQuizz();
-    }
-
-    private Quizz getNextAvailableQuizz() {
-        Quizz quizz;
-        List<Quizz> quizzes = quizzRepository.findAll()
-                .stream().filter(q -> q.isActive() && q.isBonus()).collect(Collectors.toList());
-
-        if (quizzes.isEmpty()) { // no bonus quizz, try normal quizz
-            quizzes = quizzRepository.findAll()
-                    .stream().filter(q -> q.isActive() && !q.isBonus()).collect(Collectors.toList());
-        }
-        quizz = getRandomQuizz(quizzes);
-        log.debug("Found NextQuizz: " + quizz);
-        return quizz;
-    }
-
-    private Quizz getRandomQuizz(List<Quizz> quizzes) {
-        if (quizzes == null || quizzes.isEmpty()) {
-            return null;
-        }
-        int size = quizzes.size();
-        int randomIndex = size > 1 ? RandomUtils.nextInt(size) : 0;
-        return quizzes.get(randomIndex);
     }
 
     public void saveQuizz(Quizz quizz) {
